@@ -32,6 +32,17 @@
 |Craft|ODT Macros, Client Side Attack|File Upload|PrintSpoofer||
 |Dibble|Web Exploit, Node.js RCE||SUID||
 |Hepet|ODS Macros, Client Side Attack||Misconfigured Files||
+|Zino|Booked Scheduler||Misconfigured Files||
+|Zenphoto|Zenphoto||CVE-2021-4034||
+|Tico|MongoDB SCRAM, NodeBB||NodeBB||
+|Sybaris|Redis, Sybaris||Cronjobs||
+|Postfish|Client Side Attacks, SMTP, POP3|Misconfigured Files, SMTP Disclaimers|SUID GTFO||
+|Pebbles|SQLi||||
+|Metallus|ManageEngine Applications Manager||||
+|Kevin|HP Power-Manager||||
+|Hetemit|Custom Web Exploit||Misconfigured Files||
+|Hawat|Union SQLi||||
+|Cookiecutter|Custom Web Exploit||Misconfigured Permissions||
 
 # HackTheBox
 
