@@ -1,0 +1,37 @@
+foothold 2 ways:
+
+difficult way:
+
+custom exploit to crack SCRAM password (don't really understand, need to know about SCRAM to do it lol)
+
+https://www.mongodb.com/docs/v4.2/core/security-scram/
+https://www.mongodb.com/blog/post/improved-password-based-authentication-mongodb-30-scram-explained-part-1?tck=docs_server
+https://www.mongodb.com/blog/post/improved-password-based-authentication-mongodb-30-scram-explained-part-2?tck=docs_server
+
+
+get mongodb password monkey13
+
+change password in nodebb database
+
+┌──(kali㉿kali)-[~]
+└─$ htpasswd -bnBC 12 "" password | tr -d ':'
+$2y$12$LMqnkbq1FpTnOzAWTgizbugAOpGJaKl0h7PVHvDraW9e0wK2SR7Zu
+
+> db.objects.update({ _key: /^user:1$/ }, { $set: { password: "$2y$12$LMqnkbq1FpTnOzAWTgizbugAOpGJaKl0h7PVHvDraW9e0wK2SR7Zu" }})
+
+
+easy way:
+
+https://www.exploit-db.com/exploits/48875
+
+
+
+priv esc:
+
+https://www.exploit-db.com/exploits/49813
+
+
+
+
+
+

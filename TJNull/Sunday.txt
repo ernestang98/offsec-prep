@@ -1,0 +1,17 @@
+6787 is a rabbithole
+
+79 is the way, hacktricks for enumeration
+
+brute force on port 22022
+
+-w to increase timeout of hydra
+
+if guessing can use: root, admin, password, username itself, box name
+
+if got another user, you may/can perform lateral movement!!!
+
+/backup enumeration, linpeas should filter it out
+
+sudo -l
+
+hydra -l sunny -P /usr/share/wordlists/rockyou.txt 10.129.193.99 -t 4 ssh -s 22022 -w 1000

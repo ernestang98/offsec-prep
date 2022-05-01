@@ -1,0 +1,7 @@
+gobuster dir -u https://10.129.156.237 --wordlist /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-big.txt -k -x ".txt, .php"
+https://docs.netgate.com/pfsense/en/latest/usermanager/defaults.html
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#bash-tcp
+metasploit
+https://www.exploit-db.com/exploits/43560
+
+no privesc

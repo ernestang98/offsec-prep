@@ -1,0 +1,116 @@
+Lots of ports & services, don't be confused, do it one by one 
+
+└─$ nmap -p- -Pn  192.168.204.168   
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-03-28 13:22 +08
+Stats: 0:00:02 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 0.01% done
+Stats: 0:22:57 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 57.07% done; ETC: 14:02 (0:17:16 remaining)
+Stats: 0:59:41 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 81.47% done; ETC: 14:35 (0:13:35 remaining)
+Stats: 0:59:53 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 81.62% done; ETC: 14:36 (0:13:29 remaining)
+Nmap scan report for 192.168.204.168
+Host is up (0.19s latency).
+Not shown: 65522 filtered tcp ports (no-response)
+PORT      STATE SERVICE
+3389/tcp  open  ms-wbt-server
+3700/tcp  open  lrs-paging
+3820/tcp  open  scp
+4848/tcp  open  appserv-http
+6060/tcp  open  x11
+7676/tcp  open  imqbrokerd
+8080/tcp  open  http-proxy
+8181/tcp  open  intermapper
+8686/tcp  open  sun-as-jmxrmi
+59389/tcp open  unknown
+59393/tcp open  unknown
+59394/tcp open  unknown
+59395/tcp open  unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 5246.71 seconds
+
+
+PORT      STATE    SERVICE              VERSION
+3389/tcp  open     ms-wbt-server        Microsoft Terminal Services
+| ssl-cert: Subject: commonName=Fishyyy
+| Not valid before: 2021-10-27T11:48:08
+|_Not valid after:  2022-04-28T11:48:08
+|_ssl-date: 2021-10-29T14:49:39+00:00; -151d17h53m18s from scanner time.
+| rdp-ntlm-info: 
+|   Target_Name: FISHYYY
+|   NetBIOS_Domain_Name: FISHYYY
+|   NetBIOS_Computer_Name: FISHYYY
+|   DNS_Domain_Name: Fishyyy
+|   DNS_Computer_Name: Fishyyy
+|   Product_Version: 10.0.19041
+|_  System_Time: 2021-10-29T14:49:13+00:00
+3700/tcp  open     giop                 CORBA naming service
+3820/tcp  open     ssl/giop             CORBA naming service
+| ssl-cert: Subject: commonName=localhost/organizationName=Oracle Corporation/stateOrProvinceName=California/countryName=US
+| Not valid before: 2014-08-21T13:30:10
+|_Not valid after:  2024-08-18T13:30:10
+|_ssl-date: TLS randomness does not represent time
+4848/tcp  open     http                 Sun GlassFish Open Source Edition  4.1
+|_http-title: Login
+|_http-server-header: GlassFish Server Open Source Edition  4.1 
+6060/tcp  open     http                 Synametrics Web Server 7 (Syncrify)
+|_http-server-header: Synametrics Web Server v7
+|_http-title: Site doesn't have a title (text/html).
+7676/tcp  open     java-message-service Java Message Service 301
+8080/tcp  open     http                 Sun GlassFish Open Source Edition  4.1
+|_http-server-header: GlassFish Server Open Source Edition  4.1 
+| http-methods: 
+|_  Potentially risky methods: PUT DELETE TRACE
+|_http-title: Data Web
+8181/tcp  open     ssl/http             Sun GlassFish Open Source Edition  4.1
+| ssl-cert: Subject: commonName=localhost/organizationName=Oracle Corporation/stateOrProvinceName=California/countryName=US
+| Not valid before: 2014-08-21T13:30:10
+|_Not valid after:  2024-08-18T13:30:10
+|_ssl-date: TLS randomness does not represent time
+|_http-title: Data Web
+8686/tcp  open     java-rmi             Java RMI
+| rmi-dumpregistry: 
+|   Fishyyy/7676/jmxrmi
+|     javax.management.remote.rmi.RMIServerImpl_Stub
+|     @169.254.190.43:61261
+|     extends
+|       java.rmi.server.RemoteStub
+|       extends
+|         java.rmi.server.RemoteObject
+|   jmxrmi
+|     javax.management.remote.rmi.RMIServerImpl_Stub
+|     @169.254.190.43:8686
+|     extends
+|       java.rmi.server.RemoteStub
+|       extends
+|_        java.rmi.server.RemoteObject
+59389/tcp filtered unknown
+59393/tcp filtered unknown
+59394/tcp filtered unknown
+59395/tcp filtered unknown
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: -151d17h53m18s, deviation: 0s, median: -151d17h53m18s
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 79.06 seconds
+
+SynaMan Exploit:
+https://www.exploit-db.com/exploits/45387
+Most probably entry point for the machine via rdp
+Need to find these credentials via LFI or something
+
+
+Glassfish Exploit:
+https://www.exploit-db.com/exploits/39441
+Use this to find credentials
+
+
+Priv Esc:
+Enumerate System and find TotalAV and you got it
+https://www.exploit-db.com/exploits/47897
+https://github.com/googleprojectzero/symboliclink-testing-tools
+
+It is possible, just don't panic

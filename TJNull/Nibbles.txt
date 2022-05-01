@@ -1,0 +1,8 @@
+https://github.com/TheRealHetfield/exploits/blob/master/nibbleBlog_fileUpload.py
+https://github.com/dix0nym/CVE-2015-6967/blob/main/exploit.py
+https://book.hacktricks.xyz/shells/shells/msfvenom
+
+password nibbles (sometimes password is just that, same for pfsense)
+
+sudo -l
+

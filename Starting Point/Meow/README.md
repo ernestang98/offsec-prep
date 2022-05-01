@@ -1,0 +1,23 @@
+## Meow:
+
+1. nmap -sC -sV -Pn IP
+
+    - Port 23: Telnet
+
+    - [Port 5102: Admeng](https://www.speedguide.net/port.php?port=5102)
+
+2. telnet IP
+
+	Try different common usernames (e.g. admin, administrator, root)
+	
+	![](./Screenshots/Meow-1.png)
+	
+3. Navigate through directory to get `flag.txt`
+
+	![](./Screenshots/Meow-2.png)
+
+## Telnet:
+
+- [What is telnet?](https://www.techtarget.com/searchnetworking/definition/Telnet)
+
+- [Telnet use case - test connectivity](https://netbeez.net/blog/telnet-to-test-connectivity-to-tcp/)

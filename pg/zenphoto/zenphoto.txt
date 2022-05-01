@@ -1,0 +1,19 @@
+Foothold:
+
+zenphoto rce
+
+php 18083.php 192.168.226.41 /test/
+
+find the directory...
+
+/test
+
+
+
+
+priv esc:
+
+linpeas -> CVE
+
+https://github.com/arthepsy/CVE-2021-4034
+

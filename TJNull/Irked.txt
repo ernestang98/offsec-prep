@@ -1,0 +1,85 @@
+└─$ nmap -p- 10.129.1.108
+Starting Nmap 7.91 ( https://nmap.org ) at 2022-02-22 00:06 +08
+Stats: 0:03:06 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 6.04% done; ETC: 00:57 (0:47:58 remaining)
+Stats: 0:03:13 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 6.21% done; ETC: 00:58 (0:48:33 remaining)
+Stats: 0:08:03 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 16.10% done; ETC: 00:56 (0:41:57 remaining)
+Stats: 0:09:06 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 18.45% done; ETC: 00:55 (0:40:14 remaining)
+Stats: 0:14:09 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 29.37% done; ETC: 00:54 (0:34:02 remaining)
+Stats: 0:18:30 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 38.55% done; ETC: 00:54 (0:29:29 remaining)
+Stats: 0:23:41 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 49.69% done; ETC: 00:54 (0:23:59 remaining)
+Stats: 0:33:32 elapsed; 0 hosts completed (1 up), 1 undergoing Connect Scan
+Connect Scan Timing: About 70.90% done; ETC: 00:53 (0:13:46 remaining)
+Nmap scan report for 10.129.1.108
+Host is up (0.33s latency).
+Not shown: 65528 closed ports
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+111/tcp   open  rpcbind
+6697/tcp  open  ircs-u
+8067/tcp  open  infi-async
+49603/tcp open  unknown
+65534/tcp open  unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 2837.33 seconds
+                                                                                
+┌──(george93㉿kali)-[~]
+└─$ nmap -sC -sV -Pn 10.129.1.108 -p22,80,111,6697,8067
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2022-02-22 00:56 +08
+Nmap scan report for 10.129.1.108
+Host is up (0.37s latency).
+
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 6.7p1 Debian 5+deb8u4 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 6a:5d:f5:bd:cf:83:78:b6:75:31:9b:dc:79:c5:fd:ad (DSA)
+|   2048 75:2e:66:bf:b9:3c:cc:f7:7e:84:8a:8b:f0:81:02:33 (RSA)
+|   256 c8:a3:a2:5e:34:9a:c4:9b:90:53:f7:50:bf:ea:25:3b (ECDSA)
+|_  256 8d:1b:43:c7:d0:1a:4c:05:cf:82:ed:c1:01:63:a2:0c (ED25519)
+80/tcp   open  http    Apache httpd 2.4.10 ((Debian))
+|_http-server-header: Apache/2.4.10 (Debian)
+|_http-title: Site doesn't have a title (text/html).
+111/tcp  open  rpcbind 2-4 (RPC #100000)
+| rpcinfo: 
+|   program version    port/proto  service
+|   100000  2,3,4        111/tcp   rpcbind
+|   100000  2,3,4        111/udp   rpcbind
+|   100000  3,4          111/tcp6  rpcbind
+|   100000  3,4          111/udp6  rpcbind
+|   100024  1          37715/tcp6  status
+|   100024  1          47701/udp   status
+|   100024  1          49603/tcp   status
+|_  100024  1          51023/udp6  status
+6697/tcp open  irc     UnrealIRCd
+8067/tcp open  irc     UnrealIRCd
+Service Info: Host: irked.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+
+
+
+https://null-byte.wonderhowto.com/how-to/hack-unrealircd-using-python-socket-programming-0198050/
+
+https://forums.unrealircd.org/viewtopic.php?t=6340 -> hence restart machine/box
+
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#python
+
+
+run binary in tmp file, realising its looking for listusers (possibly another binary)
+
+create binary with echo command, realise that viewuser executes listusers
+
+u got it :)
+
+
+
+
+
+important - look at weird/err logs, it may not be the problem of the exploit itslef

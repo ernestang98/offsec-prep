@@ -1,0 +1,5 @@
+https://security.stackexchange.com/questions/179407/what-does-this-sudo-l-output-mean-and-can-this-be-priv-escalated
+https://serverfault.com/questions/446841/can-i-sudo-a-command-on-behalf-of-another-user
+https://serverfault.com/questions/595088/why-does-sudo-su-su-tomcat-doesnt-switch-to-tomcat-user
+
+local file enumeration will show something weird under scripts dir

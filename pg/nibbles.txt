@@ -1,0 +1,24 @@
+postgres default username: postgres
+
+https://chartio.com/resources/tutorials/how-to-set-the-default-user-password-in-postgresql/
+https://www.liquidweb.com/kb/what-is-the-default-password-for-postgresql/
+
+default username seems to be postgres
+
+no default password... so brute force...?
+
+psql -h 192.168.140.47 -p 5437 -U postgres
+
+password: postgres
+
+
+postgres udf exploit for foothold
+
+https://blog.pentesteracademy.com/postgresql-udf-command-execution-372f0c68cfed
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#bash-tcp
+https://infinitelogins.com/2020/01/25/msfvenom-reverse-shell-payload-cheatsheet/
+
+
+privesc
+
+https://gtfobins.github.io/gtfobins/find/

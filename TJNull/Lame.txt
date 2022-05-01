@@ -1,0 +1,5 @@
+exploit/multi/samba/usermap_script
+auxiliary/admin/smb/samba_symlink_traversal
+
+in the exam, if smb comes out, just whack all of the modules on msfconsole lol...
+

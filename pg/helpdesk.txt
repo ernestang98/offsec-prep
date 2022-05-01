@@ -1,0 +1,3 @@
+msfconsole
+- exploit/multi/http/manageengine_auth_upload
+- windows/smb/ms09_050_smb2_negotiate_func_index

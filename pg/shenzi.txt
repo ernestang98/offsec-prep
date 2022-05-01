@@ -1,0 +1,17 @@
+Foothold SMBClient get password list
+
+find wordpress site - boxname lol
+
+file manager rce https://www.1337pwn.com/how-to-upload-php-web-shell-on-wordpress-site/
+
+https://lolbas-project.github.io/lolbas/Binaries/Certutil/
+
+https://www.hackingarticles.in/windows-privilege-escalation-alwaysinstallelevated/
+
+https://medium.com/@anastasisvasileiadis/windows-privilege-escalation-alwaysinstallelevated-641e660b54bd
+
+https://book.hacktricks.xyz/windows/windows-local-privilege-escalation#alwaysinstallelevated
+
+Priv Esc
+
+Always Elevated

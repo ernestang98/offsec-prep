@@ -1,0 +1,15 @@
+Initial Foothold:
+
+.odt macros... lazy do... msfconsole ones does not seem to work
+
+macros must use powershell to download reverse shell on port 80 then connect back to kali on 9090
+
+
+Lateral Movement:
+
+create a command shell on the webserver to get apache user
+
+
+Priv Esc:
+
+PrintSpoofer

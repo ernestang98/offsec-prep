@@ -1,0 +1,4 @@
+https://github.com/b4keSn4ke/shellshock
+EXTENSIONS are important :) -x .cgi,.php,.py,.sh,.rb
+
+sudo -l

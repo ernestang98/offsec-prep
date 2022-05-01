@@ -1,0 +1,14 @@
+foothold:
+
+try different HTTP methods, cannot GET /* means GET is not allowed, so maybe POST is allowed?
+
+
+privesc:
+
+manual enumeration, find strange file, or you can also ftp with credentials
+
+pdf2john
+
+when trying to Invoke-WebRequest to http://nickel/?, will throw error and a SUGGESTION to use -usebasicparsing or something, FOLLOW the suggestion
+
+urlencode your payload :)

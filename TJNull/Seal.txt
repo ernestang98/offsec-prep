@@ -1,0 +1,31 @@
+https://www.acunetix.com/vulnerabilities/web/tomcat-path-traversal-via-reverse-proxy-mapping/
+https://i.blackhat.com/us-18/Wed-August-8/us-18-Orange-Tsai-Breaking-Parser-Logic-Take-Your-Path-Normalization-Off-And-Pop-0days-Out-2.pdf
+
+READ THE EXPLOIT!!!!!!!!
+
+
+credentials.... you are in git..... source control....
+
+
+42MrHBf*z8{Z%
+
+post request also need to update ;)
+
+
+low access
+
+middle access: enumerate /opt, /srv.... AGAIN DONT BE SCARED, BE CONFIDENT
+
+symlink + wait + escape special chars
+
+tar zxf backup-2022-02-25-15\:02\:32.gz --force-local
+
+ln -s /home/luis/ /var/lib/tomcat9/webapps/ROOT/admin/dashboard/uploads/
+
+High access:
+
+sudo -l, u know how it is
+
+
+
+

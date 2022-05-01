@@ -1,0 +1,20 @@
+Initial Foothold:
+
+Burpsuite to change user level to admin
+
+mongo 192.168.139.110
+
+TRY EASIER
+
+for web apps, if there are inputs for you, try to insert executable code: if its php, try to add php, if its node js, try adding javascript
+
+DONT PUT COMPLICATED STUFF, just try simple oneliners such as console.log
+
+https://blog.appsecco.com/nodejs-and-a-simple-rce-exploit-d79001837cc6
+https://github.com/appsecco/vulnerable-apps/tree/master/node-reverse-shell
+
+
+
+PrivEsc:
+
+SUID

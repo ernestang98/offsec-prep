@@ -1,0 +1,13 @@
+      'database' => 'drupal',
+      'username' => 'drupaluser',
+      'password' => 'CQHEy@9M*m23gBVj',
+      'host' => 'localhost',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+
+so u want a tty because you want to enumerate mysql database... but you can't get a tty as some OS Error pty max limit, socat seems to be an alternative but do you really need a tty to enumerate the database? :)
+
+gtfo bins sudo -l for privesc
+
+

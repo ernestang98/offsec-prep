@@ -1,0 +1,6 @@
+https://www.exploit-db.com/exploits/48421
+https://chr0x6eos.github.io/2021/02/20/htb-Feline.html
+
+box was damn wonky
+
+zeromq exploit (theres msfconsole version)

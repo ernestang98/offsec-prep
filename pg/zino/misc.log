@@ -1,0 +1,6 @@
+Apr 28 08:39:01 zino systemd[1]: Starting Clean php session files...
+Apr 28 08:39:01 zino CRON[2791]: (CRON) info (No MTA installed, discarding output)
+Apr 28 08:39:01 zino systemd[1]: phpsessionclean.service: Succeeded.
+Apr 28 08:39:01 zino systemd[1]: Started Clean php session files.
+Apr 28 08:39:01 zino systemd[1]: Set application username "admin"
+Apr 28 08:39:01 zino systemd[1]: Set application password "adminadmin"

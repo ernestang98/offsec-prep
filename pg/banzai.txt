@@ -1,0 +1,11 @@
+foothold:
+
+ftp (try common USERNAMES & PASSWORDS)
+admin:admin
+
+for reverse shells, use ports that are opened
+
+
+privesc:
+
+mysql udf

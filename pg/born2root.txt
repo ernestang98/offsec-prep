@@ -1,0 +1,29 @@
+Foothold:
+
+gobuster -> icons -> ssh key, whose one? try everybody! martin
+
+
+
+Priv Esc:
+
+Martin -> Jimmy (cronjob)
+
+Martin -> hadi
+
+ssh bruteforce with cewl
+
+jimmy BoF exploit rabbit hole: no SUID set
+
+hadi SUID binary rabbit hole
+
+
+
+
+
+IMPORTANT:
+
+during exam, make sure to use EVERY priv esc vector
+
+bruteforcing ssh with rockyou.txt
+
+bruteforcing ssh with cewl

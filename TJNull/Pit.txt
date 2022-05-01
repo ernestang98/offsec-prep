@@ -1,0 +1,30 @@
+udp scan lol, in oscp exam pls do this just to cover your bases
+
+snmpwalk -v1 -c public 10.129.95.189 .
+
+snmpwalk -v1 -c public 10.129.95.189 NET-SNMP-EXTEND-MIB::nsExtendObjects
+
+public is a popular folder, may not always be public, get folder name via enumeration/bruteforce
+
+
+using snmpwalk, get seeddms directory and michelle username
+
+guess/brute force password (michelle)
+
+seeddms exploit, to get directory of upload, upload cmdshell (cuz alot of restrictions)
+
+using cmdshell, enumerate system and get password (multiple conf files, use the correct one to get the password for :9090 admin console)
+
+using michelle again with the password authenticate
+
+
+
+run ps -auxw and then find . -name monitor, realise that root is running monitor
+
+monitor is a actually a bash script that looks at /usr/local/monitoring/check_sh scripts and executes them
+
+try to cp over bash file but permissions denied, alot of restrictions
+
+add own ssh key to /root/.ssh/authorized_keys and you're good to go :)
+
+

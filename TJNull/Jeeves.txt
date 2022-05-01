@@ -1,0 +1,11 @@
+Foothold:
+
+Hacktricks Jenkins Exploits did not work
+https://www.hackingarticles.in/exploiting-jenkins-groovy-script-console-in-multiple-ways/
+http://powershellcookbook.com/recipe/XilI/interact-with-alternate-data-streams
+https://stackoverflow.com/questions/53380498/powershell-list-all-alternate-data-stream-information-from-one-directory
+
+
+PrivEsc:
+1. JuicyPotato (try first few from windows 10 iirc)
+2. NTLM Hashes from CEH.kdbx, crack using john the ripper

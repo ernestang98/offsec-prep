@@ -1,0 +1,21 @@
+https://medium.com/@klockw3rk/mounting-vhd-file-on-kali-linux-through-remote-share-f2f9542c1f25
+https://cyberthoth.medium.com/mounting-vhd-files-in-kali-linux-through-remote-share-smb-1c4d37c22211
+
+
+
+https://www.hackingarticles.in/credential-dumping-sam/
+http://www.computersecuritystudent.com/SECURITY_TOOLS/PASSWORD_CRACKING/lesson2/
+https://robertscocca.medium.com/cracking-windows-hashes-fb0af3108c0a
+https://traviswhitney.com/2016/12/30/using-samdump2/
+
+
+
+https://github.com/kmahyyg/mremoteng-decrypt
+https://ethicalhackingguru.com/how-to-exploit-remote-connection-managers/
+
+
+python3 mremoteng_decrypt.py -s yhgmiu5bbuamU3qMUKc/uYDdmbMrJZ/JvR1kYe4Bhiu8bXybLxVnO0U9fKRylI7NcB9QuRsZVvla8esB        
+Password: bureaulampje
+
+python3 mremoteng_decrypt.py -s aEWNFV5uGcjUHF0uS17QTdT9kVqtKCPeoC0Nw5dmaPFjNQ2kt/zO5xDqE4HdVmHAowVRdC7emf7lWWA10dQKiw==
+Password: thXLHM96BeKL0ER2

@@ -1,0 +1,2 @@
+https://www.exploit-db.com/exploits/49584
+https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS16-032

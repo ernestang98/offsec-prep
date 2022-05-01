@@ -1,0 +1,6 @@
+https://github.com/infosecjunky/FreePBX-2.10.0---Elastix-2.2.0---Remote-Code-Execution/blob/master/exploit.py
+
+sudo -l
+
+Interesting writeup, actually 3 ways to exploit:
+https://medium.com/@orhan_yildirim/beep-hackthebox-write-up-bf75e29dccea

@@ -1,0 +1,95 @@
+└─$ nc -nvv 10.129.158.117 25      
+(UNKNOWN) [10.129.158.117] 25 (smtp) open
+220 solidstate SMTP Server (JAMES SMTP Server 2.3.2) ready Wed, 16 Feb 2022 03:19:21 -0500 (EST)
+
+
+└─$ telnet 10.129.158.117 4555                                                                                                                                                                        1 ⨯
+Trying 10.129.158.117...
+Connected to 10.129.158.117.
+Escape character is '^]'.
+JAMES Remote Administration Tool 2.3.2
+Please enter your login and password
+Login id:
+root
+Password:
+root
+Welcome root. HELP for a list of commands
+HELP
+Currently implemented commands:
+help                                    display this help
+listusers                               display existing accounts
+countusers                              display the number of existing accounts
+adduser [username] [password]           add a new user
+verify [username]                       verify if specified user exist
+deluser [username]                      delete existing user
+setpassword [username] [password]       sets a user's password
+setalias [user] [alias]                 locally forwards all email for 'user' to 'alias'
+showalias [username]                    shows a user's current email alias
+unsetalias [user]                       unsets an alias for 'user'
+setforwarding [username] [emailaddress] forwards a user's email to another email address
+showforwarding [username]               shows a user's current email forwarding
+unsetforwarding [username]              removes a forward
+user [repositoryname]                   change to another user repository
+shutdown                                kills the current JVM (convenient when James is run as a daemon)
+quit                                    close connection
+listusers
+Existing accounts 5
+user: james
+user: thomas
+user: john
+user: mindy 
+user: mailadmin 
+
+https://www.exploit-db.com/docs/english/40123-exploiting-apache-james-server-2.3.2.pdf
+https://electrictoolbox.com/pop3-commands/
+https://techcommunity.microsoft.com/t5/exchange-team-blog/understanding-login-strings-with-pop3-imap/ba-p/610683
+
+└─$ nmap -sC -sV -Pn 10.129.158.117    
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2022-02-16 16:12 +08
+Stats: 0:01:16 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
+Service scan Timing: About 40.00% done; ETC: 16:14 (0:01:02 remaining)
+Stats: 0:02:27 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
+Service scan Timing: About 40.00% done; ETC: 16:17 (0:02:50 remaining)
+Stats: 0:02:33 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
+Service scan Timing: About 40.00% done; ETC: 16:17 (0:02:57 remaining)
+Stats: 0:06:07 elapsed; 0 hosts completed (1 up), 1 undergoing Script Scan
+NSE Timing: About 95.00% done; ETC: 16:18 (0:00:05 remaining)
+Nmap scan report for 10.129.158.117
+Host is up (0.33s latency).
+Not shown: 995 closed ports
+PORT    STATE SERVICE VERSION
+22/tcp  open  ssh     OpenSSH 7.4p1 Debian 10+deb9u1 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 77:00:84:f5:78:b9:c7:d3:54:cf:71:2e:0d:52:6d:8b (RSA)
+|   256 78:b8:3a:f6:60:19:06:91:f5:53:92:1d:3f:48:ed:53 (ECDSA)
+|_  256 e4:45:e9:ed:07:4d:73:69:43:5a:12:70:9d:c4:af:76 (ED25519)
+25/tcp  open  smtp?
+|_smtp-commands: Couldn't establish connection on port 25
+80/tcp  open  http    Apache httpd 2.4.25 ((Debian))
+|_http-server-header: Apache/2.4.25 (Debian)
+|_http-title: Home - Solid State Security
+110/tcp open  pop3?
+119/tcp open  nntp?
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+PORT     STATE SERVICE
+22/tcp   open  ssh
+25/tcp   open  smtp
+80/tcp   open  http
+110/tcp  open  pop3
+119/tcp  open  nntp
+4555/tcp open  rsip
+
+username: mindy
+pass: P@55W0rd1!2@
+
+
+https://www.hackingarticles.in/multiple-ways-to-get-root-through-writable-file/
+
+
+
+/opt dir got tmp.py -> local file enumeration IMPORTANT
+
+
+

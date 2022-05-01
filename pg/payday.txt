@@ -1,0 +1,21 @@
+https://www.exploit-db.com/exploits/48891
+https://www.exploit-db.com/exploits/48890
+https://gist.github.com/momenbasel/ccb91523f86714edb96c871d4cf1d05c
+
+bruteforc/password guess
+admin:admin
+
+https://www.fastwebhost.com/tutorials/knowledge-base/cs-cart-configuration/
+https://forum.cs-cart.com/topic/4099-login-password-issue/
+
+
+
+privesc
+
+www-data -> patrick
+
+tried everything so try simpler, found patrick, ssh as patrick, with password patrick
+
+patrick -> root
+
+sudo -l

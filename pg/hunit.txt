@@ -1,0 +1,26 @@
+Foothold:
+
+webpage enumeration, click on any article
+
+/api/articles
+/api/user/
+
+
+
+privesc
+
+get git user ssh key (to be used to git clone git-server repo)
+
+look at /etc/crontab.bak
+
+GIT_SSH_COMMAND='ssh -i rootkey -p 43022' git clone git@192.168.68.125:/git-server
+GIT_SSH_COMMAND='ssh -i ../rootkey -p 43022' git push origin master
+
+you know how it is
+
+dademola -> git -> root
+
+
+careful to not use sudo in your backup script as sudo is not found in the system
+
+make sure to change the permissions of your script as git also monitors file permissions (can test it out using chmod)

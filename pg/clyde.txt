@@ -1,0 +1,18 @@
+do full port scan
+
+
+foothold:
+
+ftp -> rabbitmq -> .erlang.cookie
+
+erlang port mapper cookie exploit
+port 65000 (obtained from 4367 enumeration - see hacktricks for sample output, if dk just try all the ports lol)
+
+actually would have gotten it if my nmap scans were faster :P
+
+the rest are rabbitholes
+
+
+privesc:
+
+suid nmap

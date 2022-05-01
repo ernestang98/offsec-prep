@@ -1,0 +1,23 @@
+Initial foothold:
+
+https://github.com/n0b0dyCN/RedisModules-ExecuteCommand
+
+https://book.hacktricks.xyz/pentesting/6379-pentesting-redis#load-redis-module
+
+but for the exploit... you need a place to upload files... hmmm ftp?
+
+https://www.linuxquestions.org/questions/red-hat-31/direct-access-on-pub-directory-for-anonymous-user-on-ftp-server-4175504168/
+
+
+
+
+
+priv esc:
+
+crontabs show cronjob but fail to run due to lack of utils.so
+
+lse shows writeable location to directory which is part of the ld_libs seen in crontab
+
+https://www.hackingarticles.in/linux-privilege-escalation-using-ld_preload/
+
+create utils.so and add to directory, wait 1 minute
