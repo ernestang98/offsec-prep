@@ -65,7 +65,6 @@
 |Jeeves|Jenkins||JuicyPotato, KDBX Credentials||
 |Knife|PHP||SUID||
 |Lame|SMB Exploit||||
-|Lame|SMB Exploit||||
 |Love|SSRF, Voting System using PHP||AlwaysElevated||
 |Mirai|PiHole, Raspberry PI||||
 |Nibbles|Guessable Credentials, NibbleBlog||SUID||
