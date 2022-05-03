@@ -1,0 +1,26 @@
+https://stackoverflow.com/questions/7011160/whats-does-the-perl-error-cant-locate-net-ssh-perl-pm-mean
+
+https://github.com/pentestmonkey/ident-user-enum
+
+Make sure to do it on everything/alternatively realise that eleanor is the auth owner for port 10000
+
+make sure to TRY EVERYTHING in checklist...
+
+postgres UDF and redmine exploit are rabbithole
+
+Foothold is ssh eleanor:eleanor lol
+
+priv esc is escaping rbash shell -> changing PATH
+
+ed
+!/bin/sh
+
+PATH=/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
+ 
+Realising that docker is installed -> docker priv esc (GTFO BINS)
+
+
+
+
+creds for website -> admin:admin
+creds for postgres -> postgres:postgres

