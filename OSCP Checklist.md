@@ -36,7 +36,7 @@ Useful Websites
 
 > (Usually) Require username and or password
 >
-> Software: hydra/cewl
+> Software: hydra/cewl/hashcat
 >
 > Wordlist: rockyou.txt, custom generated ones
 >
@@ -52,7 +52,7 @@ Useful Websites
 
 > Need wordlist
 >
-> Software: hydra, crackstation, cewl, hashcat
+> Software: jtr, crackstation, cewl, hashcat
 >
 > Wordlist: rockyou.txt, custom generated ones
 >
