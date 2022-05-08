@@ -495,12 +495,12 @@ Post Exploitatiion Cheatsheet
 > Container Exploit (docker/lxd/lxc)
 >
 > SUID/GTFO Bins 
->
-> Seimpersonate exploit (Juicy Potatoes)
 
 ### Windows PrivEsc
 
 > AlwaysInstallElevated exploit
+>
+> Seimpersonate exploit (Juicy Potatoes)
 >
 > UAC
 > 	>
