@@ -394,7 +394,7 @@ Exploits:
 >	>
 >	> [Resource Link #1 by xpnsec](https://blog.xpnsec.com/azuread-connect-for-redteam/)
 >	>
-> 	> [Resource Link #2 by vbscrub](https://vbscrub.com/2020/01/14/azure-ad-connect-database-exploit-priv-esc/)
+> > [Resource Link #2 by vbscrub](https://vbscrub.com/2020/01/14/azure-ad-connect-database-exploit-priv-esc/)
 >
 > GMSA Password Exposures
 >
@@ -415,6 +415,8 @@ Exploits:
 >	> [Resource on Kerberoasting #2](https://www.hackingarticles.in/deep-dive-into-kerberoasting-attack/)
 >	>
 >	> [Resource on Kerberoasting #3](https://malicious.link/post/2016/kerberoast-pt1/)
+> >
+> > HTB Kerberoasting Exploit Boxes: [Active](https://0xdf.gitlab.io/2018/12/08/htb-active.html#kerberoasting)
 
 Tools:
 >
