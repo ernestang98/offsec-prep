@@ -103,6 +103,8 @@ Useful Websites
 > [Postfix ShellShock](https://github.com/3mrgnc3/pentest_old/blob/master/postfix-shellshock-nc.py)
 >
 > Client Side Attacks 
+> 
+> [SWAKS](https://github.com/jetmore/swaks), used in [HTB SneakyMailer](https://p0i5on8.github.io/posts/hackthebox-sneakymailer/#swaks)
 
 ### POP3
 
