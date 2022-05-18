@@ -114,6 +114,16 @@ Useful Websites
 >
 > [Commands cheatsheet](https://www.atmail.com/blog/imap-commands/)
 
+### IMAP
+
+> Similar to POP3
+>
+> Service authentication bruteforcing
+>
+> [Commands cheatsheet](https://busylog.net/telnet-imap-commands-note/)
+> 
+> [Evolution tool](https://en.wikipedia.org/wiki/GNOME_Evolution)
+
 ### Apache James
 
 > Service authentication bruteforcing
