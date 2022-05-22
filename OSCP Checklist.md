@@ -371,6 +371,8 @@ Other resouces:
 > [AD pentesting notes by FareedFauzi](https://fareedfauzi.gitbook.io/oscp-notes/others/active-directory-attack)
 >
 > [AD Pentesting mindmap by Orange-Cyberdefense](https://github.com/Orange-Cyberdefense/arsenal/raw/master/mindmap/pentest_ad.png)
+> 
+> [Building and attacking an Active Directory Lab](https://1337red.wordpress.com/building-and-attacking-an-active-directory-lab-with-powershell/)
 
 Exploits:
 >
