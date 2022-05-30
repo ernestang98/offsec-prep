@@ -26,7 +26,7 @@ GDB commands:
 - Add breakpoints
 
     ```
-    (gdb) break *FUNC
+    (gdb) break *[FUNC]
     ```
 
 - Run program (with arguments
