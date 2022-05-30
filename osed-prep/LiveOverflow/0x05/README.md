@@ -7,7 +7,7 @@ GDB commands:
 - Attaches binary to debugger
     
     ```
-    gdb BINARY`
+    gdb BINARY
     ```
 
 - Disassembles function, usually use with main as we know that every C program has a main() function.
