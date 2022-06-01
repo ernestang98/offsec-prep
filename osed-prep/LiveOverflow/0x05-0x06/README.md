@@ -5,7 +5,7 @@
 GDB commands:
 
 - Attaches binary to debugger
-    
+
     ```
     gdb BINARY
     ```
