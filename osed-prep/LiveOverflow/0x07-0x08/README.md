@@ -30,7 +30,7 @@ Understanding assembly in deeper terms...
 
 - During the run with ABCDEFG as our input key, we observe that the rax value consistently stores 0x7ffd95166238 after executing `mov rax, qword [var_30h]`
 
-- tl;dr: for that particular control flow block:
+- tl;dr: for 0x400604 [od] control flow block:
 
     1. statements 1 - 3: Getting our input key
 
