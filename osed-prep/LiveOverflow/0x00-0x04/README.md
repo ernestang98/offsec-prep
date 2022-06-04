@@ -60,12 +60,13 @@ Disassembler:
 
 - Converts hexadecimals/bits into assembly instruction which allows us to analyse and study assembly code better
 
-Mentioned/Additional Resources:
+### References:
 
 - https://microcorruption.com
 
 - https://sockpuppet.org/issue-79-file-0xb-foxport-hht-hacking.txt.html
 
+### More resources:
 
-
+- https://www.youtube.com/watch?v=wC58WL0R-J4 (PUSH and POP in x86/x64)
 

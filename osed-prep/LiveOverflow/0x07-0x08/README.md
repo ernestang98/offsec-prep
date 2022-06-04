@@ -39,3 +39,29 @@ Understanding assembly in deeper terms...
     3. statements 7 - 8: Getting the byte value of our index and storing it into eax (rax)
 
     4. statements 9 - 10: Adding the byte value into the sum before incrementing i by 1
+
+### 0x08: Parser Differentials
+
+Prevents hackers from reversing executables
+
+```
+$ ./exe
+Hello World
+
+$ gdb ./exe
+Broken...
+```
+
+How this works is that the parser from the linux kernel is different from the parser used in such reversing softwares. The input given to the linux kernel may see the broken file as a valid input while the input given to softwares such as gdb or radare2 will see it as broken and cannot be disassembled.
+
+How to find this? Fuzzing!
+
+Basically the fuzzer works by adding a random ascii character within the binary. Then we run a for loop infinitely to see which random iteration of fuzzing the binary will result in an output which does not affect the normal running of the binary but does prevent the binary from being disassembled by radare2 and gdb.
+
+### References:
+
+https://pocorgtfo.hacke.rs/
+
+https://about.gitlab.com/blog/2020/03/30/how-to-exploit-parser-differentials/
+
+https://www.sentinelone.com/blog/breaking-and-evading/
