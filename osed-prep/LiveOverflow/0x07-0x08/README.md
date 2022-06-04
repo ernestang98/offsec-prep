@@ -6,7 +6,7 @@ Previously on reversing, we managed to reverse the binary license_1 and find out
 
 Try reversing and cracking it using gdb & radare2 (not too difficult)
 
-More commands on radare2:
+### More commands on radare2:
 
 `ood ARGUMENT` to add argument before running program using `dc`
 
