@@ -12,7 +12,7 @@ For this section, we will be attempting stack3, stack4 and stack5
 
 - Based on the code, we need to change the fp variable with our buffer overflow to the memory address of the win() function
 
-- Finding the address if the win() function
+- Finding the address if the win() function (you can also use `objdump -t stack4 | win`)
 
     ```
     (gdb) x win
