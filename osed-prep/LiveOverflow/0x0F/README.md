@@ -104,6 +104,8 @@ Background information:
 
 2. Return address - can be anything, but most people use an exit function() to end the function properly
 
+    - `(gdb) p exit`
+
 3. Location of "/bin/sh" 
 
     - `cat /proc/self/maps` to get starting address of /lib/libc-2.11.2.so library
