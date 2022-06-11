@@ -1,4 +1,4 @@
-
+# LiveOverflow Binary Exploitation / Memory Corruption
 
 ### 0x0F - Ret2Libc attacks via Stack Six exercise
 
@@ -209,3 +209,11 @@ print padding+_system+_return+_argument
 ### Additional Stuff:
 
 - The address that we returned to in our first answer, is known as a gadget (part of ROPGadgets, learn more next time)
+
+- [Resetting environment in gdb](https://stackoverflow.com/questions/17775186/buffer-overflow-works-in-gdb-but-not-without-it)
+
+- [Resetting environment in CLI](https://www.roguesecurity.in/2018/01/13/buffer-overflow-series-exploit-failing-outside-gdb/)
+
+- [Explanation of what strdup() does to the eax register and using CALL EAX](https://secinject.wordpress.com/2017/07/08/protostar-stack7/)
+
+- [Better explanation of using eax register and CALL EAX](https://failingsilently.wordpress.com/2017/08/01/exploit-exercises-protostar-stack7-trampolines/)
