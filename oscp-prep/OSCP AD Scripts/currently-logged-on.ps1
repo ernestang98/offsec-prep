@@ -1,0 +1,3 @@
+Get-NetLoggedon
+
+Get-NetSession

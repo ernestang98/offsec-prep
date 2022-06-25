@@ -83,7 +83,11 @@ List of tools/repositories I used throughout my OSCP journey.
 
 [Sherlock](https://github.com/rasta-mouse/Sherlock)
 
+[suid3num](https://github.com/Anon-Exploiter/SUID3NUM)
+
 [Windows sysinternal tools](https://github.com/davehardy20/sysinternals)
+
+[Webassembly](https://github.com/WebAssembly/wabt)
 
 ### Exploits
 
@@ -155,11 +159,15 @@ List of tools/repositories I used throughout my OSCP journey.
 
 [php 8.1.0 dev RCE](https://github.com/flast101/php-8.1.0-dev-backdoor-rce)
 
+[process tokens privilege escalation vector](https://github.com/nongiach/sudo_inject)
+
 [redis RCE #1](https://github.com/Ridter/redis-rce)
 
 [redis RCE #2](https://github.com/jas502n/Redis-RCE)
 
 [Umbraco RCE](https://github.com/noraj/Umbraco-RCE)
+
+[Werkzeug Exploit](https://github.com/MistSpark/Vigilant-Exploits/blob/master/Werkzeug_Exploit.py)
 
 [wesng](https://github.com/bitsadmin/wesng)
 
