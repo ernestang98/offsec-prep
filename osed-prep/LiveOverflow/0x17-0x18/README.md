@@ -1,3 +1,15 @@
+### Heap3 dlmalloc unlink() exploit
+
+High level overview of how free() works, given that we want to free(chunk)
+
+1. We will look at the next chunk after chunk
+
+2. We will see if it is a free chunk and if it is pointing to any other free chunks (doubly linked list data structure)
+
+3. If the next chunk is free and it is pointing to other free chunks, we will unlink the next chunks from the other free chunks 
+
+4. After which, we will then merge the current chunk and the next chunk
+
 After the 3 malloc(32) function calls:
 
 ```
@@ -111,7 +123,6 @@ After free(c):
 ```
 
 - 2nd and 3rd free() function call returns a pointer (FD) pointing to an address which is the location of the next free memory ready to be allocated. After using the memory allocated for that was for the now-freed *a pointer, the program will use the memory allocated for the now-freed *b pointer since we know its location. This overall creates a linked-list of freed up memory locations in the heap allocatable by malloc().
-
 
 How the free() function and algorithm works:
 
@@ -372,3 +383,10 @@ How the free() function and algorithm works:
     };
     ```
 
+### References
+
+[Voodoo malloc tricks & Once upon a free() articles](http://phrack.org/issues/57/8.html)
+
+[LiveOverflow explanation of free() and unlink()](https://www.youtube.com/watch?v=HWhzH--89UQ&t=140s)
+
+[Writeup on Heap3 by airman604](https://airman604.medium.com/protostar-heap-3-walkthrough-56d9334bcd13)
