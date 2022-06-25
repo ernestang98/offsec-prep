@@ -359,5 +359,16 @@ How the free() function and algorithm works:
 
     - In theory then 0xe should work as well
 
+- Data structure of a malloc chunk:
 
+    ```
+    struct malloc_chunk {
+
+      INTERNAL_SIZE_T      prev_size;  /* Size of previous chunk (if free).  */
+      INTERNAL_SIZE_T      size;       /* Size in bytes, including overhead. */
+    
+      struct malloc_chunk* fd;         /* double links -- used only if free. */
+      struct malloc_chunk* bk;
+    };
+    ```
 
