@@ -326,7 +326,7 @@ Objective:
 >
 > Try to gather information about the active directory that maybe exploited 
 >
-> Take note that any hashes/exploits that you find from using AD enumeration tools can usually ONLY be used against DOMAIN accounts and not LOCAL accounts
+> Take note that any hashes/exploits that you find by using AD-specific enumeration tools can usually ONLY be used against DOMAIN accounts and not LOCAL accounts
 
 Background information:
 >
