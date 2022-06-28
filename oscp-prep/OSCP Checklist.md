@@ -374,6 +374,18 @@ Other resouces:
 > 
 > [Building and attacking an Active Directory Lab](https://1337red.wordpress.com/building-and-attacking-an-active-directory-lab-with-powershell/)
 
+AD Enumeration Commands:
+>
+> [Finding Domain Controllers and Domain Admins](https://www.netspi.com/blog/technical/network-penetration-testing/5-ways-to-find-systems-running-domain-admin-processes/)
+>
+> [Listing users in AD Group](https://serverfault.com/questions/49405/command-line-to-list-users-in-a-windows-active-directory-group)
+>
+> [AD Domain Controller documentation](https://docs.microsoft.com/en-us/powershell/module/activedirectory/get-addomaincontroller?view=windowsserver2022-ps)
+> 
+> [`net group` vs `net localgroup` #1](https://www.reddit.com/r/sysadmin/comments/cshfvg/net_group_vs_net_localgroup/)
+>
+> [`net group` vs `net localgroup` #2](https://social.technet.microsoft.com/Forums/lync/en-US/c157d6d4-a21d-44a9-b560-b161f60c3c79/how-to-find-list-of-list-of-domain-admin-and-local-administrator-user-through-command-line?forum=winserverDS)
+
 Exploits:
 >
 > Pass the ticket
