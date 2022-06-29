@@ -1,104 +1,233 @@
-program generates a random number, sends it to client in decimal form and asks for it to be translated into 32 bit little endian format (how the number itself is stored in memory, which is also the format that we are comparing the input to)
+# LiveOverflow Binary Exploitation / Memory Corruption
 
-import socket
-import struct
+### 0x19 Working on Net0
 
-HOST="127.0.0.1"
-PORT=2999
+- RE net0 binary using `strace ./BINARY` and `strace -f ./BINARY` to see how the program works (e.g. setting of GID & UID, cloning processes, construction of STDIN, STDOUT, STDERR). Running `strace` with `-f` flag follows any child processes that is created which allows you to debug and gather more information on the binary
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
-data = s.recv(1024)
-print "Received following data from socket: " + data
+- Run `ps -aux` and `netstat -ano` to see running processes
 
-value = filter(str.isdigit, data) # extract number from data
-value = value[:-2] # last 2 digits is 32 which indicates that it is 32bit
+- Program generates a random number, sends it to client in decimal form and asks for it to be translated into 32 bit little endian format (bytes) which is the original way the data is being stored in program.
 
-payload = struct.pack("I", int(value)) #32 bit little endian format
-s.send(payload)
-data = s.recv(1024)
-print "Received following data from socket: " + data
+- Input read by client will be stored into an int (unsigned int i), hence you will have to send it as a byte string
 
+- [How `struct.pack` and `struct.unpack` works](https://www.journaldev.com/17401/python-struct-pack-unpack)
 
-for this level, the number stored in fub is stored as a decimal, hence you don't have to pack it into bytes
+- Answer:
 
-https://www.delftstack.com/howto/python/how-to-convert-bytes-to-integers/
+    ```
+    import socket
+    import struct
+    
+    HOST="127.0.0.1"
+    PORT=2999
+    
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    data = s.recv(1024)
+    print "Received following data from socket: " + data
+    
+    value = filter(str.isdigit, data) # extract number from data
+    value = value[:-2] # last 2 digits is 32 which indicates that it is 32bit
+    
+    payload = struct.pack("I", int(value)) # returns value in 32 bit little endian format, str datatype
+    s.send(payload)
+    data = s.recv(1024)
+    print "Received following data from socket: " + data
+    ```
 
-import socket
-import struct
-import time
+- Some logs (when run `nc 127.0.0.1 2999` after running `strace -f /opt/protostar/bin/net0`)
 
-HOST="127.0.0.1"
-PORT=2998
+    ```
+    ...
+    accept(3, {sa_family=AF_INET, sin_port=htons(52977), sin_addr=inet_addr("127.0.0.1")}, [16]) = 4
+    clone(Process 1534 attached
+    child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xb7e96728) = 1534
+    [pid  1524] close(4)                    = 0
+    [pid  1524] accept(3,  <unfinished ...>
+    [pid  1534] close(3)                    = 0
+    [pid  1534] dup2(4, 0)                  = 0
+    [pid  1534] dup2(4, 1)                  = 1
+    [pid  1534] dup2(4, 2)                  = 2
+    [pid  1534] time(NULL)                  = 1656514905
+    [pid  1534] write(1, "Please send '709800560' as a lit"..., 53) = 53
+    [pid  1534] read(0, "p\262N*", 4)       = 4   // observe the struct.pack data being sent to server
+    [pid  1534] write(1, "Thank you sir/madam", 19) = 19
+    [pid  1534] write(1, "\n", 1)           = 1
+    [pid  1534] exit_group(20)              = ?
+    Process 1534 detached
+    <... accept resumed> 0xbffffc98, [16])  = ? ERESTARTSYS (To be restarted)
+    --- SIGCHLD (Child exited) @ 0 (0) ---
+    wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 20}], 0, NULL) = 1534
+    sigreturn()                             = ? (mask now [])
+    accept(3, {sa_family=AF_INET, sin_port=htons(52978), sin_addr=inet_addr("127.0.0.1")}, [16]) = 4
+    clone(Process 1536 attached
+    child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xb7e96728) = 1536
+    [pid  1524] close(4)                    = 0
+    [pid  1524] accept(3,  <unfinished ...>
+    [pid  1536] close(3)                    = 0
+    [pid  1536] dup2(4, 0)                  = 0
+    [pid  1536] dup2(4, 1)                  = 1
+    [pid  1536] dup2(4, 2)                  = 2
+    [pid  1536] time(NULL)                  = 1656514955
+    [pid  1536] write(1, "Please send '1613548683' as a li"..., 54) = 54
+    [pid  1536] read(0, 
+    ```
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
-data = s.recv(1024) # need to be big enough to properly get the full data sent from socket
-print "Received following data from socket: ", data
+- More logs when run PoC exploit:
 
-# s.send(str(1111111111)) # fuzzing input need to be bigger
-payload = struct.unpack("I", data)[0]
-print "Decoded ", data, " into: ", payload
-s.send(str(payload))
+    ```
+    ...
+    accept(3, {sa_family=AF_INET, sin_port=htons(52977), sin_addr=inet_addr("127.0.0.1")}, [16]) = 4
+    clone(Process 1534 attached
+    child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xb7e96728) = 1534
+    [pid  1524] close(4)                    = 0
+    [pid  1524] accept(3,  <unfinished ...>
+    [pid  1534] close(3)                    = 0
+    [pid  1534] dup2(4, 0)                  = 0
+    [pid  1534] dup2(4, 1)                  = 1
+    [pid  1534] dup2(4, 2)                  = 2
+    [pid  1534] time(NULL)                  = 1656514905
+    [pid  1534] write(1, "Please send '709800560' as a lit"..., 53) = 53
+    [pid  1534] read(0, "p\262N*", 4)       = 4
+    [pid  1534] write(1, "Thank you sir/madam", 19) = 19
+    [pid  1534] write(1, "\n", 1)           = 1
+    [pid  1534] exit_group(20)              = ?
+    Process 1534 detached
+    <... accept resumed> 0xbffffc98, [16])  = ? ERESTARTSYS (To be restarted)
+    --- SIGCHLD (Child exited) @ 0 (0) ---
+    wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 20}], 0, NULL) = 1534
+    sigreturn()                             = ? (mask now [])
+    accept(3
+    ```
 
-time.sleep(1) # prevent socket from hanging
-print s.recv(1024)
-s.close()
+### 0x1A TCP
 
+- Covered the basics of TCP
 
+- Played around with netcat and wireshark
 
+### 0x1B Net1, Net2
 
+Net1
 
+- For this level, the number generated by random() is stored in fub is read in its decimal form and stored as a string (char buffer), hence you don't have to pack the int value into its bytes representation as in Net0, you can just convert the byte data sent by the server into its decimal integer form and just send it directly, the socket will interpret it as a string as you will see.
 
+- Input read by client will be stored into a string (char buf[12]), hence you will have to send a string
 
+- [How to convert bytes into integers](https://www.delftstack.com/howto/python/how-to-convert-bytes-to-integers/)
 
+- Answer:
 
-import socket
-import struct
-import time
+    ```
+    import socket
+    import struct
+    import time
+    
+    HOST="127.0.0.1"
+    PORT=2998
+    
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    data = s.recv(4) # need to be big enough to properly get the full data sent from socket
+    print "Received following data from socket: ", data
+    
+    # s.send(str(1111111111)) # fuzzing input need to be bigger
+    payload = struct.unpack("I", data)[0]
+    print "Decoded ", data, " into: ", payload
+    s.send(str(payload))
+    
+    time.sleep(1) # prevent socket from hanging
+    print s.recv(1024)
+    s.close()
+    ```
 
-HOST="127.0.0.1"
-PORT=2997
+- Some logs when we run exploit script (observe the difference between sending data as it is vs sending data packed by struct library):
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((HOST, PORT))
+    ```
+    accept(3, {sa_family=AF_INET, sin_port=htons(56046), sin_addr=inet_addr("127.0.0.1")}, [16]) = 4
+    clone(Process 1568 attached
+    child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0xb7e96728) = 1568
+    [pid  1545] close(4)                    = 0
+    [pid  1545] accept(3,  <unfinished ...>
+    [pid  1568] close(3)                    = 0
+    [pid  1568] dup2(4, 0)                  = 0
+    [pid  1568] dup2(4, 1)                  = 1
+    [pid  1568] dup2(4, 2)                  = 2
+    [pid  1568] time(NULL)                  = 1656515658
+    [pid  1568] write(0, "\233\22\251X", 4) = 4
+    [pid  1568] read(0, "1", 1)             = 1
+    [pid  1568] read(0, "4", 1)             = 1
+    [pid  1568] read(0, "8", 1)             = 1
+    [pid  1568] read(0, "7", 1)             = 1
+    [pid  1568] read(0, "4", 1)             = 1
+    [pid  1568] read(0, "7", 1)             = 1
+    [pid  1568] read(0, "5", 1)             = 1
+    [pid  1568] read(0, "3", 1)             = 1
+    [pid  1568] read(0, "5", 1)             = 1
+    [pid  1568] read(0, "5", 1)             = 1
+    [pid  1568] write(1, "you correctly sent the data", 27) = 27
+    [pid  1568] write(1, "\n", 1)           = 1
+    [pid  1568] exit_group(28)              = ?
+    Process 1568 detached
+    <... accept resumed> 0xbffffc98, [16])  = ? ERESTARTSYS (To be restarted)
+    --- SIGCHLD (Child exited) @ 0 (0) ---
+    wait4(-1, [{WIFEXITED(s) && WEXITSTATUS(s) == 28}], 0, NULL) = 1568
+    sigreturn()                             = ? (mask now [])
+    accept(3,
+    ```
 
-final = 0
+Net 2:
 
-data = s.recv(1024) # need to be big enough to properly get the full data sent from socket
-print "Received following data from socket: ", data
-decoded = struct.unpack("I", data)[0]
-print "Decoded ", data, " into: ", decoded
-final += decoded
+- Answer:
 
-data1 = s.recv(1024) # need to be big enough to properly get the full data sent from socket
-print "Received following data1 from socket: ", data1
-decoded = struct.unpack("I", data1)[0]
-print "Decoded ", data1, " into: ", decoded
-final += decoded
-
-data2 = s.recv(1024) # need to be big enough to properly get the full data sent from socket
-print "Received following data2 from socket: ", data2
-decoded = struct.unpack("I", data2)[0]
-print "Decoded ", data2, " into: ", decoded
-final += decoded
-
-data3 = s.recv(1024) # need to be big enough to properly get the full data sent from socket
-print "Received following data3 from socket: ", data3
-decoded = struct.unpack("I", data3)[0]
-print "Decoded ", data3, " into: ", decoded
-final += decoded
-
-print "Final Payload: ", final
-
-print "Final Payload accounting for integer overflow: ", final & 0xffffffff
-
-payload = struct.pack("I", final & 0xffffffff)
-
-s.send(str(payload))
-
-data4 = s.recv(1024) # need to be big enough to properly get the full data sent from socket
-print "Received following data from socket: ", data4
+    ```
+    import socket
+    import struct
+    import time
+    
+    HOST="127.0.0.1"
+    PORT=2997
+    
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, PORT))
+    
+    final = 0
+    
+    data = s.recv(1024) # need to be big enough to properly get the full data sent from socket
+    print "Received following data from socket: ", data
+    decoded = struct.unpack("I", data)[0]
+    print "Decoded ", data, " into: ", decoded
+    final += decoded
+    
+    data1 = s.recv(1024) # need to be big enough to properly get the full data sent from socket
+    print "Received following data1 from socket: ", data1
+    decoded = struct.unpack("I", data1)[0]
+    print "Decoded ", data1, " into: ", decoded
+    final += decoded
+    
+    data2 = s.recv(1024) # need to be big enough to properly get the full data sent from socket
+    print "Received following data2 from socket: ", data2
+    decoded = struct.unpack("I", data2)[0]
+    print "Decoded ", data2, " into: ", decoded
+    final += decoded
+    
+    data3 = s.recv(1024) # need to be big enough to properly get the full data sent from socket
+    print "Received following data3 from socket: ", data3
+    decoded = struct.unpack("I", data3)[0]
+    print "Decoded ", data3, " into: ", decoded
+    final += decoded
+    
+    print "Final Payload: ", final
+    
+    print "Final Payload accounting for integer overflow: ", final & 0xffffffff
+    
+    payload = struct.pack("I", final & 0xffffffff) # you can omit the & 0xffffffff and it will still work as the struct library will handle the integer overflow for you
+    
+    s.send(str(payload))
+    
+    data4 = s.recv(1024) # need to be big enough to properly get the full data sent from socket
+    print "Received following data from socket: ", data4
+    ```
 
 
 
