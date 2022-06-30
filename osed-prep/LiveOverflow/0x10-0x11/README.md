@@ -68,7 +68,7 @@ Interesting walkthrough done on reversing executables in 64bit and 32bit while o
 
 - Same idea as format1, just that now we need to set a particular value to target
 
-- For a given "%4$08n" format string, what the compiler will do is that it will directly access the 4th parameter on stack with "4$" and write the address (\xe4\x96\x04\x08) there with "%08n"
+- For a given `%4$08n` format string, what the compiler will do is that it will directly access the 4th parameter on stack with "4$" and write the address (\xe4\x96\x04\x08) there with "%08n"
 
 - Answer
 
