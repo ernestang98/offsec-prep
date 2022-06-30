@@ -24,3 +24,7 @@ t.interact()
 
 debug using `gdb /opt/protostar/bin/final0 /tmp/CORE_DUMP_FILE`
 
+https://wiki.archlinux.org/title/Core_dump
+
+https://exploit.education/protostar/
+
