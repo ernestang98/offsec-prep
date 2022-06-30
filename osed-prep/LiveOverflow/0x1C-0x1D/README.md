@@ -22,3 +22,5 @@ t = telnetlib.Telnet()
 t.sock = s
 t.interact()
 
+debug using `gdb /opt/protostar/bin/final0 /tmp/CORE_DUMP_FILE`
+
