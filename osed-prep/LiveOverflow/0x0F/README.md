@@ -114,7 +114,7 @@ Background information:
 
     - `strings -a -t x /lib/libc-2.11.2.so | grep "/bin/sh"` to find the offset to from the starting address of the library to the address of /bin/sh
 
-    - `x/s 0xb7e97000 + 0x11f3bf` to find location of /bin/sh in memory (more reliable)
+    - `x/s 0xb7e97000 + 0x11f3bf` to find location of /bin/sh in memory (more reliable). You have to use the starting memory address obtained from `$ cat /proc/self/maps` instead of `(gdb) info proc mappings`
 
 Python code:
 
