@@ -30,3 +30,10 @@ https://exploit.education/protostar/
 
 https://www.ibm.com/docs/en/zos/2.2.0?topic=functions-gets-read-string 
 
+https://www.educative.io/answers/how-to-use-the-fgets-function-in-c
+
+https://man7.org/linux/man-pages/man2/read.2.html
+
+https://www.ibm.com/docs/en/i/7.4?topic=functions-fread-read-items
+
+
