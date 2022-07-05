@@ -349,7 +349,7 @@ How the free() function and algorithm works:
 
     - The first fffffffc within fffffffc fffffffc fd bk chunk can be anything as long as it does not contain null bytes and the last bit is 0
 
-- How we check if the next chunk is in used or not (i.e. calculation of the nextinuse variable)? USing the function inuse_bit_at_offset:
+- How we check if the next chunk is in used or not (i.e. calculation of the nextinuse variable)? Using the function inuse_bit_at_offset:
 
     ```
     nextinuse = inuse_bit_at_offset(nextchunk, nextsize); // find if the next chunk is in use or not
