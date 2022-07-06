@@ -126,6 +126,20 @@ After free(c):
 
 - 2nd and 3rd free() function call returns a pointer (FD) pointing to an address which is the location of the next free memory ready to be allocated. After using the memory allocated for that was for the now-freed *a pointer, the program will use the memory allocated for the now-freed *b pointer since we know its location. This overall creates a linked-list of freed up memory locations in the heap allocatable by malloc().
 
+How the free() function and algorithm works (illustrations):
+
+1. free target chunk and the merge the next free chunk to it
+
+    ![](./images/ss2.png)
+
+2. unlink the free chunk from its next and previous free chunk
+
+    ![](./images/ss1.png)
+
+3. Final output:
+
+    ![](./images/ss3.png)
+
 How the free() function and algorithm works:
 
 - Source code found [here](https://github.com/emeryberger/Malloc-Implementations/blob/master/allocators/ptmalloc/ptmalloc2/malloc.c)
