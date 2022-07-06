@@ -21,7 +21,7 @@ Used Protostar Exploit Education resource throughout his tutorial
 |0x10-0x11|Introduction to format string exploits, Format0, Format1. Format2, Format3|
 |0x12-0x13|Introduction to PLT & GOT, Format4|
 |0x14-0x15|Introduction to Heap Exploits, Heap0, Heap1|
-|0x16|Use Afte Free Exploit, Heap2|
+|0x16|Use After Free Exploit, Heap2|
 |0x17-0x18|dlmalloc unlink exploit, Heap3|
 |0x19-0x1B|Introduction to TCP & Networking, Integer Overflow Exploit, Net0, Net1, Net2|
 |0x1C-0x1D|Final0|

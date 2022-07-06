@@ -8,7 +8,7 @@
 
     `gdb /path/to/binary /path/to/core/file`
 
-### 0x1D
+### 0x1D Final0 Remote Stack Buffer Overflow Exploit
 
 - For this exercise, we are to perform a remote BoF exploit given tht the program uses the unsafe gets() function to receive input for the username.
 
