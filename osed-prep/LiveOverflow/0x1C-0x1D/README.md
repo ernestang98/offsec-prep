@@ -12,7 +12,7 @@
 
 - For this exercise, we are to perform a remote BoF exploit given tht the program uses the unsafe gets() function to receive input for the username.
 
-- Take note that for net0 - net1, the way that the program receives input is via fread(), read(), and fgets() which are all generally safe functions whereas for this challenge, we are using gets(), and gets() reads input till it receives the "\n" nextline character. Hence, when we are sending our input, we need to append all our inputs with "\n"
+- gets() and fgets() reads input till it receives the "\n" nextline character. Hence, when we are sending our input, we need to append all our inputs with "\n"
 
 - Answer (using normal BoF):
 
@@ -86,5 +86,7 @@ https://www.educative.io/answers/how-to-use-the-fgets-function-in-c
 https://man7.org/linux/man-pages/man2/read.2.html
 
 https://www.ibm.com/docs/en/i/7.4?topic=functions-fread-read-items
+
+https://www.ibm.com/docs/en/zos/2.2.0?topic=functions-fgets-read-string-from-stream
 
 
