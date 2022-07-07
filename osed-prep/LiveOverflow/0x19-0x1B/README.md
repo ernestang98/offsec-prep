@@ -2,7 +2,7 @@
 
 ### 0x19 Working on Net0
 
-- RE net0 binary using `strace ./BINARY` and `strace -f ./BINARY` to see how the program works (e.g. setting of GID & UID, cloning processes, construction of STDIN, STDOUT, STDERR). Running `strace` with `-f` flag follows any child processes that is created which allows you to debug and gather more information on the binary
+- Reverse engineer net0 binary using `strace ./BINARY` and `strace -f ./BINARY` to see how the program works (e.g. setting of GID & UID, cloning processes, construction of STDIN, STDOUT, STDERR). Running `strace` with `-f` flag follows any child processes that is created which allows you to debug and gather more information on the binary
 
 - Run `ps -aux` and `netstat -ano` to see running processes
 
