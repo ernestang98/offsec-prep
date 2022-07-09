@@ -40,7 +40,7 @@ Step 3: Install gdb on iphone
 
 3. Search and install gdb
 
-### Set up ():
+### Set up (Computer):
 
 Alternatively, if you do not have an iPhone/do not want to go through the hassle of jailbreaking it, each challenge directory has a `src` subdirectory revealing the source code of each challenge. You can compile it yourself accordingly and try to reverse it on your computer.
 
