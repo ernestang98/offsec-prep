@@ -56,6 +56,6 @@ You will need to compile the source code to the binaries with the appropriate se
 
 5. ASLR: `echo 0 | sudo tee /proc/sys/kernel/randomize_va_space` (ref [here](https://askubuntu.com/questions/318315/how-can-i-temporarily-disable-aslr-address-space-layout-randomization))
 
-6. Stack Canary: `-fno-stack-protector`
+6. Stack Canary: `-fno-stack-protector` (ref [here](https://stackoverflow.com/questions/2340259/how-to-turn-off-gcc-compiler-optimization-to-enable-buffer-overflow))
 
-7. NX/DEP: `-z execstack`
+7. NX/DEP: `-z execstack` (ref [here](https://stackoverflow.com/questions/2340259/how-to-turn-off-gcc-compiler-optimization-to-enable-buffer-overflow))
