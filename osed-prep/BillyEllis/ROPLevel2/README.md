@@ -110,3 +110,7 @@ Based on the design of this challenge, the gadget function is not suitable to so
 ### References:
 
 https://icyphox.sh/blog/rop-on-arm/
+
+https://developer.arm.com/documentation/dui0068/b/Thumb-Instruction-Reference/Thumb-memory-access-instructions/PUSH-and-POP
+
+https://developer.arm.com/documentation/dui0041/c/Babbfdih#
