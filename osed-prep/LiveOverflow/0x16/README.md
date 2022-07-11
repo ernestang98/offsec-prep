@@ -520,3 +520,7 @@ Explanation of logs:
     you have logged in already!
     [ auth = 0x804c008, service = 0x804c018 ]
     ```
+
+### References:
+
+https://failingsilently.wordpress.com/2018/01/05/exploit-development-stale-pointers-use-after-free-protostar-heap2/
