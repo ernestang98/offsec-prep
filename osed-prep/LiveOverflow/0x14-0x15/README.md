@@ -369,7 +369,7 @@ Run `strace ./BINARY` to see `mmap()` and `brk()` being used by binary which sho
 
         - At first breakpoint, we observe that we are unable to access the heap, which is expected as we have not called malloc()
 
-        - At the second breakpoint, we observe the following which is expected as we have used 0x1 (16) amount of bytes after allocating memory for internet struct i1 (int takes up 4bytes and char pointer takes up 4 bytes along with a consistent 8 bytes empty buffer). The first bit of 0x1 is set to 1 to indicate that the previous memory location has been allocated, resulting in 0x00000011. 0x00020ff1 represents the volume of memory left in the heap.
+        - At the second breakpoint, we observe the following which is expected as we have used 0x1 (16) amount of bytes after allocating memory for internet struct i1 (int takes up 4bytes and char pointer takes up 4 bytes along with a consistent 8 bytes empty buffer - 4 of the 8 bytes are used to store the entire size of the chunk and the other 4 is an empty gap as observed and explained in this [forum](https://cboard.cprogramming.com/c-programming/63292-malloc-address-allocation.html). The first bit of 0x1 is set to 1 to indicate that the previous memory location has been allocated, resulting in 0x00000011. 0x00020ff1 represents the volume of memory left in the heap. 
 
             ```
             0x804a000:	0x00000000	0x00000011	0x00000000	0x00000000
