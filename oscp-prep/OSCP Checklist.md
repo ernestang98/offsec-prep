@@ -375,6 +375,8 @@ Other resouces:
 > [AD Pentesting mindmap by Orange-Cyberdefense](https://github.com/Orange-Cyberdefense/arsenal/raw/master/mindmap/pentest_ad.png)
 > 
 > [Building and attacking an Active Directory Lab](https://1337red.wordpress.com/building-and-attacking-an-active-directory-lab-with-powershell/)
+>
+> [Crackmapexec cheatsheet](https://cheatsheet.haax.fr/windows-systems/exploitation/crackmapexec/)
 
 AD Enumeration Commands:
 >
