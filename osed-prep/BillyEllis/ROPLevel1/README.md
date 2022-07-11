@@ -1,4 +1,4 @@
-### How to compile binary:
+### How to compile binary (disable ASLR):
 
 `gcc roplevel1.c -o roplevel1 -fno-stack-protector -z execstack -m32 -no-pie -Wl,-z,norelro -mpreferred-stack-boundary=2`
 
