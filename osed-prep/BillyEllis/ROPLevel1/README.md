@@ -13,7 +13,7 @@ pwndbg> x change
 
 ### Methodolody:
 
-Chain change() and secret() one after the other such that when the main function finishes is returning, it will return to the change function. WHen the change function finishes and is returning, it returns to the secret() function.
+Chain change() and secret() one after the other such that when the main function finishes is returning, it will return to the change function. When the change function finishes and is returning, it returns to the secret() function.
 
 ### Answer:
 
