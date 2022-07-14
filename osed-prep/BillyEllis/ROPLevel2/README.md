@@ -1,4 +1,4 @@
-# REDEIGN ROPLEVEL2
+# CHANGE CHALLENGE TO RUNNING STR1, STR2, STR3 via SYSTEM FUNCTION
 
 ### How to compile binary (disable ASLR):
 
