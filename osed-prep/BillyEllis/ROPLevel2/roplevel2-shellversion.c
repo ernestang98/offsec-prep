@@ -14,14 +14,14 @@ void winner(){
 }
 
 void gadget(){
-	__asm__("push %ebx;");
+	__asm__("pop %ebx; ret");
 	//__asm__("pop {r0,pc}\n");
 }
 
 int main(){
 	char buff[16];
-	printf("Welcome to ROPLevel2 created by Billy Ellis (@bellis1000)\n");
-	printf("The objective of this level is to execute a shell command of your choice by using a ROP gadget followed by jumping to system()\n");
+	printf("Welcome to ROPLevel2 created by Billy Ellis (@bellis1000) edited by Potato_dev :)\n");
+	printf("The objective of this level is to obtain a shell via Ret2libc/ROP\n");
 	printf("Good luck: ");
 	scanf("%s",buff);
 	printf("Nice try ;)\n");

