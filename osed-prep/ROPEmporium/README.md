@@ -73,3 +73,7 @@
 7. [ROPGadget](https://github.com/JonathanSalwan/ROPgadget)
 
     `sudo apt install python3-ropgadget`
+
+### 32bit vs 64bit
+
+- https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/linux-x64-calling-convention-stack-frame

