@@ -82,6 +82,8 @@
 
 - Difference between 32 bit & 64 bit programs: system grabs arguments off rdi
 
+- We will need to find ROP gadgets within the binary. With pwntools, we can use `rop = ROP(elf)` which will extract all ROP gadgets from the elf binary (similar to `ropper -f split --search "pop rdi"`)
+
 - Find ROP gadgets in binary
 
     ```
