@@ -77,3 +77,13 @@
 ### 32bit vs 64bit
 
 - https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/linux-x64-calling-convention-stack-frame
+
+### Analyse libraries/binaries
+
+- `objdump -S /path/to/library.so`
+
+- `rabin2 -s /path/to/binary`
+
+- `ropper -f /path/to/bianry --search "pop"`
+
+- `ROPgadget --binary /path/to/binary`

