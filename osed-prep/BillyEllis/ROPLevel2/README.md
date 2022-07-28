@@ -110,7 +110,7 @@ python2 -c "print('AAAABBBBCCCCDDDDEEEE\x00\xdd\xdf\xf7' + '\xda\x91\x04\x08GGGG
 
 - FINAL EXPLOIT = FINAL PADDING (AAAABBBBCCCCDDDDEEEE\x00\xdd\xdf\xf7) + GADGET(0x080491da) + EXIT (GGGG) + ARGUMENT (str1[], str2[], str3[])
 
-- Gadget is called first which pushes the current value of `ebx` to the top of the stack. When the gadget completes, it calls that function which is the SYSTEM function call which then looks at the top 2 values on stack for the exit address and the argument.
+- Gadget is called first after the 6 * "XXXX" buffer which pushes the current value of `ebx` to the top of the stack. When the gadget completes, it calls that function which is the SYSTEM function call which then looks at the top 2 values on stack for the exit address and the argument.
 
 - 0xf7dfdd00 is the `system()` address
 
