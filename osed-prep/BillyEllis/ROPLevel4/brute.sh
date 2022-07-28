@@ -9,7 +9,7 @@ while [ $? -ne 1 ]; do
     if [ $? -eq 139 ]; then
         echo "It crashed! Try Again..."
     else
-	printf "\n\n\nWe did it... Possibly... After $i tries..."
+	printf "\n\n\nWe did it... Possibly... After $i tries...\n"
 	exit 1
     fi
     i=$(($i + 1))
