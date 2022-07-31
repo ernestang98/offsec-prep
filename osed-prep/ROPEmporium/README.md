@@ -74,10 +74,6 @@
 
     `sudo apt install python3-ropgadget`
 
-### 32bit vs 64bit
-
-- https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/linux-x64-calling-convention-stack-frame
-
 ### Analyse libraries/binaries
 
 - `objdump -S /path/to/library.so`
@@ -87,3 +83,9 @@
 - `ropper -f /path/to/bianry --search "pop"`
 
 - `ROPgadget --binary /path/to/binary`
+
+### Other Stuff
+
+- [32bit vs 64bit](https://www.ired.team/miscellaneous-reversing-forensics/windows-kernel-internals/linux-x64-calling-convention-stack-frame)
+
+- You are supposed to solve all of these challenges with ASLR enabled (`echo 2 | sudo tee /proc/sys/kernel/randomize_va_space`) as observed [here](https://ropemporium.com/guide.html)
