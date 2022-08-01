@@ -14,40 +14,38 @@
 char feedbackString[32];
 char feedbackString2[32];
 
-void give_feedback(){
-
-    printf("\033[1mLeave some feedback:\n");
-    char string[16];
-    scanf("%s",string);
-
-if (strcmp(string,"q") == 0){
-exit(0);
-}
-
-char leakme[] = "AAAA";
-    
-    printf(string);
-    printf("\n");
-
-    sprintf(feedbackString,string,string);
-    char leakme2[] = "BBBB";
-    sprintf(feedbackString2,feedbackString,feedbackString);
-    
-    printf("%s\n", feedbackString);
-    //printf("%s\n", feedbackString2);
-
-    FILE *f = fopen("./feedback.txt","w");
-    fprintf(f,"%s",feedbackString2);
-fclose(f);
-
-    
-}
-
 void secret(){
 
 printf("\n\x1b[32myou win ;)\n");
 system("ls -sail");
 
+}
+
+void give_feedback(){
+printf("%x\n", &secret);
+    printf("\033[1mLeave some feedback:\n");
+    char string[16];
+    //scanf("%s",string);
+    gets(string);
+
+if (strcmp(string,"q") == 0){
+exit(0);
+}
+
+char leakme[] = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    
+    printf(string);
+    printf("\n");
+
+    sprintf(feedbackString,string,string);
+    char leakme2[] = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
+    sprintf(feedbackString2,feedbackString,feedbackString);
+    FILE *f = fopen("./feedback.txt","w");
+    fprintf(f,"%s",feedbackString2);
+    fclose(f);
+    //printf("%s\n", feedbackString);
+    //printf("%s\n", feedbackString2);
+    
 }
 
 int main(){
@@ -63,9 +61,7 @@ int main(){
     while (a){
     
 give_feedback();
-
 sleep(1);
-printf("%x", &secret);
     }
     
     return 0;

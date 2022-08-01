@@ -60,6 +60,8 @@ You will need to compile the source code to the binaries with the appropriate se
 
 7. NX/DEP: `-z execstack` (ref [here](https://stackoverflow.com/questions/2340259/how-to-turn-off-gcc-compiler-optimization-to-enable-buffer-overflow))
 
+8. Compile with 32 bit: `-m32`
+
 ### GDB Things
 
 1. `set $esp=0x0000000` vs set `set {int}$esp=0x00000000` differences
