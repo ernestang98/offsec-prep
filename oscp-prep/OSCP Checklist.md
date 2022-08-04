@@ -589,3 +589,9 @@ Post Exploitatiion Cheatsheet
 > 	> $ pip install --upgrade setuptools
 >	>
 > 	> $ pip install impacket 
+>
+> Transferring files from Kali to Windows
+> >
+> > [certutil.exe](https://oscp.infosecsanyam.in/transferring-files)
+> > 
+> > [iwr](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-webrequest?view=powershell-7.2)
