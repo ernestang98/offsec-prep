@@ -1,7 +1,7 @@
 ### How to compile binary (disable ASLR & PIE):
 
 ```
-echo 2 | sudo tee /proc/sys/kernel/randomize_va_space
+echo 0 | sudo tee /proc/sys/kernel/randomize_va_space
 gcc roplevel3.c -o roplevel3 -fno-stack-protector -m32 -Wl,-z,norelro -mpreferred-stack-boundary=2 -no-pie
 ```
 
