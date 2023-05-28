@@ -1,0 +1,5 @@
+﻿cl : command line warning D9025: overriding '/sdl' with '/GS-'
+  Corelan Vulnserver in C.c
+C:\Users\Sales2\Desktop\Corelan\Corelan Vulnserver in C\Corelan Vulnserver in C\Corelan Vulnserver in C.c(19,25): warning C4133: 'function': incompatible types - from 'char *' to 'LPCWSTR'
+C:\Users\Sales2\Desktop\Corelan\Corelan Vulnserver in C\Corelan Vulnserver in C\Corelan Vulnserver in C.c(19,41): warning C4133: 'function': incompatible types - from 'char [13]' to 'LPCWSTR'
+  Corelan Vulnserver in C.vcxproj -> C:\Users\Sales2\Desktop\Corelan\Corelan Vulnserver in C\Debug\Corelan Vulnserver in C.exe
