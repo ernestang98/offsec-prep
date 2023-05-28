@@ -1,0 +1,35 @@
+<div id="clob"></div><div id ="clob"></div>
+<div id="noclob"></div>
+<script>
+console.log("This should be a DOM collection: ")
+console.log(clob)
+</script>
+<script>
+console.log("This should be a HTLM element: ")
+console.log(noclob)
+</script>
+<a id=defaultque href="/hehehaha"></a><a id=defaultque name=octave href="/hehehaha" onclick="alert(100);"></a>
+<script>
+console.log(defaultque)
+</script>
+<a id=someObject></a><a id=someObject name=url href=dom-clobbering.js></a>
+<script>
+window.onload = function(){
+	let collection = window.someObject || {};
+	console.log(collection)
+	let script = document.createElement('script');
+	script.src = collection.url;
+	document.body.appendChild(script);
+};
+</script>
+
+<!--
+
+https://medium.com/@shilpybanerjee/dom-clobbering-its-clobbering-time-f8dd5c8fbc4b
+https://domclob.xyz/domc_markups/list
+https://stackoverflow.com/questions/67064756/dom-clobbering-and-how-it-works
+https://portswigger.net/research/dom-clobbering-strikes-back
+https://www.youtube.com/watch?v=7xgM83HHWEQ&ab_channel=TheQprojectatUCMerced
+
+-->
+

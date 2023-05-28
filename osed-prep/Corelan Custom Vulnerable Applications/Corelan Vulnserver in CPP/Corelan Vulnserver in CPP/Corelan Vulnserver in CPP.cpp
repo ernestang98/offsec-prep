@@ -1,0 +1,140 @@
+// #include "stdafx.h"
+#include "stdio.h"
+#include "winsock.h"
+#include "windows.h"
+#include "tchar.h"
+
+//load windows socket
+#pragma comment(lib, "wsock32.lib")
+
+//Define Return Messages
+#define SS_ERROR 1
+#define SS_OK 0
+
+void pr(char* str)
+{
+    char buffer[20];
+    char buffer2[10];
+    try
+    {
+        try
+        {
+            strcpy(buffer, str);
+            //strcpy(buffer2, buffer);
+            //strcpy(buffer2, buffer);
+            //strcpy(buffer2, buffer);
+            //strcpy(buffer2, buffer);
+            printf("Input received : %s\n", buffer);
+        }
+        catch (char* strErr)
+        {
+            printf("No valid input received ! \n");
+            printf("Exception : %s\n", strErr);
+        }
+    }
+    catch (char* strErr)
+    {
+        printf("No valid input received ! \n");
+        printf("Exception : %s\n", strErr);
+    }
+}
+void sError(char* str)
+{
+    printf("Error %s", str);
+    WSACleanup();
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+    try
+    {
+        WORD sockVersion;
+        WSADATA wsaData;
+
+        int rVal;
+        char Message[5000] = " ";
+        char buf[2000] = " ";
+
+        u_short LocalPort;
+        LocalPort = 200;
+
+        //wsock32 initialized for usage
+        sockVersion = MAKEWORD(1, 1);
+        WSAStartup(sockVersion, &wsaData);
+
+        //create server socket
+        SOCKET serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+
+        if (serverSocket == INVALID_SOCKET)
+        {
+            return SS_ERROR;
+        }
+
+        SOCKADDR_IN sin;
+        sin.sin_family = PF_INET;
+        sin.sin_port = htons(LocalPort);
+        sin.sin_addr.s_addr = INADDR_ANY;
+
+        //bind the socket
+        rVal = bind(serverSocket, (LPSOCKADDR)&sin, sizeof(sin));
+        if (rVal == SOCKET_ERROR)
+        {
+            WSACleanup();
+            return SS_ERROR;
+        }
+
+        //get socket to listen
+        rVal = listen(serverSocket, 10);
+        if (rVal == SOCKET_ERROR)
+        {
+            WSACleanup();
+            return SS_ERROR;
+        }
+
+        //wait for a client to connect
+        SOCKET clientSocket;
+        clientSocket = accept(serverSocket, NULL, NULL);
+        if (clientSocket == INVALID_SOCKET)
+        {
+            WSACleanup();
+            return SS_ERROR;
+        }
+
+        int bytesRecv = SOCKET_ERROR;
+        while (bytesRecv == SOCKET_ERROR)
+        {
+            //receive the data that is being sent by the client max limit to 5000 bytes.
+            bytesRecv = recv(clientSocket, Message, 5000, 0);
+
+            if (bytesRecv == 0 || bytesRecv == WSAECONNRESET)
+            {
+                printf("\nConnection Closed.\n");
+                break;
+            }
+        }
+
+        try
+        {
+            pr(Message);
+        }
+        //Pass the data received to the function pr
+        catch (char* strErr)
+        {
+            printf("No valid input received ! \n");
+            printf("Exception : %s\n", strErr);
+        }
+
+        //close client socket
+        closesocket(clientSocket);
+        //close server socket
+        closesocket(serverSocket);
+
+        WSACleanup();
+    }
+    catch (char* strErr)
+    {
+        printf("No valid input received ! \n");
+        printf("Exception : %s\n", strErr);
+    }
+    return SS_OK;
+}
